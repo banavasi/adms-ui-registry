@@ -6,10 +6,10 @@ A Vue 3 component library implementing the ASU Rocket Design System (RDS). Add b
 
 ```bash
 # Initialize your project
-npx @adms-rds-ui/cli init
+npx @banavasi/adms-rds-ui-cli init
 
 # Add components
-npx @adms-rds-ui/cli add button
+npx @banavasi/adms-rds-ui-cli add button
 ```
 
 ## Features
@@ -34,7 +34,7 @@ npx @adms-rds-ui/cli add button
 Run the init command to set up your project:
 
 ```bash
-npx @adms-rds-ui/cli init
+npx @banavasi/adms-rds-ui-cli init
 ```
 
 This will:
@@ -47,10 +47,10 @@ This will:
 
 ```bash
 # Add a specific component
-npx @adms-rds-ui/cli add button
+npx @banavasi/adms-rds-ui-cli add button
 
 # Add multiple components
-npx @adms-rds-ui/cli add button card modal
+npx @banavasi/adms-rds-ui-cli add button card modal
 ```
 
 ## Available Components
@@ -169,7 +169,7 @@ pnpm install
 pnpm --filter storybook dev
 
 # Build CLI
-pnpm --filter @adms-rds-ui/cli build
+pnpm --filter @banavasi/adms-rds-ui-cli build
 
 # Build everything
 pnpm build
