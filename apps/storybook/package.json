@@ -6,9 +6,16 @@
   "scripts": {
     "dev": "storybook dev -p 6006",
     "build": "storybook build -o storybook-static",
-    "sync": "node ../../packages/cli/dist/index.js init -y && node ../../packages/cli/dist/index.js add button -y -o"
+    "sync": "node ../../packages/cli/dist/index.js init -y && node ../../packages/cli/dist/index.js add button -y -o",
+    "sync-all": "node sync-components.mjs"
   },
   "dependencies": {
+    "bootstrap": "^5.3.8",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "reka-ui": "^2.8.0",
+    "sass": "^1.97.3",
+    "tailwind-merge": "^3.4.0",
     "vue": "^3.5.0"
   },
   "devDependencies": {
