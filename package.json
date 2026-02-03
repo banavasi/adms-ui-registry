@@ -6,6 +6,7 @@
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev",
+    "version": "pnpm changeset version",
     "release": "pnpm --filter @adms-rds-ui/cli publish"
   },
   "devDependencies": {
