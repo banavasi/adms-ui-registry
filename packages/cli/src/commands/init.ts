@@ -34,7 +34,7 @@ export async function init(options: InitOptions) {
   console.log(pc.dim(`Detected package manager: ${pm}\n`));
 
   // Check if already initialized
-  if (configExists(cwd)) {
+  if (configExists(cwd) && !options.yes) {
     const { overwrite } = await prompts({
       type: "confirm",
       name: "overwrite",

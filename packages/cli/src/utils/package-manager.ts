@@ -6,18 +6,24 @@ import pc from "picocolors";
 export type PackageManager = "pnpm" | "npm" | "yarn" | "bun";
 
 export function detectPackageManager(cwd: string): PackageManager {
-  // Check for lock files
-  if (fs.existsSync(path.join(cwd, "pnpm-lock.yaml"))) {
-    return "pnpm";
-  }
-  if (fs.existsSync(path.join(cwd, "yarn.lock"))) {
-    return "yarn";
-  }
-  if (fs.existsSync(path.join(cwd, "bun.lockb"))) {
-    return "bun";
-  }
-  if (fs.existsSync(path.join(cwd, "package-lock.json"))) {
-    return "npm";
+  // Check for lock files in cwd and parent directories (monorepo support)
+  let dir = cwd;
+  const root = path.parse(dir).root;
+
+  while (dir !== root) {
+    if (fs.existsSync(path.join(dir, "pnpm-lock.yaml"))) {
+      return "pnpm";
+    }
+    if (fs.existsSync(path.join(dir, "yarn.lock"))) {
+      return "yarn";
+    }
+    if (fs.existsSync(path.join(dir, "bun.lockb"))) {
+      return "bun";
+    }
+    if (fs.existsSync(path.join(dir, "package-lock.json"))) {
+      return "npm";
+    }
+    dir = path.dirname(dir);
   }
 
   // Default to npm
