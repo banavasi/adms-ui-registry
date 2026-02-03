@@ -1,0 +1,206 @@
+import { Meta } from '@storybook/blocks'
+
+<Meta title="Documentation/Getting Started" />
+
+# Getting Started
+
+ADMS RDS UI is a Vue 3 component library implementing the ASU Rocket Design System. Components are copied directly into your project, giving you full control to customize as needed.
+
+## Installation
+
+### 1. Install the CLI
+
+```bash
+# npm
+npm install -g @banavasi/adms-rds-ui-cli
+
+# pnpm
+pnpm add -g @banavasi/adms-rds-ui-cli
+
+# yarn
+yarn global add @banavasi/adms-rds-ui-cli
+
+# bun
+bun add -g @banavasi/adms-rds-ui-cli
+```
+
+### 2. Initialize Your Project
+
+```bash
+adms-rds-ui init
+```
+
+This creates the following structure:
+
+```
+your-project/
+├── src/
+│   ├── components/ui/          # Component directory
+│   ├── lib/
+│   │   └── util.ts             # Utility functions (cn, cva)
+│   └── styles/                 # ASU brand styles
+│       ├── _colors.scss
+│       ├── _variables.scss
+│       ├── _spacing.scss
+│       ├── _typography.scss
+│       ├── _mixins.scss
+│       ├── _index.scss
+│       └── styles.scss
+├── vite.config.ts              # Updated with aliases
+├── tsconfig.json               # Updated with paths
+└── rds-ui.json                 # CLI configuration
+```
+
+### 3. Import Styles
+
+Add to your `main.ts` or `main.js`:
+
+```typescript
+import '@/styles/styles.scss'
+```
+
+### 4. Add Components
+
+```bash
+# Add a single component
+adms-rds-ui add button
+
+# Add multiple components
+adms-rds-ui add button tooltip card
+
+# Skip confirmation prompts
+adms-rds-ui add button -y
+```
+
+## CLI Options
+
+<table>
+  <thead>
+    <tr>
+      <th>Command</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>adms-rds-ui init</code></td>
+      <td>Initialize project with base files</td>
+    </tr>
+    <tr>
+      <td><code>adms-rds-ui add &lt;component&gt;</code></td>
+      <td>Add component(s) to your project</td>
+    </tr>
+    <tr>
+      <td><code>--yes, -y</code></td>
+      <td>Skip confirmation prompts</td>
+    </tr>
+    <tr>
+      <td><code>--overwrite, -o</code></td>
+      <td>Overwrite existing files</td>
+    </tr>
+    <tr>
+      <td><code>--src &lt;dir&gt;</code></td>
+      <td>Custom source directory</td>
+    </tr>
+  </tbody>
+</table>
+
+## Available Components
+
+<table>
+  <thead>
+    <tr>
+      <th>Component</th>
+      <th>Description</th>
+      <th>Dependencies</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>button</code></td>
+      <td>Buttons with variants and sizes</td>
+      <td><code>reka-ui</code></td>
+    </tr>
+    <tr>
+      <td><code>tooltip</code></td>
+      <td>Accessible tooltips</td>
+      <td><code>reka-ui</code></td>
+    </tr>
+  </tbody>
+</table>
+
+## Usage Example
+
+```vue
+<script setup lang="ts">
+import { Button } from '@/components/ui/Button'
+</script>
+
+<template>
+  <Button variant="primary">Click me</Button>
+</template>
+```
+
+## Configuration
+
+The CLI creates a `rds-ui.json` file for project-specific settings:
+
+```json
+{
+  "src": "src",
+  "components": "@/components/ui",
+  "lib": "@/lib",
+  "styles": "@/styles",
+  "aliases": {
+    "@/components/ui": "src/components/ui",
+    "@/lib": "src/lib",
+    "@/styles": "src/styles"
+  }
+}
+```
+
+## Design Tokens
+
+Components use ASU brand colors defined in SCSS:
+
+<table>
+  <thead>
+    <tr>
+      <th>Color</th>
+      <th>Variable</th>
+      <th>Value</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Maroon</td>
+      <td><code>$asu-maroon</code></td>
+      <td><code>#8c1d40</code></td>
+    </tr>
+    <tr>
+      <td>Gold</td>
+      <td><code>$asu-gold</code></td>
+      <td><code>#ffc627</code></td>
+    </tr>
+    <tr>
+      <td>Success</td>
+      <td><code>$asu-success</code></td>
+      <td><code>#78be20</code></td>
+    </tr>
+    <tr>
+      <td>Info</td>
+      <td><code>$asu-info</code></td>
+      <td><code>#00a3e0</code></td>
+    </tr>
+    <tr>
+      <td>Warning</td>
+      <td><code>$asu-warning</code></td>
+      <td><code>#ff7f32</code></td>
+    </tr>
+    <tr>
+      <td>Danger</td>
+      <td><code>$asu-danger</code></td>
+      <td><code>#cc2f2f</code></td>
+    </tr>
+  </tbody>
+</table>

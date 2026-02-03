@@ -25,6 +25,19 @@
       "files": ["ui/button/Button.vue", "ui/button/index.ts"],
       "dependencies": ["reka-ui"],
       "registryDependencies": []
+    },
+    "tooltip": {
+      "name": "Tooltip",
+      "files": [
+        "ui/tooltip/Tooltip.vue",
+        "ui/tooltip/TooltipProvider.vue",
+        "ui/tooltip/TooltipTrigger.vue",
+        "ui/tooltip/TooltipContent.vue",
+        "ui/tooltip/tooltip.css",
+        "ui/tooltip/index.ts"
+      ],
+      "dependencies": ["reka-ui"],
+      "registryDependencies": ["lib/util"]
     }
   }
 }
