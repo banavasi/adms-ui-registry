@@ -39,13 +39,13 @@ jobs:
           node-version: 20
           cache: "pnpm"
           registry-url: "https://npm.pkg.github.com"
-          scope: "@adms-rds-ui"
+          scope: "@banavasi"
 
       - name: Install dependencies
         run: pnpm install
 
       - name: Build CLI
-        run: pnpm --filter @adms-rds-ui/cli build
+        run: pnpm --filter @banavasi/adms-rds-ui-cli build
 
       - name: Create Release PR or Publish
         id: changeset
@@ -84,7 +84,7 @@ jobs:
         run: pnpm install
 
       - name: Build CLI
-        run: pnpm --filter @adms-rds-ui/cli build
+        run: pnpm --filter @banavasi/adms-rds-ui-cli build
 
       - name: Initialize Storybook with CLI
         working-directory: apps/storybook
