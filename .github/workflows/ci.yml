@@ -1,14 +1,19 @@
 name: CI
 
 on:
-  push:
-    branches-ignore: [main]  # Run on feature branches
   pull_request:
     branches: [main]
-  workflow_dispatch:         # Allow manual triggers
+  push:
+    branches-ignore: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   build:
+    name: Build & Validate
     runs-on: ubuntu-latest
 
     steps:
@@ -32,9 +37,14 @@ jobs:
       - name: Build CLI
         run: pnpm --filter @banavasi/adms-rds-ui-cli build
 
+      - name: Test CLI init
+        working-directory: apps/storybook
+        run: node ../../packages/cli/dist/index.js init -y
+
+      - name: Test CLI add component
+        working-directory: apps/storybook
+        run: node ../../packages/cli/dist/index.js add button -y
+
       - name: Build Storybook
         working-directory: apps/storybook
-        run: |
-          node ../../packages/cli/dist/index.js init -y
-          node ../../packages/cli/dist/index.js add button -y
-          pnpm build
+        run: pnpm build
