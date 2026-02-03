@@ -1,5 +1,8 @@
 name: CI
 
+# Validates code quality, builds packages, and tests CLI functionality.
+# Runs on all pull requests and pushes to non-main branches.
+
 on:
   pull_request:
     branches: [main]
@@ -50,9 +53,13 @@ jobs:
         working-directory: apps/storybook
         run: node ../../packages/cli/dist/index.js init -y
 
-      - name: Test CLI add component
+      - name: Test CLI add Button component
         working-directory: apps/storybook
         run: node ../../packages/cli/dist/index.js add button -y
+
+      - name: Test CLI add Tooltip component
+        working-directory: apps/storybook
+        run: node ../../packages/cli/dist/index.js add tooltip -y
 
       - name: Build Storybook
         working-directory: apps/storybook
