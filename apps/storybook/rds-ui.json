@@ -2,6 +2,7 @@
   "alias": "@",
   "srcDir": "src",
   "componentsDir": "src/components/ui",
+  "componentsAlias": "",
   "libDir": "src/lib",
   "stylesDir": "src/styles"
 }
