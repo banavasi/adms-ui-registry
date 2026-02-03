@@ -37,7 +37,7 @@
         "ui/tooltip/index.ts"
       ],
       "dependencies": ["reka-ui"],
-      "registryDependencies": ["lib/util"]
+      "registryDependencies": []
     }
   }
 }
