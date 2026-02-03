@@ -1,13 +1,37 @@
 {
-    "name": "adms-rds-ui",
-    "private": true,
-    "scripts": {
-      "build": "turbo build",
-      "dev": "turbo dev",
-      "storybook": "turbo storybook"
-    },
-    "devDependencies": {
-      "turbo": "^2.3.0"
-    },
-    "packageManager": "pnpm@9.0.0"
-  }
+  "name": "@adms-rds-ui/cli",
+  "version": "0.0.1",
+  "description": "CLI for adding ADMS RDS UI components to your project",
+  "type": "module",
+  "bin": {
+    "adms-rds-ui": "./dist/index.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch"
+  },
+  "dependencies": {
+    "commander": "^12.0.0",
+    "prompts": "^2.4.2",
+    "picocolors": "^1.0.0",
+    "fs-extra": "^11.2.0"
+  },
+  "devDependencies": {
+    "@types/fs-extra": "^11.0.4",
+    "@types/node": "^20.0.0",
+    "@types/prompts": "^2.4.9",
+    "tsup": "^8.3.5",
+    "typescript": "~5.8.0"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/banavasi/adms-ui-registry.git"
+  },
+  "license": "MIT"
+}
