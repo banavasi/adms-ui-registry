@@ -1,9 +1,12 @@
 name: Release
 
+# Creates version bump PRs and publishes packages to GitHub Packages Registry.
+# Uses Changesets to manage versions and changelogs.
+
 on:
   push:
     branches: [main]
-  workflow_dispatch:         # Allow manual triggers
+  workflow_dispatch:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -16,7 +19,7 @@ permissions:
 
 jobs:
   release:
-    name: Release
+    name: Release or Version
     runs-on: ubuntu-latest
     outputs:
       published: ${{ steps.changeset.outputs.published }}
