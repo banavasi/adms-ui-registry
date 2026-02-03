@@ -13,8 +13,6 @@ permissions:
   contents: write
   pull-requests: write
   packages: write
-  id-token: write
-  pages: write
 
 jobs:
   release:
@@ -59,52 +57,3 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-  deploy-storybook:
-    name: Deploy Storybook
-    runs-on: ubuntu-latest
-    needs: release
-    if: needs.release.outputs.published == 'true'
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 9
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: "pnpm"
-
-      - name: Install dependencies
-        run: pnpm install
-
-      - name: Build CLI
-        run: pnpm --filter @banavasi/adms-rds-ui-cli build
-
-      - name: Initialize Storybook with CLI
-        working-directory: apps/storybook
-        run: node ../../packages/cli/dist/index.js init -y
-
-      - name: Add Button component
-        working-directory: apps/storybook
-        run: node ../../packages/cli/dist/index.js add button -y
-
-      - name: Build Storybook
-        working-directory: apps/storybook
-        run: pnpm build
-
-      - name: Setup Pages
-        uses: actions/configure-pages@v4
-
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: apps/storybook/storybook-static
-
-      - name: Deploy to GitHub Pages
-        uses: actions/deploy-pages@v4
