@@ -12,7 +12,7 @@
     "format:check": "biome format .",
     "check": "biome check --write . && eslint . --fix",
     "version": "pnpm changeset version",
-    "release": "pnpm --filter @banavasi/adms-rds-ui-cli publish"
+    "release": "pnpm --filter @banavasi/eslint-config build && pnpm --filter @banavasi/eslint-config publish && pnpm --filter @banavasi/adms-rds-ui-cli publish"
   },
   "devDependencies": {
     "@banavasi/eslint-config": "workspace:*",
