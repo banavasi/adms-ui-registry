@@ -1,0 +1,13 @@
+{
+    "name": "adms-rds-ui",
+    "private": true,
+    "scripts": {
+      "build": "turbo build",
+      "dev": "turbo dev",
+      "storybook": "turbo storybook"
+    },
+    "devDependencies": {
+      "turbo": "^2.3.0"
+    },
+    "packageManager": "pnpm@9.0.0"
+  }

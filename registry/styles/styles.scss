@@ -1,0 +1,70 @@
+$prefix: 'rds-';
+$white: #fff;
+$black: #000;
+$tooltip-border-radius: 5px;
+$tooltip-font-size: 16px;
+$tooltip-max-width: 300px;
+
+// 1. Include functions first
+@import 'bootstrap/scss/functions';
+
+// 2. Import token overrides (ORDER MATTERS!)
+@import './colors';           // Colors first
+@import './spacing';     // Spacing
+@import './variables';        // Variables that depend on colors
+
+// 3. Include Bootstrap variables
+@import 'bootstrap/scss/variables';
+@import 'bootstrap/scss/variables-dark';
+
+// 4. Merge custom theme colors
+$custom-theme-colors: map-merge(
+  $theme-colors,
+  (
+    'light-1': $asu-light-1,
+    'light-2': $asu-light-2,
+    'light-3': $asu-light-3,
+    'light-4': $asu-light-4,
+    'light-5': $asu-light-5,
+    'dark-1': $asu-dark-1,
+    'dark-2': $asu-dark-2,
+    'dark-3': $asu-dark-3,
+  )
+);
+
+$theme-colors: map-merge($theme-colors, $custom-theme-colors);
+$theme-colors-rgb: map-loop($theme-colors, to-rgb, '$value');
+
+// 5. Include Bootstrap core
+@import 'bootstrap/scss/maps';
+@import 'bootstrap/scss/mixins';
+@import 'bootstrap/scss/root';
+
+// 6. Include Bootstrap components
+@import 'bootstrap/scss/reboot';
+@import 'bootstrap/scss/accordion';
+@import 'bootstrap/scss/alert';
+@import 'bootstrap/scss/button-group';
+@import 'bootstrap/scss/buttons';
+@import 'bootstrap/scss/card';
+@import 'bootstrap/scss/close';
+@import 'bootstrap/scss/containers';
+@import 'bootstrap/scss/dropdown';
+@import 'bootstrap/scss/forms';
+@import 'bootstrap/scss/grid';
+@import 'bootstrap/scss/images';
+@import 'bootstrap/scss/list-group';
+@import 'bootstrap/scss/modal';
+@import 'bootstrap/scss/nav';
+@import 'bootstrap/scss/navbar';
+@import 'bootstrap/scss/pagination';
+@import 'bootstrap/scss/spinners';
+@import 'bootstrap/scss/tables';
+@import 'bootstrap/scss/tooltip';
+@import 'bootstrap/scss/type';
+@import 'bootstrap/scss/helpers';
+@import 'bootstrap/scss/progress';
+@import 'bootstrap/scss/utilities';
+
+// 7. Include utilities API
+@import 'bootstrap/scss/utilities/api';

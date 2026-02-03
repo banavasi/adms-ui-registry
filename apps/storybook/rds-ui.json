@@ -1,0 +1,7 @@
+{
+  "alias": "@",
+  "srcDir": "src",
+  "componentsDir": "src/components/ui",
+  "libDir": "src/lib",
+  "stylesDir": "src/styles"
+}

@@ -1,0 +1,152 @@
+// ═══════════════════════════════════════════════════════════════════════════════
+// RDS MIXINS
+// ═══════════════════════════════════════════════════════════════════════════════
+
+@use "sass:color";
+@use "sass:map";
+@use "sass:math";
+
+// Color Functions
+@function tint-color($color, $weight) {
+  @return color.mix(white, $color, $weight);
+}
+
+@function shade-color($color, $weight) {
+  @return color.mix(black, $color, $weight);
+}
+
+@function color-contrast($background) {
+  $r: color.red($background);
+  $g: color.green($background);
+  $b: color.blue($background);
+  $yiq: math.div(($r * 299) + ($g * 587) + ($b * 114), 1000);
+  @return if($yiq >= 150, #000, #fff);
+}
+
+// Breakpoint Mixins
+@function breakpoint-min($name, $breakpoints: $grid-breakpoints) {
+  $min: map.get($breakpoints, $name);
+  @return if($min != 0, $min, null);
+}
+
+@mixin media-breakpoint-up($name, $breakpoints: $grid-breakpoints) {
+  $min: breakpoint-min($name, $breakpoints);
+  @if $min {
+    @media (min-width: $min) { @content; }
+  } @else {
+    @content;
+  }
+}
+
+// Focus Ring (RDS uses black outline)
+@mixin focus-ring($color: $black, $width: 2px) {
+  outline: $width solid $color;
+  outline-offset: 2px;
+}
+
+@mixin focus-visible-ring($color: $black, $width: 2px) {
+  &:focus-visible {
+    @include focus-ring($color, $width);
+  }
+}
+
+// Transition
+$btn-transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out !default;
+
+@mixin transition($transition...) {
+  @if length($transition) == 0 {
+    transition: all 0.2s ease-in-out;
+  } @else {
+    transition: $transition;
+  }
+}
+
+// Button Mixins
+@mixin button-variant(
+  $background,
+  $border: $background,
+  $color: color-contrast($background),
+  $hover-background: shade-color($background, 15%),
+  $hover-border: shade-color($border, 20%),
+  $hover-color: color-contrast($hover-background),
+  $active-background: shade-color($background, 20%),
+  $active-border: shade-color($border, 25%),
+  $active-color: color-contrast($active-background)
+) {
+  background-color: $background;
+  border-color: $border;
+  color: $color;
+
+  &:hover {
+    background-color: $hover-background;
+    border-color: $hover-border;
+    color: $hover-color;
+    text-decoration: none;
+  }
+
+  &:focus-visible {
+    @include focus-ring();
+  }
+
+  &:active, &.active {
+    background-color: $active-background;
+    border-color: $active-border;
+    color: $active-color;
+  }
+
+  &:disabled, &.disabled {
+    pointer-events: none;
+    opacity: 0.65;
+  }
+}
+
+@mixin button-outline-variant(
+  $color,
+  $color-hover: color-contrast($color),
+  $active-background: $color,
+  $active-color: color-contrast($color)
+) {
+  background-color: transparent;
+  border-color: $color;
+  color: $color;
+
+  &:hover {
+    background-color: $color;
+    border-color: $color;
+    color: $color-hover;
+    text-decoration: none;
+  }
+
+  &:focus-visible {
+    @include focus-ring();
+  }
+
+  &:active, &.active {
+    background-color: $active-background;
+    color: $active-color;
+  }
+
+  &:disabled, &.disabled {
+    pointer-events: none;
+    opacity: 0.65;
+  }
+}
+
+@mixin button-size($padding-y, $padding-x, $font-size, $border-radius) {
+  padding: $padding-y $padding-x;
+  font-size: $font-size;
+  border-radius: $border-radius;
+}
+
+// Visually Hidden
+@mixin visually-hidden() {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}

@@ -1,0 +1,42 @@
+{
+	"$schema": "./registry.schema.json",
+	"name": "@your-org/ui",
+	"version": "1.0.0",
+	"description": "ADMS RDS Vue 3 component library",
+	"repository": {
+	  "type": "github",
+	  "owner": "adms-rds",
+	  "repo": "ui-registry",
+	  "branch": "main"
+	},
+	"tokens": {
+	  "path": "tokens",
+	  "files": [
+		"_colors.scss",
+		"_typography.scss",
+		"_spacing.scss",
+		"_input.scss",
+
+		"_index.scss"
+	  ],
+	  "targetPath": "src/styles/tokens"
+	},
+	"components": [
+	  {
+		"name": "Input",
+		"description": "Form input component",
+		"path": "components/Input",
+		"files": [
+		  "Input.vue",
+		  "InputGroup.vue",
+		  "InputAddon.vue",
+		  "_input.scss",
+		  "index.ts",
+		  "types.ts"
+		],
+		"dependencies": [],
+		"peerDependencies": [],
+		"registryDependencies": []
+	  }
+	]
+  }

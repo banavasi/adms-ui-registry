@@ -1,0 +1,45 @@
+# Dependencies
+node_modules
+.pnpm-store
+
+# Build outputs
+dist
+build
+.storybook-static
+*.tsbuildinfo
+
+# Turbo
+.turbo
+
+# Logs & debug
+*.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment & secrets
+.env
+.env.local
+.env.*.local
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE / Editor
+.idea
+*.swp
+*.swo
+*~
+
+# Test & coverage
+coverage
+.nyc_output
+
+# Vite cache
+.vite
+
+# Optional: lock files from other package managers (if using pnpm only)
+# package-lock.json
+# yarn.lock
