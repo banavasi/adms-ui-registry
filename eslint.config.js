@@ -7,6 +7,7 @@ const config = await adms({
   ignores: [
     'registry/**', // Registry files are templates, not source code
     'eslint.config.js', // Config file doesn't need type checking
+    '**/*.mjs', // Ignore .mjs files (no TypeScript type info available)
   ],
 })
 
