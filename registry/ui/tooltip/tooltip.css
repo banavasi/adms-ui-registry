@@ -15,7 +15,7 @@
 
 /* Arrow triangle using ::before pseudo-element */
 .tooltip-arrow::before {
-  content: '';
+  content: "";
   position: absolute;
   border-style: solid;
   border-color: transparent;
