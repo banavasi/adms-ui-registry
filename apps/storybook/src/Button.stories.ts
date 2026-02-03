@@ -1,70 +1,70 @@
-import type { Meta, StoryObj } from "@storybook/vue3";
-import { Button } from "@/components/ui/Button";
+import type { Meta, StoryObj } from '@storybook/vue3'
+import { Button } from '@/components/ui/Button'
 
 const meta: Meta<typeof Button> = {
-  title: "Components/Button",
+  title: 'Components/Button',
   component: Button,
-  tags: ["autodocs"],
+  tags: ['autodocs'],
   argTypes: {
     variant: {
-      control: "select",
+      control: 'select',
       options: [
-        "primary",
-        "secondary",
-        "success",
-        "danger",
-        "warning",
-        "info",
-        "light",
-        "dark",
-        "outline-primary",
-        "outline-secondary",
-        "outline-success",
-        "outline-danger",
-        "outline-warning",
-        "outline-info",
-        "outline-light",
-        "outline-dark",
-        "link",
+        'primary',
+        'secondary',
+        'success',
+        'danger',
+        'warning',
+        'info',
+        'light',
+        'dark',
+        'outline-primary',
+        'outline-secondary',
+        'outline-success',
+        'outline-danger',
+        'outline-warning',
+        'outline-info',
+        'outline-light',
+        'outline-dark',
+        'link',
       ],
     },
     size: {
-      control: "select",
-      options: ["sm", "md", "lg"],
+      control: 'select',
+      options: ['sm', 'md', 'lg'],
     },
-    loading: { control: "boolean" },
-    disabled: { control: "boolean" },
+    loading: { control: 'boolean' },
+    disabled: { control: 'boolean' },
   },
-};
+}
 
-export default meta;
-type Story = StoryObj<typeof meta>;
+export default meta
+type Story = StoryObj<typeof meta>
 
 export const Primary: Story = {
   args: {
-    variant: "primary",
+    variant: 'primary',
   },
   render: (args) => ({
     components: { Button },
     setup() {
-      return { args };
+      return { args }
     },
     template: '<Button v-bind="args">Primary Button</Button>',
   }),
-};
+}
 
 export const Secondary: Story = {
   args: {
-    variant: "secondary",
+    variant: 'secondary',
   },
   render: (args) => ({
     components: { Button },
     setup() {
-      return { args };
+      return { args }
     },
     template: '<Button v-bind="args">Secondary Button</Button>',
   }),
-};
+}
 
 export const AllVariants: Story = {
   render: () => ({
@@ -82,7 +82,7 @@ export const AllVariants: Story = {
       </div>
     `,
   }),
-};
+}
 
 export const OutlineVariants: Story = {
   render: () => ({
@@ -100,7 +100,7 @@ export const OutlineVariants: Story = {
       </div>
     `,
   }),
-};
+}
 
 export const Sizes: Story = {
   render: () => ({
@@ -113,7 +113,7 @@ export const Sizes: Story = {
       </div>
     `,
   }),
-};
+}
 
 export const Loading: Story = {
   args: {
@@ -122,11 +122,11 @@ export const Loading: Story = {
   render: (args) => ({
     components: { Button },
     setup() {
-      return { args };
+      return { args }
     },
     template: '<Button v-bind="args">Loading...</Button>',
   }),
-};
+}
 
 export const Disabled: Story = {
   args: {
@@ -135,8 +135,8 @@ export const Disabled: Story = {
   render: (args) => ({
     components: { Button },
     setup() {
-      return { args };
+      return { args }
     },
     template: '<Button v-bind="args">Disabled</Button>',
   }),
-};
+}

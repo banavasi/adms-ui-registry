@@ -1,48 +1,48 @@
-import fs from "fs-extra";
-import path from "path";
-import { execSync } from "child_process";
-import pc from "picocolors";
+import { execSync } from 'node:child_process'
+import path from 'node:path'
+import fs from 'fs-extra'
+import pc from 'picocolors'
 
-export type PackageManager = "pnpm" | "npm" | "yarn" | "bun";
+export type PackageManager = 'pnpm' | 'npm' | 'yarn' | 'bun'
 
 export function detectPackageManager(cwd: string): PackageManager {
   // Check for lock files in cwd and parent directories (monorepo support)
-  let dir = cwd;
-  const root = path.parse(dir).root;
+  let dir = cwd
+  const root = path.parse(dir).root
 
   while (dir !== root) {
-    if (fs.existsSync(path.join(dir, "pnpm-lock.yaml"))) {
-      return "pnpm";
+    if (fs.existsSync(path.join(dir, 'pnpm-lock.yaml'))) {
+      return 'pnpm'
     }
-    if (fs.existsSync(path.join(dir, "yarn.lock"))) {
-      return "yarn";
+    if (fs.existsSync(path.join(dir, 'yarn.lock'))) {
+      return 'yarn'
     }
-    if (fs.existsSync(path.join(dir, "bun.lockb"))) {
-      return "bun";
+    if (fs.existsSync(path.join(dir, 'bun.lockb'))) {
+      return 'bun'
     }
-    if (fs.existsSync(path.join(dir, "package-lock.json"))) {
-      return "npm";
+    if (fs.existsSync(path.join(dir, 'package-lock.json'))) {
+      return 'npm'
     }
-    dir = path.dirname(dir);
+    dir = path.dirname(dir)
   }
 
   // Default to npm
-  return "npm";
+  return 'npm'
 }
 
 export function getInstallCommand(pm: PackageManager, deps: string[], dev = false): string {
-  const devFlag = dev ? (pm === "npm" ? "--save-dev" : "-D") : "";
+  const devFlag = dev ? (pm === 'npm' ? '--save-dev' : '-D') : ''
 
   switch (pm) {
-    case "pnpm":
-      return `pnpm add ${devFlag} ${deps.join(" ")}`.trim();
-    case "yarn":
-      return `yarn add ${devFlag} ${deps.join(" ")}`.trim();
-    case "bun":
-      return `bun add ${devFlag} ${deps.join(" ")}`.trim();
-    case "npm":
+    case 'pnpm':
+      return `pnpm add ${devFlag} ${deps.join(' ')}`.trim()
+    case 'yarn':
+      return `yarn add ${devFlag} ${deps.join(' ')}`.trim()
+    case 'bun':
+      return `bun add ${devFlag} ${deps.join(' ')}`.trim()
+    case 'npm':
     default:
-      return `npm install ${devFlag} ${deps.join(" ")}`.trim();
+      return `npm install ${devFlag} ${deps.join(' ')}`.trim()
   }
 }
 
@@ -51,25 +51,25 @@ export function installDependencies(
   deps: string[],
   options: { dev?: boolean; silent?: boolean } = {}
 ): boolean {
-  if (deps.length === 0) return true;
+  if (deps.length === 0) return true
 
-  const pm = detectPackageManager(cwd);
-  const command = getInstallCommand(pm, deps, options.dev);
+  const pm = detectPackageManager(cwd)
+  const command = getInstallCommand(pm, deps, options.dev)
 
   if (!options.silent) {
-    console.log(pc.dim(`\nInstalling dependencies with ${pm}...`));
-    console.log(pc.dim(`$ ${command}\n`));
+    console.log(pc.dim(`\nInstalling dependencies with ${pm}...`))
+    console.log(pc.dim(`$ ${command}\n`))
   }
 
   try {
     execSync(command, {
       cwd,
-      stdio: options.silent ? "ignore" : "inherit",
-    });
-    return true;
-  } catch (error) {
-    console.log(pc.red(`\n❌ Failed to install dependencies`));
-    console.log(pc.dim(`Run manually: ${command}`));
-    return false;
+      stdio: options.silent ? 'ignore' : 'inherit',
+    })
+    return true
+  } catch {
+    console.log(pc.red(`\n❌ Failed to install dependencies`))
+    console.log(pc.dim(`Run manually: ${command}`))
+    return false
   }
 }
