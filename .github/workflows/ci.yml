@@ -1,8 +1,11 @@
 name: CI
 
 on:
+  push:
+    branches-ignore: [main]  # Run on feature branches
   pull_request:
     branches: [main]
+  workflow_dispatch:         # Allow manual triggers
 
 jobs:
   build:
