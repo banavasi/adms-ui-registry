@@ -1,0 +1,12 @@
+# @adms-rds-ui/cli
+
+## 0.1.0
+
+### Minor Changes
+
+- [`4e96d72`](https://github.com/banavasi/adms-ui-registry/commit/4e96d7293733070495682998a7baa8e39d6d3109) Thanks [@banavasi](https://github.com/banavasi)! - Initial release of ADMS RDS UI
+
+  - CLI with `init` and `add` commands
+  - Button component with 17 variants and 3 sizes
+  - ASU brand design tokens (colors, spacing, typography)
+  - Bootstrap 5 integration with SCSS customization
