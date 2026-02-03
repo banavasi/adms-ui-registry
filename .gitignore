@@ -40,6 +40,6 @@ coverage
 # Vite cache
 .vite
 
-# Optional: lock files from other package managers (if using pnpm only)
-# package-lock.json
-# yarn.lock
+# Lock files from other package managers (pnpm only)
+package-lock.json
+yarn.lock
