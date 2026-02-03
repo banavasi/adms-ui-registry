@@ -212,11 +212,16 @@ Add to `registry/index.json`:
         "ui/component-name/index.ts"
       ],
       "dependencies": ["reka-ui"],
-      "registryDependencies": ["lib/util"]
+      "registryDependencies": []
     }
   }
 }
 ```
+
+**Important:**
+- `dependencies`: npm packages (e.g., `reka-ui`)
+- `registryDependencies`: Other components this component uses (e.g., if Card uses Button internally)
+- **DO NOT** include `lib/util` - it's installed during `init`
 
 ## 3. Create Storybook Stories
 

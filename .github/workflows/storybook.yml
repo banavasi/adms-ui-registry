@@ -1,5 +1,8 @@
 name: Deploy Storybook
 
+# Builds and deploys the Storybook documentation to GitHub Pages.
+# This provides a public documentation site for the ADMS RDS UI component library.
+
 on:
   push:
     branches: [main]
@@ -16,7 +19,7 @@ permissions:
 
 jobs:
   deploy:
-    name: Deploy
+    name: Deploy to GitHub Pages
     runs-on: ubuntu-latest
     environment:
       name: github-pages
@@ -40,6 +43,9 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
+      - name: Build ESLint config
+        run: pnpm --filter @banavasi/eslint-config build
+
       - name: Build CLI
         run: pnpm --filter @banavasi/adms-rds-ui-cli build
 
@@ -50,6 +56,10 @@ jobs:
       - name: Add Button component
         working-directory: apps/storybook
         run: node ../../packages/cli/dist/index.js add button -y
+
+      - name: Add Tooltip component
+        working-directory: apps/storybook
+        run: node ../../packages/cli/dist/index.js add tooltip -y
 
       - name: Build Storybook
         working-directory: apps/storybook
