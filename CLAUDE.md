@@ -184,6 +184,148 @@ After creating a component:
 
 ---
 
+# Adding a New Component
+
+When adding a new component to the registry, follow this complete workflow:
+
+## 1. Create Component Files
+
+Create in `registry/ui/{component-name}/`:
+
+```
+registry/ui/{component-name}/
+├── {Component}.vue      # Vue SFC with template
+└── index.ts             # CVA variants, types, and exports
+```
+
+## 2. Update Registry Index
+
+Add to `registry/index.json`:
+
+```json
+{
+  "components": {
+    "component-name": {
+      "name": "ComponentName",
+      "files": [
+        "ui/component-name/ComponentName.vue",
+        "ui/component-name/index.ts"
+      ],
+      "dependencies": ["reka-ui"],
+      "registryDependencies": ["lib/util"]
+    }
+  }
+}
+```
+
+## 3. Create Storybook Stories
+
+Create `apps/storybook/src/{Component}.stories.ts` with installation docs:
+
+```typescript
+import type { Meta, StoryObj } from '@storybook/vue3'
+import { ComponentName } from '@/components/ui/ComponentName'
+
+const meta: Meta<typeof ComponentName> = {
+  title: 'Components/ComponentName',
+  component: ComponentName,
+  tags: ['autodocs'],
+  parameters: {
+    layout: 'centered',
+    docs: {
+      description: {
+        component: `Component description.
+
+## Installation
+
+\`\`\`bash
+adms-rds-ui add component-name
+\`\`\`
+
+## Import
+
+\`\`\`vue
+<script setup lang="ts">
+import { ComponentName } from '@/components/ui/ComponentName'
+</script>
+
+<template>
+  <ComponentName variant="primary">Example</ComponentName>
+</template>
+\`\`\``,
+      },
+    },
+  },
+  argTypes: {
+    variant: {
+      control: 'select',
+      options: ['primary', 'secondary'],
+      table: { defaultValue: { summary: 'primary' } },
+    },
+  },
+}
+
+export default meta
+type Story = StoryObj<typeof meta>
+
+export const Primary: Story = {
+  args: { variant: 'primary' },
+  render: (args) => ({
+    components: { ComponentName },
+    setup() { return { args } },
+    template: '<ComponentName v-bind="args">Example</ComponentName>',
+  }),
+}
+```
+
+## 4. Update Documentation Pages
+
+### Update `apps/storybook/src/Intro.mdx`
+
+Add component card to the grid (use JSX object syntax for styles):
+
+```jsx
+<a href="?path=/docs/components-componentname--docs" style={{display: 'block', padding: '16px', border: '1px solid #dee2e6', borderRadius: '8px', textDecoration: 'none', color: 'inherit', background: '#fff'}}>
+  <div style={{width: '40px', height: '40px', background: '#8c1d40', borderRadius: '8px', marginBottom: '12px'}}></div>
+  <h3 style={{margin: '0 0 8px', fontSize: '16px'}}>ComponentName</h3>
+  <p style={{margin: '0', fontSize: '14px', color: '#6c757d'}}>Brief description</p>
+</a>
+```
+
+### Update `apps/storybook/src/GettingStarted.mdx`
+
+Add to the Available Components HTML table:
+
+```html
+<tr>
+  <td><code>component-name</code></td>
+  <td>Brief description</td>
+  <td><code>reka-ui</code></td>
+</tr>
+```
+
+## 5. Test the Component
+
+```bash
+# Sync component to Storybook
+cd apps/storybook
+pnpm sync
+
+# Run Storybook
+pnpm dev
+```
+
+## Checklist
+
+- [ ] Component created in `registry/ui/{component-name}/`
+- [ ] `registry/index.json` updated
+- [ ] Storybook stories created with installation docs
+- [ ] `Intro.mdx` updated with component card
+- [ ] `GettingStarted.mdx` updated with component table entry
+- [ ] Component tested in Storybook
+
+---
+
 ## CLI Commands
 
 ```bash
