@@ -1,0 +1,123 @@
+import { Meta } from '@storybook/blocks'
+
+<Meta title="Introduction" />
+
+# ADMS RDS UI
+
+A Vue 3 component library implementing the **ASU Rocket Design System**.
+
+## Features
+
+- **Vue 3** - Built with Composition API and `<script setup>`
+- **Bootstrap 5** - Uses Bootstrap utilities and components
+- **ASU Brand** - Official ASU colors and design tokens
+- **Accessible** - Built with Reka UI primitives for full accessibility
+- **Copy-Paste** - Components live in your codebase, fully customizable
+
+## Quick Start
+
+### 1. Install CLI
+
+```bash
+npm install -g @banavasi/adms-rds-ui-cli
+```
+
+### 2. Initialize Project
+
+```bash
+adms-rds-ui init
+```
+
+### 3. Add Component
+
+```bash
+adms-rds-ui add button
+```
+
+### 4. Use in Your App
+
+```vue
+<script setup lang="ts">
+import { Button } from '@/components/ui/Button'
+</script>
+
+<template>
+  <Button variant="primary">Click me</Button>
+</template>
+```
+
+## Documentation
+
+- **[Getting Started](?path=/docs/documentation-getting-started--docs)** - Installation and setup guide
+- **[Button](?path=/docs/components-button--docs)** - Button component documentation
+- **[Tooltip](?path=/docs/components-tooltip--docs)** - Tooltip component documentation
+
+## Available Components
+
+<div style={{display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '16px', margin: '24px 0'}}>
+  <a href="?path=/docs/components-button--docs" style={{display: 'block', padding: '16px', border: '1px solid #dee2e6', borderRadius: '8px', textDecoration: 'none', color: 'inherit', background: '#fff', transition: 'box-shadow 0.2s'}}>
+    <div style={{width: '40px', height: '40px', background: '#8c1d40', borderRadius: '8px', marginBottom: '12px'}}></div>
+    <h3 style={{margin: '0 0 8px', fontSize: '16px'}}>Button</h3>
+    <p style={{margin: '0', fontSize: '14px', color: '#6c757d'}}>Buttons with variants and sizes</p>
+  </a>
+  <a href="?path=/docs/components-tooltip--docs" style={{display: 'block', padding: '16px', border: '1px solid #dee2e6', borderRadius: '8px', textDecoration: 'none', color: 'inherit', background: '#fff', transition: 'box-shadow 0.2s'}}>
+    <div style={{width: '40px', height: '40px', background: '#ffc627', borderRadius: '8px', marginBottom: '12px'}}></div>
+    <h3 style={{margin: '0 0 8px', fontSize: '16px'}}>Tooltip</h3>
+    <p style={{margin: '0', fontSize: '14px', color: '#6c757d'}}>Accessible tooltips with positioning</p>
+  </a>
+</div>
+
+## Design Tokens
+
+Components use ASU brand colors defined in SCSS:
+
+<table>
+  <thead>
+    <tr>
+      <th>Color</th>
+      <th>Variable</th>
+      <th>Value</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Maroon</td>
+      <td><code>$asu-maroon</code></td>
+      <td><code>#8c1d40</code></td>
+    </tr>
+    <tr>
+      <td>Gold</td>
+      <td><code>$asu-gold</code></td>
+      <td><code>#ffc627</code></td>
+    </tr>
+    <tr>
+      <td>Success</td>
+      <td><code>$asu-success</code></td>
+      <td><code>#78be20</code></td>
+    </tr>
+    <tr>
+      <td>Info</td>
+      <td><code>$asu-info</code></td>
+      <td><code>#00a3e0</code></td>
+    </tr>
+    <tr>
+      <td>Warning</td>
+      <td><code>$asu-warning</code></td>
+      <td><code>#ff7f32</code></td>
+    </tr>
+    <tr>
+      <td>Danger</td>
+      <td><code>$asu-danger</code></td>
+      <td><code>#cc2f2f</code></td>
+    </tr>
+  </tbody>
+</table>
+
+## Links
+
+- [CLI Documentation](https://github.com/banavasi/adms-ui-registry/tree/main/packages/cli)
+- [Report an Issue](https://github.com/banavasi/adms-ui-registry/issues)
+
+## License
+
+MIT
