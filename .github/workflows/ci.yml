@@ -34,6 +34,15 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
+      - name: Build ESLint config
+        run: pnpm --filter @banavasi/eslint-config build
+
+      - name: Check formatting
+        run: pnpm format:check
+
+      - name: Lint
+        run: pnpm lint
+
       - name: Build CLI
         run: pnpm --filter @banavasi/adms-rds-ui-cli build
 
