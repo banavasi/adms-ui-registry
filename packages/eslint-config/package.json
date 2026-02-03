@@ -1,6 +1,6 @@
 {
   "name": "@banavasi/eslint-config",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "ESLint config for ADMS RDS UI projects",
   "type": "module",
   "main": "./dist/index.js",
@@ -11,7 +11,9 @@
       "types": "./dist/index.d.ts"
     }
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch"
@@ -35,5 +37,12 @@
     "registry": "https://npm.pkg.github.com"
   },
   "license": "MIT",
-  "keywords": ["eslint", "eslint-config", "vue", "typescript", "adms", "rds"]
+  "keywords": [
+    "eslint",
+    "eslint-config",
+    "vue",
+    "typescript",
+    "adms",
+    "rds"
+  ]
 }
