@@ -2,9 +2,9 @@
 import type { HTMLAttributes } from 'vue'
 import type { LabelVariants } from '.'
 import { Label as RekaLabel } from 'reka-ui'
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/Tooltip'
 import { cn } from '@/lib/util'
 import { labelVariants } from '.'
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/Tooltip'
 
 interface Props {
   for: string
@@ -45,7 +45,7 @@ const props = withDefaults(defineProps<Props>(), {
           <button
             type="button"
             class="btn btn-link p-0 tooltip-trigger"
-            :aria-label="`More information about this field`"
+            aria-label="More information about this field"
             :aria-describedby="`tooltip-${props.for}`"
           >
             <svg

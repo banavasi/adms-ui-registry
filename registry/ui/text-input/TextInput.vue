@@ -51,6 +51,12 @@ const props = withDefaults(defineProps<Props>(), {
 
 const emit = defineEmits<{
   'update:modelValue': [value: string | number]
+  blur: [event: FocusEvent]
+  focus: [event: FocusEvent]
+  input: [event: Event]
+  change: [event: Event]
+  keydown: [event: KeyboardEvent]
+  keyup: [event: KeyboardEvent]
 }>()
 
 const model = defineModel<string | number>()
@@ -79,6 +85,12 @@ const model = defineModel<string | number>()
       :placeholder="props.placeholder"
       :has-prefix="props.hasPrefix || !!$slots.prefix"
       :has-suffix="props.hasSuffix || !!$slots.suffix"
+      @blur="emit('blur', $event)"
+      @focus="emit('focus', $event)"
+      @input="emit('input', $event)"
+      @change="emit('change', $event)"
+      @keydown="emit('keydown', $event)"
+      @keyup="emit('keyup', $event)"
     >
       <template v-if="$slots.prefix" #prefix>
         <slot name="prefix" />
