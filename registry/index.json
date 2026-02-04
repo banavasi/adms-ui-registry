@@ -123,13 +123,7 @@
       "name": "TextSSN",
       "files": ["ui/text-ssn/TextSSN.vue", "ui/text-ssn/index.ts"],
       "dependencies": [],
-      "registryDependencies": [
-        "input-root",
-        "input-masked",
-        "input-error",
-        "input-help",
-        "label"
-      ]
+      "registryDependencies": ["input-root", "input-masked", "input-error", "input-help", "label"]
     },
     "input-numeric-range": {
       "name": "InputNumericRange",
