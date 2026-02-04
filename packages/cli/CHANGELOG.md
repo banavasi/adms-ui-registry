@@ -1,5 +1,11 @@
 # @adms-rds-ui/cli
 
+## 2.0.0
+
+### Major Changes
+
+- [#14](https://github.com/banavasi/adms-ui-registry/pull/14) [`ca1ad64`](https://github.com/banavasi/adms-ui-registry/commit/ca1ad640143f1d3b61612de87ab12ffadcb7f581) Thanks [@banavasi](https://github.com/banavasi)! - added text input and text password with all the preimitives
+
 ## 1.1.0
 
 ### Minor Changes
