@@ -47,7 +47,9 @@ export const Default: Story = {
   args: { variant: 'gold' },
   render: (args) => ({
     components: { Highlight },
-    setup() { return { args } },
+    setup() {
+      return { args }
+    },
     template: '<Highlight v-bind="args">Highlighted Text</Highlight>',
   }),
 }

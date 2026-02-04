@@ -66,7 +66,9 @@ export const Default: Story = {
   args: { for: 'email' },
   render: (args) => ({
     components: { Label },
-    setup() { return { args } },
+    setup() {
+      return { args }
+    },
     template: `
       <div>
         <Label v-bind="args">Email Address</Label>
@@ -80,7 +82,9 @@ export const WithOptional: Story = {
   args: { for: 'phone', optional: true },
   render: (args) => ({
     components: { Label },
-    setup() { return { args } },
+    setup() {
+      return { args }
+    },
     template: `
       <div>
         <Label v-bind="args">Phone Number</Label>
@@ -94,7 +98,9 @@ export const WithTooltip: Story = {
   args: { for: 'ssn', tooltip: 'Required for identity verification. Your data is encrypted.' },
   render: (args) => ({
     components: { Label },
-    setup() { return { args } },
+    setup() {
+      return { args }
+    },
     template: `
       <div>
         <Label v-bind="args">Social Security Number</Label>
@@ -109,7 +115,9 @@ export const FullExample: Story = {
   args: { for: 'middle-name', optional: true, tooltip: 'Include if you have one' },
   render: (args) => ({
     components: { Label },
-    setup() { return { args } },
+    setup() {
+      return { args }
+    },
     template: `
       <div>
         <Label v-bind="args">Middle Name</Label>

@@ -62,7 +62,9 @@ export const Default: Story = {
   args: { level: 'h3' },
   render: (args) => ({
     components: { Heading },
-    setup() { return { args } },
+    setup() {
+      return { args }
+    },
     template: '<Heading v-bind="args">Question Header</Heading>',
   }),
 }
@@ -71,7 +73,9 @@ export const WithOptional: Story = {
   args: { level: 'h3', optional: true },
   render: (args) => ({
     components: { Heading },
-    setup() { return { args } },
+    setup() {
+      return { args }
+    },
     template: '<Heading v-bind="args">Question Header</Heading>',
   }),
 }
@@ -80,17 +84,25 @@ export const WithTooltip: Story = {
   args: { level: 'h3', tooltip: 'This provides additional context about the question.' },
   render: (args) => ({
     components: { Heading },
-    setup() { return { args } },
+    setup() {
+      return { args }
+    },
     template: '<Heading v-bind="args">Question Header</Heading>',
   }),
 }
 
 export const FullExample: Story = {
   name: 'With Optional and Tooltip',
-  args: { level: 'h3', optional: true, tooltip: 'This field is not required but helps us serve you better.' },
+  args: {
+    level: 'h3',
+    optional: true,
+    tooltip: 'This field is not required but helps us serve you better.',
+  },
   render: (args) => ({
     components: { Heading },
-    setup() { return { args } },
+    setup() {
+      return { args }
+    },
     template: '<Heading v-bind="args">Question Header</Heading>',
   }),
 }

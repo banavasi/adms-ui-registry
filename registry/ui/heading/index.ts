@@ -19,18 +19,15 @@ export const headingVariants = cva('d-flex align-items-start gap-space-sm mb-0',
   },
 })
 
-export const optionalBadgeVariants = cva(
-  'badge rounded-pill fw-normal',
-  {
-    variants: {
-      variant: {
-        default: '',
-      },
+export const optionalBadgeVariants = cva('badge rounded-pill fw-normal', {
+  variants: {
+    variant: {
+      default: '',
     },
-    defaultVariants: {
-      variant: 'default',
-    },
-  }
-)
+  },
+  defaultVariants: {
+    variant: 'default',
+  },
+})
 
 export type HeadingVariants = VariantProps<typeof headingVariants>

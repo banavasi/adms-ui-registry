@@ -4,12 +4,7 @@ import type { HeadingVariants } from '.'
 import { computed } from 'vue'
 import { cn } from '@/lib/util'
 import { headingVariants, optionalBadgeVariants } from '.'
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from '@/components/ui/Tooltip'
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/Tooltip'
 
 interface Props {
   level?: HeadingVariants['level']
