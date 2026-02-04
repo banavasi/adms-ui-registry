@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { ref } from 'vue'
 import type { HTMLAttributes } from 'vue'
-import { InputRoot } from '@/components/ui/InputRoot'
-import { InputField } from '@/components/ui/InputField'
+import { ref } from 'vue'
 import { InputError } from '@/components/ui/InputError'
+import { InputField } from '@/components/ui/InputField'
 import { InputHelp } from '@/components/ui/InputHelp'
 import { InputPasswordToggle } from '@/components/ui/InputPasswordToggle'
+import { InputRoot } from '@/components/ui/InputRoot'
 import { Label } from '@/components/ui/Label'
 
 interface Props {
@@ -41,6 +41,15 @@ const props = withDefaults(defineProps<Props>(), {
   required: false,
   optional: false,
 })
+
+const emit = defineEmits<{
+  blur: [event: FocusEvent]
+  focus: [event: FocusEvent]
+  input: [event: Event]
+  change: [event: Event]
+  keydown: [event: KeyboardEvent]
+  keyup: [event: KeyboardEvent]
+}>()
 
 const model = defineModel<string>()
 
@@ -78,6 +87,12 @@ function toggleVisibility(visible: boolean) {
       :type="passwordVisible ? 'text' : 'password'"
       :placeholder="props.placeholder"
       :has-suffix="true"
+      @blur="emit('blur', $event)"
+      @focus="emit('focus', $event)"
+      @input="emit('input', $event)"
+      @change="emit('change', $event)"
+      @keydown="emit('keydown', $event)"
+      @keyup="emit('keyup', $event)"
     >
       <template #suffix>
         <InputPasswordToggle

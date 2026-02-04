@@ -44,6 +44,15 @@ const props = withDefaults(defineProps<Props>(), {
 
 const model = defineModel<string>()
 
+const emit = defineEmits<{
+  blur: [event: FocusEvent]
+  focus: [event: FocusEvent]
+  input: [event: Event]
+  change: [event: Event]
+  keydown: [event: KeyboardEvent]
+  keyup: [event: KeyboardEvent]
+}>()
+
 const passwordVisible = ref(false)
 
 function toggleVisibility(visible: boolean) {
@@ -78,6 +87,12 @@ function toggleVisibility(visible: boolean) {
       :type="passwordVisible ? 'text' : 'password'"
       :placeholder="props.placeholder"
       :has-suffix="true"
+      @blur="emit('blur', $event)"
+      @focus="emit('focus', $event)"
+      @input="emit('input', $event)"
+      @change="emit('change', $event)"
+      @keydown="emit('keydown', $event)"
+      @keyup="emit('keyup', $event)"
     >
       <template #suffix>
         <InputPasswordToggle

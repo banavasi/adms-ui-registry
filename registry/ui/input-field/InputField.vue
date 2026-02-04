@@ -30,6 +30,10 @@ const model = defineModel<string | number>()
 const emit = defineEmits<{
   blur: [event: FocusEvent]
   focus: [event: FocusEvent]
+  input: [event: Event]
+  change: [event: Event]
+  keydown: [event: KeyboardEvent]
+  keyup: [event: KeyboardEvent]
 }>()
 
 const computedAutocomplete = computed(() => {
@@ -60,8 +64,8 @@ const inputClasses = computed(() =>
       'has-suffix': props.hasSuffix,
       'has-prefix': props.hasPrefix,
     },
-    props.class,
-  ),
+    props.class
+  )
 )
 </script>
 
@@ -86,6 +90,10 @@ const inputClasses = computed(() =>
       :aria-describedby="ariaDescribedBy"
       @blur="emit('blur', $event)"
       @focus="emit('focus', $event)"
+      @input="emit('input', $event)"
+      @change="emit('change', $event)"
+      @keydown="emit('keydown', $event)"
+      @keyup="emit('keyup', $event)"
     />
     <span v-if="hasSuffix" class="input-suffix">
       <slot name="suffix" />

@@ -11,9 +11,7 @@
       "types": "./dist/index.d.ts"
     }
   },
-  "files": [
-    "dist"
-  ],
+  "files": ["dist"],
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch"
@@ -37,12 +35,5 @@
     "registry": "https://npm.pkg.github.com"
   },
   "license": "MIT",
-  "keywords": [
-    "eslint",
-    "eslint-config",
-    "vue",
-    "typescript",
-    "adms",
-    "rds"
-  ]
+  "keywords": ["eslint", "eslint-config", "vue", "typescript", "adms", "rds"]
 }

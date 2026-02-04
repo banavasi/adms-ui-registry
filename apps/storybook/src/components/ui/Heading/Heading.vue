@@ -2,9 +2,9 @@
 import type { HTMLAttributes } from 'vue'
 import type { HeadingVariants } from '.'
 import { computed } from 'vue'
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/Tooltip'
 import { cn } from '@/lib/util'
 import { headingVariants, optionalBadgeVariants } from '.'
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/Tooltip'
 
 interface Props {
   level?: HeadingVariants['level']
