@@ -227,7 +227,7 @@ watch(
       displayValue.value = applyMask(newValue || '')
     }
   },
-  { immediate: true },
+  { immediate: true }
 )
 
 const ariaDescribedBy = computed(() => {
