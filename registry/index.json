@@ -38,6 +38,24 @@
       ],
       "dependencies": ["reka-ui"],
       "registryDependencies": ["lib/util"]
+    },
+    "highlight": {
+      "name": "Highlight",
+      "files": ["ui/highlight/Highlight.vue", "ui/highlight/index.ts"],
+      "dependencies": ["reka-ui"],
+      "registryDependencies": []
+    },
+    "heading": {
+      "name": "Heading",
+      "files": ["ui/heading/Heading.vue", "ui/heading/index.ts"],
+      "dependencies": ["reka-ui"],
+      "registryDependencies": ["tooltip"]
+    },
+    "label": {
+      "name": "Label",
+      "files": ["ui/label/Label.vue", "ui/label/index.ts"],
+      "dependencies": ["reka-ui"],
+      "registryDependencies": ["tooltip"]
     }
   }
 }
