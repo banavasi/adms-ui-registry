@@ -1,5 +1,11 @@
 # @adms-rds-ui/cli
 
+## 3.0.0
+
+### Major Changes
+
+- [#16](https://github.com/banavasi/adms-ui-registry/pull/16) [`41839c0`](https://github.com/banavasi/adms-ui-registry/commit/41839c0b0269247c352e6ec00e530187245e8657) Thanks [@banavasi](https://github.com/banavasi)! - released input ssn, input range
+
 ## 2.0.0
 
 ### Major Changes
