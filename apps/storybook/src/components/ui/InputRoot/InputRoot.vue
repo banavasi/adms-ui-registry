@@ -28,7 +28,7 @@ provide(INPUT_INJECTION_KEY, {
 </script>
 
 <template>
-  <div data-slot="input-root" class="field position-relative mb-space-sm" :class="props.class">
+  <div data-slot="input-root" class="field d-flex flex-column gap-space-xs position-relative mb-space-sm" :class="props.class">
     <slot />
   </div>
 </template>

@@ -86,6 +86,18 @@
       "files": ["ui/text-input/TextInput.vue", "ui/text-input/index.ts"],
       "dependencies": [],
       "registryDependencies": ["input-root", "input-field", "input-error", "input-help", "label"]
+    },
+    "input-password-toggle": {
+      "name": "InputPasswordToggle",
+      "files": ["ui/input-password-toggle/InputPasswordToggle.vue", "ui/input-password-toggle/index.ts"],
+      "dependencies": [],
+      "registryDependencies": ["input-root"]
+    },
+    "text-password": {
+      "name": "TextPassword",
+      "files": ["ui/text-password/TextPassword.vue", "ui/text-password/index.ts"],
+      "dependencies": [],
+      "registryDependencies": ["input-root", "input-field", "input-error", "input-help", "input-password-toggle", "label"]
     }
   }
 }
