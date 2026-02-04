@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import type { HTMLAttributes } from 'vue'
-import { ref, computed, inject, watch } from 'vue'
-import { cn } from '@/lib/util'
+import { computed, inject, ref, watch } from 'vue'
 import { INPUT_INJECTION_KEY } from '@/components/ui/InputRoot'
+import { cn } from '@/lib/util'
 
 interface MaskToken {
   pattern: RegExp
@@ -23,20 +23,11 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
   tokens: () => ({
     '#': { pattern: /\d/ },
-    '%': { pattern: /[a-zA-Z]/ },
-    '@': { pattern: /[a-zA-Z0-9]/ },
+    '%': { pattern: /[a-z]/i },
+    '@': { pattern: /[a-z0-9]/i },
     '*': { pattern: /./ },
   }),
 })
-
-const context = inject(INPUT_INJECTION_KEY)
-if (!context) {
-  throw new Error('InputMasked must be used within InputRoot')
-}
-
-const model = defineModel<string>()
-const inputRef = ref<HTMLInputElement>()
-const displayValue = ref('')
 
 const emit = defineEmits<{
   blur: [event: FocusEvent]
@@ -46,6 +37,14 @@ const emit = defineEmits<{
   keydown: [event: KeyboardEvent]
   keyup: [event: KeyboardEvent]
 }>()
+const context = inject(INPUT_INJECTION_KEY)
+if (!context) {
+  throw new Error('InputMasked must be used within InputRoot')
+}
+
+const model = defineModel<string>()
+const inputRef = ref<HTMLInputElement>()
+const displayValue = ref('')
 
 // Get unmasked value (only the actual input characters)
 const unmaskedValue = computed(() => {
@@ -227,7 +226,7 @@ watch(
       displayValue.value = applyMask(newValue || '')
     }
   },
-  { immediate: true },
+  { immediate: true }
 )
 
 const ariaDescribedBy = computed(() => {

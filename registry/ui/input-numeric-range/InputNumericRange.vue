@@ -201,7 +201,7 @@ watch(
       updateDisplayValue(newValue ?? null)
     }
   },
-  { immediate: true },
+  { immediate: true }
 )
 
 const ariaDescribedBy = computed(() => {

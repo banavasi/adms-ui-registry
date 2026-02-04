@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import type { HTMLAttributes } from 'vue'
-import { computed, ref, watch, inject } from 'vue'
-import { cn } from '@/lib/util'
+import { computed, inject, ref, watch } from 'vue'
 import { INPUT_INJECTION_KEY } from '@/components/ui/InputRoot'
+import { cn } from '@/lib/util'
 
 interface Props {
   /** Minimum allowed value */
@@ -82,9 +82,9 @@ const parseInput = (input: string): number | null => {
 
   if (clean === '' || clean === '-') return null
 
-  const parsed = props.allowDecimal ? parseFloat(clean) : parseInt(clean, 10)
+  const parsed = props.allowDecimal ? Number.parseFloat(clean) : Number.parseInt(clean, 10)
 
-  if (isNaN(parsed)) return null
+  if (Number.isNaN(parsed)) return null
 
   return parsed
 }
@@ -201,7 +201,7 @@ watch(
       updateDisplayValue(newValue ?? null)
     }
   },
-  { immediate: true },
+  { immediate: true }
 )
 
 const ariaDescribedBy = computed(() => {

@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
 import { ref } from 'vue'
-import { InputRoot } from '@/components/ui/InputRoot'
-import { InputNumericRange } from '@/components/ui/InputNumericRange'
 import { InputError } from '@/components/ui/InputError'
 import { InputHelp } from '@/components/ui/InputHelp'
+import { InputNumericRange } from '@/components/ui/InputNumericRange'
+import { InputRoot } from '@/components/ui/InputRoot'
 import { Label } from '@/components/ui/Label'
 
 const meta: Meta = {

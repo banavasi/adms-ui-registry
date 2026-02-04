@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
 import type { HTMLAttributes } from 'vue'
-import { InputRoot } from '@/components/ui/InputRoot'
-import { InputMasked } from '@/components/ui/InputMasked'
+import { computed, ref } from 'vue'
 import { InputError } from '@/components/ui/InputError'
 import { InputHelp } from '@/components/ui/InputHelp'
+import { InputMasked } from '@/components/ui/InputMasked'
+import { InputRoot } from '@/components/ui/InputRoot'
 import { Label } from '@/components/ui/Label'
 
 interface Props {
@@ -42,8 +42,6 @@ const props = withDefaults(defineProps<Props>(), {
   optional: false,
 })
 
-const model = defineModel<string>()
-
 const emit = defineEmits<{
   blur: [event: FocusEvent]
   focus: [event: FocusEvent]
@@ -52,6 +50,8 @@ const emit = defineEmits<{
   keydown: [event: KeyboardEvent]
   keyup: [event: KeyboardEvent]
 }>()
+
+const model = defineModel<string>()
 
 // SSN mask: ###-##-####
 const SSN_MASK = '###-##-####'
