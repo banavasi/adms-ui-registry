@@ -41,7 +41,11 @@ const computedAutocomplete = computed(() => {
 
 const ariaDescribedBy = computed(() => {
   const ids: string[] = []
-  ids.push(context.helpId.value)
+  // Only reference help when not invalid (help is hidden when invalid)
+  if (!context.invalid.value) {
+    ids.push(context.helpId.value)
+  }
+  // Only reference error when invalid
   if (context.invalid.value) {
     ids.push(context.errorId.value)
   }
@@ -53,6 +57,8 @@ const inputClasses = computed(() =>
     'form-control col-12 p-space-xs',
     {
       'is-invalid': context.invalid.value,
+      'has-suffix': props.hasSuffix,
+      'has-prefix': props.hasPrefix,
     },
     props.class,
   ),
@@ -60,8 +66,8 @@ const inputClasses = computed(() =>
 </script>
 
 <template>
-  <div v-if="hasPrefix || hasSuffix" class="input-group">
-    <span v-if="hasPrefix" class="input-group-text">
+  <div class="input-wrapper">
+    <span v-if="hasPrefix" class="input-prefix">
       <slot name="prefix" />
     </span>
     <input
@@ -81,33 +87,30 @@ const inputClasses = computed(() =>
       @blur="emit('blur', $event)"
       @focus="emit('focus', $event)"
     />
-    <span v-if="hasSuffix" class="input-group-text">
+    <span v-if="hasSuffix" class="input-suffix">
       <slot name="suffix" />
     </span>
   </div>
-  <input
-    v-else
-    :id="context.id.value"
-    v-model="model"
-    data-slot="input-field"
-    :type="type"
-    :class="inputClasses"
-    :placeholder="placeholder"
-    :required="context.required.value"
-    :disabled="context.disabled.value"
-    :readonly="readonly"
-    :autocomplete="computedAutocomplete"
-    :aria-required="context.required.value"
-    :aria-invalid="context.invalid.value ? 'true' : undefined"
-    :aria-describedby="ariaDescribedBy"
-    @blur="emit('blur', $event)"
-    @focus="emit('focus', $event)"
-  />
 </template>
 
 <style>
+.input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
 .form-control {
   border-radius: 0;
+  width: 100%;
+}
+
+.form-control.has-suffix {
+  padding-right: 3rem;
+}
+
+.form-control.has-prefix {
+  padding-left: 3rem;
 }
 
 .form-control:focus {
@@ -118,5 +121,31 @@ const inputClasses = computed(() =>
 
 .is-invalid {
   border-bottom-width: 0.25rem;
+  /* Remove Bootstrap's default error icon */
+  background-image: none !important;
+  padding-right: 3rem !important;
+}
+
+.input-prefix,
+.input-suffix {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: var(--rds-dark-1, #747474);
+}
+
+.input-prefix {
+  left: 1rem;
+}
+
+.input-suffix {
+  right: 1rem;
+}
+
+/* Turn suffix icon red when input is invalid */
+.input-wrapper:has(.is-invalid) .input-suffix {
+  color: var(--rds-danger, #cc2f2f);
 }
 </style>
