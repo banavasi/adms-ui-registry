@@ -95,5 +95,7 @@ const model = defineModel<string | number>()
     <InputError v-if="props.errorText || $slots.error">
       <slot name="error">{{ props.errorText }}</slot>
     </InputError>
+
+    <slot name="footer" />
   </InputRoot>
 </template>
