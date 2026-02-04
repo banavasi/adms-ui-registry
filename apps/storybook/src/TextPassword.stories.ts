@@ -250,7 +250,7 @@ export const ValidationExample: Story = {
         } else if (!/[A-Z]/.test(value.value)) {
           isInvalid.value = true
           errorMessage.value = 'Password must contain at least one uppercase letter.'
-        } else if (!/[0-9]/.test(value.value)) {
+        } else if (!/\d/.test(value.value)) {
           isInvalid.value = true
           errorMessage.value = 'Password must contain at least one number.'
         } else {

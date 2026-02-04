@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import type { HTMLAttributes } from 'vue'
 import { computed, inject } from 'vue'
-import { cn } from '@/lib/util'
 import { INPUT_INJECTION_KEY } from '@/components/ui/InputRoot'
+import { cn } from '@/lib/util'
 
 interface Props {
   type?: 'text' | 'email' | 'tel' | 'password' | 'number' | 'url' | 'search'
@@ -20,17 +20,20 @@ const props = withDefaults(defineProps<Props>(), {
   hasSuffix: false,
 })
 
+const emit = defineEmits<{
+  blur: [event: FocusEvent]
+  focus: [event: FocusEvent]
+  input: [event: Event]
+  change: [event: Event]
+  keydown: [event: KeyboardEvent]
+  keyup: [event: KeyboardEvent]
+}>()
 const context = inject(INPUT_INJECTION_KEY)
 if (!context) {
   throw new Error('InputField must be used within InputRoot')
 }
 
 const model = defineModel<string | number>()
-
-const emit = defineEmits<{
-  blur: [event: FocusEvent]
-  focus: [event: FocusEvent]
-}>()
 
 const computedAutocomplete = computed(() => {
   if (props.autocomplete === 'off') {
@@ -60,8 +63,8 @@ const inputClasses = computed(() =>
       'has-suffix': props.hasSuffix,
       'has-prefix': props.hasPrefix,
     },
-    props.class,
-  ),
+    props.class
+  )
 )
 </script>
 
@@ -86,6 +89,10 @@ const inputClasses = computed(() =>
       :aria-describedby="ariaDescribedBy"
       @blur="emit('blur', $event)"
       @focus="emit('focus', $event)"
+      @input="emit('input', $event)"
+      @change="emit('change', $event)"
+      @keydown="emit('keydown', $event)"
+      @keyup="emit('keyup', $event)"
     />
     <span v-if="hasSuffix" class="input-suffix">
       <slot name="suffix" />
