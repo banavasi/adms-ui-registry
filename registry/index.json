@@ -112,6 +112,24 @@
         "input-password-toggle",
         "label"
       ]
+    },
+    "input-masked": {
+      "name": "InputMasked",
+      "files": ["ui/input-masked/InputMasked.vue", "ui/input-masked/index.ts"],
+      "dependencies": [],
+      "registryDependencies": ["input-root", "lib/util"]
+    },
+    "text-ssn": {
+      "name": "TextSSN",
+      "files": ["ui/text-ssn/TextSSN.vue", "ui/text-ssn/index.ts"],
+      "dependencies": [],
+      "registryDependencies": [
+        "input-root",
+        "input-masked",
+        "input-error",
+        "input-help",
+        "label"
+      ]
     }
   }
 }
