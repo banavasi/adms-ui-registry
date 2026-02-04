@@ -2,14 +2,9 @@
 import type { HTMLAttributes } from 'vue'
 import type { LabelVariants } from '.'
 import { Label as RekaLabel } from 'reka-ui'
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/Tooltip'
 import { cn } from '@/lib/util'
 import { labelVariants } from '.'
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from '@/components/ui/Tooltip'
 
 interface Props {
   for: string
