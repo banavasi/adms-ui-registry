@@ -56,6 +56,36 @@
       "files": ["ui/label/Label.vue", "ui/label/index.ts"],
       "dependencies": ["reka-ui"],
       "registryDependencies": ["tooltip"]
+    },
+    "input-root": {
+      "name": "InputRoot",
+      "files": ["ui/input-root/InputRoot.vue", "ui/input-root/index.ts", "ui/input-root/context.ts"],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    "input-field": {
+      "name": "InputField",
+      "files": ["ui/input-field/InputField.vue", "ui/input-field/index.ts"],
+      "dependencies": [],
+      "registryDependencies": ["input-root", "lib/util"]
+    },
+    "input-error": {
+      "name": "InputError",
+      "files": ["ui/input-error/InputError.vue", "ui/input-error/index.ts"],
+      "dependencies": [],
+      "registryDependencies": ["input-root"]
+    },
+    "input-help": {
+      "name": "InputHelp",
+      "files": ["ui/input-help/InputHelp.vue", "ui/input-help/index.ts"],
+      "dependencies": [],
+      "registryDependencies": ["input-root"]
+    },
+    "text-input": {
+      "name": "TextInput",
+      "files": ["ui/text-input/TextInput.vue", "ui/text-input/index.ts"],
+      "dependencies": [],
+      "registryDependencies": ["input-root", "input-field", "input-error", "input-help", "label"]
     }
   }
 }
