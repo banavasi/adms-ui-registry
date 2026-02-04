@@ -130,6 +130,12 @@
         "input-help",
         "label"
       ]
+    },
+    "input-numeric-range": {
+      "name": "InputNumericRange",
+      "files": ["ui/input-numeric-range/InputNumericRange.vue", "ui/input-numeric-range/index.ts"],
+      "dependencies": [],
+      "registryDependencies": ["input-root", "lib/util"]
     }
   }
 }
