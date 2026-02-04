@@ -34,9 +34,10 @@ const props = withDefaults(defineProps<Props>(), {
       <slot />
     </span>
 
-    <span v-if="optional" class="optional-badge badge rounded-pill fw-normal">
+    <span v-if="optional" class="optional-badge badge rounded-0 fw-normal" aria-hidden="true">
       {{ optionalText }}
     </span>
+    <span v-if="optional" class="visually-hidden">({{ optionalText }})</span>
 
     <TooltipProvider v-if="tooltip">
       <Tooltip :delay-duration="300">
@@ -44,7 +45,8 @@ const props = withDefaults(defineProps<Props>(), {
           <button
             type="button"
             class="btn btn-link p-0 tooltip-trigger"
-            aria-label="More information"
+            :aria-label="`More information about this field`"
+            :aria-describedby="`tooltip-${props.for}`"
           >
             <svg
               width="16"
@@ -63,7 +65,7 @@ const props = withDefaults(defineProps<Props>(), {
             </svg>
           </button>
         </TooltipTrigger>
-        <TooltipContent :side="tooltipPosition">
+        <TooltipContent :id="`tooltip-${props.for}`" :side="tooltipPosition" role="tooltip">
           {{ tooltip }}
         </TooltipContent>
       </Tooltip>
