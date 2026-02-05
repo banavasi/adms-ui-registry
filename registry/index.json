@@ -142,6 +142,16 @@
       "files": ["ui/radio-segment/RadioSegment.vue", "ui/radio-segment/index.ts"],
       "dependencies": ["reka-ui"],
       "registryDependencies": ["input-root", "input-error", "input-help", "label"]
+    },
+    "radio-card": {
+      "name": "RadioCard",
+      "files": [
+        "ui/radio-card/RadioCard.vue",
+        "ui/radio-card/RadioCardGroup.vue",
+        "ui/radio-card/index.ts"
+      ],
+      "dependencies": ["reka-ui"],
+      "registryDependencies": ["input-root", "input-error", "input-help", "label"]
     }
   }
 }
