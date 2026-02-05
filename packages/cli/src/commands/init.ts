@@ -234,6 +234,20 @@ ${aliasEntries}
   console.log(pc.green('✓ Updated vite.config.ts with alias'))
 }
 
+// Merge paths without duplicating existing aliases
+function mergePaths(
+  existingPaths: Record<string, string[]> | undefined,
+  newPaths: Record<string, string[]>
+): Record<string, string[]> {
+  const merged = { ...existingPaths }
+  for (const [key, value] of Object.entries(newPaths)) {
+    if (!merged[key]) {
+      merged[key] = value
+    }
+  }
+  return merged
+}
+
 // Update tsconfig.json with paths
 async function updateTsConfig(cwd: string, config: RdsConfig) {
   const tsConfigPath = path.join(cwd, 'tsconfig.json')
@@ -268,13 +282,61 @@ async function updateTsConfig(cwd: string, config: RdsConfig) {
 
   const tsConfig = fs.readJsonSync(tsConfigPath)
 
-  tsConfig.compilerOptions = tsConfig.compilerOptions || {}
-  tsConfig.compilerOptions.baseUrl = tsConfig.compilerOptions.baseUrl || '.'
-  tsConfig.compilerOptions.paths = {
-    ...tsConfig.compilerOptions.paths,
-    ...paths,
-  }
+  // Check if using TypeScript project references
+  const usesProjectReferences =
+    Array.isArray(tsConfig.references) &&
+    tsConfig.references.length > 0 &&
+    Array.isArray(tsConfig.files) &&
+    tsConfig.files.length === 0
 
-  fs.writeJsonSync(tsConfigPath, tsConfig, { spaces: 2 })
-  console.log(pc.green('✓ Updated tsconfig.json with paths'))
+  if (usesProjectReferences) {
+    // Find and update the app tsconfig (the one that includes src files)
+    let appConfigUpdated = false
+
+    for (const ref of tsConfig.references) {
+      const refPath = path.join(cwd, ref.path)
+      const refConfigPath = refPath.endsWith('.json') ? refPath : `${refPath}.json`
+
+      if (!fs.existsSync(refConfigPath)) continue
+
+      const refConfig = fs.readJsonSync(refConfigPath)
+
+      // Check if this config includes src files
+      const includesSrc =
+        Array.isArray(refConfig.include) &&
+        refConfig.include.some(
+          (inc: string) => inc.includes('src/') || inc.startsWith('src')
+        )
+
+      if (includesSrc) {
+        refConfig.compilerOptions = refConfig.compilerOptions || {}
+        refConfig.compilerOptions.baseUrl = '.'
+        refConfig.compilerOptions.paths = mergePaths(refConfig.compilerOptions.paths, paths)
+
+        fs.writeJsonSync(refConfigPath, refConfig, { spaces: 2 })
+        console.log(pc.green(`✓ Updated ${path.basename(refConfigPath)} with paths`))
+        appConfigUpdated = true
+      }
+    }
+
+    // Also update root tsconfig for IDE support
+    tsConfig.compilerOptions = tsConfig.compilerOptions || {}
+    tsConfig.compilerOptions.baseUrl = tsConfig.compilerOptions.baseUrl || '.'
+    tsConfig.compilerOptions.paths = mergePaths(tsConfig.compilerOptions.paths, paths)
+    fs.writeJsonSync(tsConfigPath, tsConfig, { spaces: 2 })
+
+    if (appConfigUpdated) {
+      console.log(pc.green('✓ Updated tsconfig.json with paths'))
+    } else {
+      console.log(pc.yellow('⚠ Could not find app tsconfig to update. You may need to add paths manually.'))
+    }
+  } else {
+    // Standard tsconfig without project references
+    tsConfig.compilerOptions = tsConfig.compilerOptions || {}
+    tsConfig.compilerOptions.baseUrl = tsConfig.compilerOptions.baseUrl || '.'
+    tsConfig.compilerOptions.paths = mergePaths(tsConfig.compilerOptions.paths, paths)
+
+    fs.writeJsonSync(tsConfigPath, tsConfig, { spaces: 2 })
+    console.log(pc.green('✓ Updated tsconfig.json with paths'))
+  }
 }
