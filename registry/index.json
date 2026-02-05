@@ -152,5 +152,6 @@
       ],
       "dependencies": ["reka-ui"],
       "registryDependencies": ["input-root", "input-error", "input-help", "label"]
-    }  }
+    }
+  }
 }
