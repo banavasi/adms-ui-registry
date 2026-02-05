@@ -8,7 +8,27 @@ ADMS RDS UI is a Vue 3 component library implementing the ASU Rocket Design Syst
 
 ## Installation
 
-### 1. Install the CLI
+### 1. Configure GitHub Packages Registry
+
+This package is hosted on GitHub Packages. You need to authenticate before installing.
+
+**Create a GitHub Personal Access Token:**
+1. Go to [GitHub Settings → Developer settings → Personal access tokens](https://github.com/settings/tokens)
+2. Generate a new token (classic) with `read:packages` scope
+3. Copy the token
+
+**Configure npm to use GitHub Packages:**
+
+Create or edit `~/.npmrc` in your home directory:
+
+```bash
+//npm.pkg.github.com/:_authToken=YOUR_GITHUB_TOKEN
+@banavasi:registry=https://npm.pkg.github.com
+```
+
+Replace `YOUR_GITHUB_TOKEN` with your actual token.
+
+### 2. Install the CLI
 
 ```bash
 # npm
