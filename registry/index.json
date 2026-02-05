@@ -152,6 +152,15 @@
       ],
       "dependencies": ["reka-ui"],
       "registryDependencies": ["input-root", "input-error", "input-help", "label"]
+    },
+    "radio-group": {
+      "name": "RadioGroup",
+      "files": [
+        "ui/radio-group/RadioGroup.vue",
+        "ui/radio-group/index.ts"
+      ],
+      "dependencies": ["reka-ui"],
+      "registryDependencies": ["input-root", "input-error", "input-help", "label"]
     }
   }
 }
