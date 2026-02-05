@@ -17,9 +17,19 @@ This package is hosted on GitHub Packages. You need to authenticate before insta
 2. Generate a new token (classic) with `read:packages` scope
 3. Copy the token
 
-**Configure npm to use GitHub Packages:**
+**Configure npm to use GitHub Packages for global installs:**
 
-Create or edit `~/.npmrc` in your home directory:
+For global package installations, the `.npmrc` file **must** be in your home directory. Create or edit `~/.npmrc`:
+
+```bash
+# macOS/Linux
+nano ~/.npmrc
+
+# Windows (PowerShell)
+notepad $HOME\.npmrc
+```
+
+Add these lines to the file:
 
 ```bash
 //npm.pkg.github.com/:_authToken=YOUR_GITHUB_TOKEN
@@ -27,6 +37,17 @@ Create or edit `~/.npmrc` in your home directory:
 ```
 
 Replace `YOUR_GITHUB_TOKEN` with your actual token.
+
+**Verify the configuration:**
+
+```bash
+# Check that the file exists and has correct content
+cat ~/.npmrc
+
+# You should see your token and the registry setting
+```
+
+> **Note:** Project-level `.npmrc` files are ignored for global installs. The home directory `~/.npmrc` is required.
 
 ### 2. Install the CLI
 
@@ -44,7 +65,7 @@ yarn global add @banavasi/adms-rds-ui-cli
 bun add -g @banavasi/adms-rds-ui-cli
 ```
 
-### 2. Initialize Your Project
+### 3. Initialize Your Project
 
 ```bash
 adms-rds-ui init
@@ -71,7 +92,7 @@ your-project/
 └── rds-ui.json                 # CLI configuration
 ```
 
-### 3. Import Styles
+### 4. Import Styles
 
 Add to your `main.ts` or `main.js`:
 
@@ -79,7 +100,7 @@ Add to your `main.ts` or `main.js`:
 import '@/styles/styles.scss'
 ```
 
-### 4. Add Components
+### 5. Add Components
 
 ```bash
 # Add a single component
@@ -214,6 +235,16 @@ adms-rds-ui add button -y
     <tr>
       <td><code>radio-yes-no</code></td>
       <td>Card-style yes/no radio buttons with label</td>
+      <td><code>reka-ui</code>, <code>label</code>, <code>input-*</code></td>
+    </tr>
+    <tr>
+      <td><code>radio-segment</code></td>
+      <td>Card-style horizontal radio group</td>
+      <td><code>reka-ui</code>, <code>label</code>, <code>input-*</code></td>
+    </tr>
+    <tr>
+      <td><code>radio-card</code></td>
+      <td>Card-based radio options with icons</td>
       <td><code>reka-ui</code>, <code>label</code>, <code>input-*</code></td>
     </tr>
   </tbody>
