@@ -1,5 +1,11 @@
 # @adms-rds-ui/cli
 
+## 3.1.0
+
+### Minor Changes
+
+- [#20](https://github.com/banavasi/adms-ui-registry/pull/20) [`7050cab`](https://github.com/banavasi/adms-ui-registry/commit/7050cab386f2edf2961b92d5d3c40e36269e699d) Thanks [@banavasi](https://github.com/banavasi)! - fixed the issues on the library add
+
 ## 3.0.0
 
 ### Major Changes
