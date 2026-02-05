@@ -1,5 +1,22 @@
 # @adms-rds-ui/cli
 
+## 3.2.0
+
+### Minor Changes
+
+- [#25](https://github.com/banavasi/adms-ui-registry/pull/25) [`9dc4ef7`](https://github.com/banavasi/adms-ui-registry/commit/9dc4ef7f9fdbd413129b7a71180b1fcb4503b165) Thanks [@banavasi](https://github.com/banavasi)! - feat: add RadioSegment component with comprehensive documentation and stories
+
+  - Introduced the RadioSegment component, a card-style horizontal radio group for selecting options.
+  - Added detailed documentation covering installation, usage, props, and events.
+  - Created multiple stories demonstrating various configurations, including prefill values, case-insensitive matching, and error states.
+  - Updated registry and CLI to include the new RadioSegment component
+
+- [#25](https://github.com/banavasi/adms-ui-registry/pull/25) [`1df9928`](https://github.com/banavasi/adms-ui-registry/commit/1df9928816d17f4e80557cd505530894acc9f158) Thanks [@banavasi](https://github.com/banavasi)! - added radio card component
+
+### Patch Changes
+
+- [#23](https://github.com/banavasi/adms-ui-registry/pull/23) [`b8a8937`](https://github.com/banavasi/adms-ui-registry/commit/b8a8937c2a3ff1fa476f9d3eda83867cdb8fc4f5) Thanks [@banavasi](https://github.com/banavasi)! - added class changes
+
 ## 3.1.0
 
 ### Minor Changes
