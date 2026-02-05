@@ -126,7 +126,7 @@ const handleValueChange = (value: string) => {
   </InputRoot>
 </template>
 
-<style>
+<style scoped>
 .radio-yes-no-group {
   display: flex;
   flex-direction: row;

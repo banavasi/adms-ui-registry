@@ -1,0 +1,21 @@
+# Lefthook configuration for pre-commit hooks
+# https://github.com/evilmartians/lefthook
+
+pre-commit:
+  parallel: true
+  commands:
+    format:
+      glob: "*.{js,ts,vue,json,md,css,scss}"
+      run: pnpm biome format --write {staged_files}
+      stage_fixed: true
+    lint:
+      glob: "*.{js,ts,vue}"
+      run: pnpm eslint {staged_files} --fix
+      stage_fixed: true
+
+pre-push:
+  commands:
+    lint-check:
+      run: pnpm lint
+    format-check:
+      run: pnpm format:check
