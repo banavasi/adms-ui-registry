@@ -6,6 +6,8 @@
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev",
+    "storybook": "pnpm --filter storybook dev",
+    "build:storybook": "pnpm --filter storybook build",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "format": "biome format --write .",
