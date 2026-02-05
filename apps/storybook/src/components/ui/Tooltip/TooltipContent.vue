@@ -9,16 +9,16 @@ import { cn } from '@/lib/util'
 
 import './tooltip.css'
 
+defineOptions({
+  inheritAttrs: false,
+})
+
 const props = withDefaults(defineProps<Props>(), {
   sideOffset: 4,
   side: 'top',
 })
 
 const emits = defineEmits<TooltipContentEmits>()
-
-defineOptions({
-  inheritAttrs: false,
-})
 
 interface Props extends /* @vue-ignore */ TooltipContentProps {
   class?: HTMLAttributes['class']
