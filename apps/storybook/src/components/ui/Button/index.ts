@@ -1,5 +1,5 @@
-import type {VariantProps} from '@/lib/util';
-import { cva  } from '@/lib/util'
+import type { VariantProps } from '@/lib/util'
+import { cva } from '@/lib/util'
 
 export { default as Button } from './Button.vue'
 
