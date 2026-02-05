@@ -73,7 +73,7 @@ const props = withDefaults(defineProps<Props>(), {
   </RekaLabel>
 </template>
 
-<style>
+<style scoped>
 .optional-badge {
   background-color: var(--rds-light-3, #e8e8e8);
   color: var(--rds-dark-2, #484848);
