@@ -56,7 +56,7 @@ export async function add(components: string[] | undefined, options: AddOptions)
 
   // Warn about lib dependencies if needed
   for (const libDep of libComponents) {
-    const fileName = libDep.replace('lib/', '') + '.ts'
+    const fileName = `${libDep.replace('lib/', '')}.ts`
     const libPath = path.join(cwd, config.libDir, fileName)
     if (!fs.existsSync(libPath)) {
       console.log(pc.yellow(`⚠ Missing ${libDep}. Run \`adms-rds-ui init\` to install it.`))
@@ -149,7 +149,7 @@ export async function add(components: string[] | undefined, options: AddOptions)
   if (libDeps.length > 0) {
     for (const libDep of libDeps) {
       // lib/util -> util.ts
-      const fileName = libDep.replace('lib/', '') + '.ts'
+      const fileName = `${libDep.replace('lib/', '')}.ts`
       const libPath = path.join(cwd, config.libDir, fileName)
       if (!fs.existsSync(libPath)) {
         console.log(pc.yellow(`\n⚠ Missing ${libDep}. Run \`adms-rds-ui init\` to install it.`))

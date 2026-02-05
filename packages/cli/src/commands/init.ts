@@ -304,9 +304,7 @@ async function updateTsConfig(cwd: string, config: RdsConfig) {
       // Check if this config includes src files
       const includesSrc =
         Array.isArray(refConfig.include) &&
-        refConfig.include.some(
-          (inc: string) => inc.includes('src/') || inc.startsWith('src')
-        )
+        refConfig.include.some((inc: string) => inc.includes('src/') || inc.startsWith('src'))
 
       if (includesSrc) {
         refConfig.compilerOptions = refConfig.compilerOptions || {}
@@ -328,7 +326,9 @@ async function updateTsConfig(cwd: string, config: RdsConfig) {
     if (appConfigUpdated) {
       console.log(pc.green('✓ Updated tsconfig.json with paths'))
     } else {
-      console.log(pc.yellow('⚠ Could not find app tsconfig to update. You may need to add paths manually.'))
+      console.log(
+        pc.yellow('⚠ Could not find app tsconfig to update. You may need to add paths manually.')
+      )
     }
   } else {
     // Standard tsconfig without project references
