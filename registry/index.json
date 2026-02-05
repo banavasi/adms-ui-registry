@@ -37,7 +37,7 @@
         "ui/tooltip/index.ts"
       ],
       "dependencies": ["reka-ui"],
-      "registryDependencies": ["lib/util"]
+      "registryDependencies": []
     },
     "highlight": {
       "name": "Highlight",
@@ -71,7 +71,7 @@
       "name": "InputField",
       "files": ["ui/input-field/InputField.vue", "ui/input-field/index.ts"],
       "dependencies": [],
-      "registryDependencies": ["input-root", "lib/util"]
+      "registryDependencies": ["input-root"]
     },
     "input-error": {
       "name": "InputError",
@@ -117,7 +117,7 @@
       "name": "InputMasked",
       "files": ["ui/input-masked/InputMasked.vue", "ui/input-masked/index.ts"],
       "dependencies": [],
-      "registryDependencies": ["input-root", "lib/util"]
+      "registryDependencies": ["input-root"]
     },
     "text-ssn": {
       "name": "TextSSN",
@@ -129,13 +129,13 @@
       "name": "InputNumericRange",
       "files": ["ui/input-numeric-range/InputNumericRange.vue", "ui/input-numeric-range/index.ts"],
       "dependencies": [],
-      "registryDependencies": ["input-root", "lib/util"]
+      "registryDependencies": ["input-root"]
     },
     "radio-yes-no": {
       "name": "RadioYesNo",
       "files": ["ui/radio-yes-no/RadioYesNo.vue", "ui/radio-yes-no/index.ts"],
       "dependencies": ["reka-ui"],
-      "registryDependencies": ["input-root", "input-error", "input-help", "label", "lib/util"]
+      "registryDependencies": ["input-root", "input-error", "input-help", "label"]
     }
   }
 }

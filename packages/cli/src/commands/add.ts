@@ -50,6 +50,30 @@ export async function add(components: string[] | undefined, options: AddOptions)
     process.exit(0)
   }
 
+  // Filter out lib dependencies (handled separately)
+  const libComponents = components.filter((c) => c.startsWith('lib/'))
+  const actualComponents = components.filter((c) => !c.startsWith('lib/'))
+
+  // Warn about lib dependencies if needed
+  for (const libDep of libComponents) {
+    const fileName = `${libDep.replace('lib/', '')}.ts`
+    const libPath = path.join(cwd, config.libDir, fileName)
+    if (!fs.existsSync(libPath)) {
+      console.log(pc.yellow(`⚠ Missing ${libDep}. Run \`adms-rds-ui init\` to install it.`))
+    }
+  }
+
+  // If only lib deps were requested, exit early
+  if (actualComponents.length === 0) {
+    if (libComponents.length > 0) {
+      console.log(pc.dim('Lib dependencies are installed via `adms-rds-ui init`.'))
+    }
+    return
+  }
+
+  // Update components to only include actual components
+  components = actualComponents
+
   // Validate components
   for (const comp of components) {
     if (!registry.components[comp]) {
@@ -117,10 +141,26 @@ export async function add(components: string[] | undefined, options: AddOptions)
     (dep) => !components!.includes(dep)
   )
 
-  // Recursively add registry dependencies
-  if (uniqueRegistryDeps.length > 0) {
+  // Separate lib dependencies from component dependencies
+  const libDeps = uniqueRegistryDeps.filter((dep) => dep.startsWith('lib/'))
+  const componentDeps = uniqueRegistryDeps.filter((dep) => !dep.startsWith('lib/'))
+
+  // Handle lib dependencies (check if they exist, warn if missing)
+  if (libDeps.length > 0) {
+    for (const libDep of libDeps) {
+      // lib/util -> util.ts
+      const fileName = `${libDep.replace('lib/', '')}.ts`
+      const libPath = path.join(cwd, config.libDir, fileName)
+      if (!fs.existsSync(libPath)) {
+        console.log(pc.yellow(`\n⚠ Missing ${libDep}. Run \`adms-rds-ui init\` to install it.`))
+      }
+    }
+  }
+
+  // Recursively add component dependencies
+  if (componentDeps.length > 0) {
     console.log(pc.yellow(`\n⚠ Installing required component dependencies...`))
-    for (const dep of uniqueRegistryDeps) {
+    for (const dep of componentDeps) {
       await add([dep], { ...options, yes: true })
     }
   }
