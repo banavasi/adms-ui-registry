@@ -40,7 +40,7 @@ const props = withDefaults(defineProps<Props>(), {
   </Primitive>
 </template>
 
-<style>
+<style scoped>
 .btn:focus-visible {
   outline: 2px solid #000;
   outline-offset: 2px;

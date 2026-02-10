@@ -56,6 +56,19 @@ const isCitizen = ref<'Y' | 'N'>()
 - **helpText** - Help text (shown when not invalid)
 - **errorText** - Error text (shown when invalid)
 - **readonly** - Make the radio group read-only
+- **isInToolbar** - Toolbar keyboard mode (arrow keys navigate only; Space/Enter check)
+
+## Keyboard Navigation
+
+**Standard Mode (default):**
+- Tab/Shift+Tab: Move focus in/out of radiogroup
+- Arrow Keys (any direction): Navigate AND automatically check the focused radio
+- Space: Check the focused radio (if not already checked)
+
+**Toolbar Mode (\`isInToolbar: true\`):**
+- Tab/Shift+Tab: Move focus in/out of toolbar
+- Arrow Keys (any direction): Navigate WITHOUT checking
+- Space/Enter: Explicitly check the focused radio
 
 ## Events
 
@@ -274,6 +287,105 @@ export const Required: Story = {
           Validate
         </button>
         <p class="mt-2 text-muted fs-small">Value: {{ value ?? 'undefined' }}</p>
+      </div>
+    `,
+  }),
+}
+
+export const ToolbarMode: Story = {
+  name: 'Toolbar Keyboard Mode',
+  parameters: {
+    docs: {
+      description: {
+        story: `When \`isInToolbar\` is \`true\`, the keyboard navigation changes:
+- **Arrow keys** only move focus (do NOT auto-check)
+- **Space or Enter** explicitly checks the focused option
+
+Try keyboard navigation: use arrows to move between options, then press Space/Enter to select.`,
+      },
+    },
+  },
+  render: () => ({
+    components: { RadioYesNo },
+    setup() {
+      const value = ref<'Y' | 'N'>()
+      return { value }
+    },
+    template: `
+      <div style="min-width: 400px;">
+        <div role="toolbar" aria-label="Answer toolbar" class="p-3 border rounded" style="background: #f8f9fa;">
+          <p class="mb-2"><strong>Keyboard Test:</strong> Use arrow keys to navigate, Space/Enter to select</p>
+          <RadioYesNo
+            id="toolbar-question"
+            v-model="value"
+            label="Do you agree?"
+            :is-in-toolbar="true"
+          />
+        </div>
+        <div class="mt-3 p-2 bg-light rounded">
+          <small class="text-muted">Value: {{ value ?? 'undefined' }}</small>
+        </div>
+        <div class="mt-2 p-2 bg-info-subtle rounded">
+          <small><strong>Try it:</strong> Tab to focus, use arrow keys (↑↓←→) to navigate, press Space or Enter to check</small>
+        </div>
+      </div>
+    `,
+  }),
+}
+
+export const ToolbarVsStandard: Story = {
+  name: 'Comparison: Toolbar vs Standard',
+  parameters: {
+    docs: {
+      description: {
+        story: `Side-by-side comparison of keyboard behaviors:
+
+**Standard Mode (top):**
+- Arrow keys navigate AND check automatically
+
+**Toolbar Mode (bottom):**
+- Arrow keys navigate only
+- Space/Enter required to check`,
+      },
+    },
+  },
+  render: () => ({
+    components: { RadioYesNo },
+    setup() {
+      const standardValue = ref<'Y' | 'N'>()
+      const toolbarValue = ref<'Y' | 'N'>()
+      return { standardValue, toolbarValue }
+    },
+    template: `
+      <div style="min-width: 500px;">
+        <div class="mb-4 p-3 border rounded">
+          <h5 class="mb-3">Standard Mode (default)</h5>
+          <RadioYesNo
+            id="standard-comparison"
+            v-model="standardValue"
+            label="Arrow keys navigate AND check"
+            help-text="Try: Use any arrow key to move and auto-select"
+          />
+          <div class="mt-2 p-2 bg-light rounded">
+            <small class="text-muted">Value: {{ standardValue ?? 'undefined' }}</small>
+          </div>
+        </div>
+
+        <div class="p-3 border rounded" style="background: #f8f9fa;">
+          <h5 class="mb-3">Toolbar Mode</h5>
+          <div role="toolbar" aria-label="Comparison toolbar">
+            <RadioYesNo
+              id="toolbar-comparison"
+              v-model="toolbarValue"
+              label="Arrow keys navigate only"
+              help-text="Try: Use arrow keys to navigate, then press Space/Enter to select"
+              :is-in-toolbar="true"
+            />
+          </div>
+          <div class="mt-2 p-2 bg-light rounded">
+            <small class="text-muted">Value: {{ toolbarValue ?? 'undefined' }}</small>
+          </div>
+        </div>
       </div>
     `,
   }),
