@@ -3,7 +3,7 @@
   "baseUrl": "https://raw.githubusercontent.com/banavasi/adms-ui-registry/main/registry",
   "lib": {
     "utils": {
-      "files": ["lib/util.ts"],
+      "files": ["lib/util.ts", "lib/useRadioKeyboard.ts"],
       "dependencies": ["clsx", "tailwind-merge", "class-variance-authority"]
     }
   },
@@ -135,13 +135,25 @@
       "name": "RadioYesNo",
       "files": ["ui/radio-yes-no/RadioYesNo.vue", "ui/radio-yes-no/index.ts"],
       "dependencies": ["reka-ui"],
-      "registryDependencies": ["input-root", "input-error", "input-help", "label"]
+      "registryDependencies": [
+        "input-root",
+        "input-error",
+        "input-help",
+        "label",
+        "lib/useRadioKeyboard"
+      ]
     },
     "radio-segment": {
       "name": "RadioSegment",
       "files": ["ui/radio-segment/RadioSegment.vue", "ui/radio-segment/index.ts"],
       "dependencies": ["reka-ui"],
-      "registryDependencies": ["input-root", "input-error", "input-help", "label"]
+      "registryDependencies": [
+        "input-root",
+        "input-error",
+        "input-help",
+        "label",
+        "lib/useRadioKeyboard"
+      ]
     },
     "radio-card": {
       "name": "RadioCard",
@@ -151,7 +163,13 @@
         "ui/radio-card/index.ts"
       ],
       "dependencies": ["reka-ui"],
-      "registryDependencies": ["input-root", "input-error", "input-help", "label"]
+      "registryDependencies": [
+        "input-root",
+        "input-error",
+        "input-help",
+        "label",
+        "lib/useRadioKeyboard"
+      ]
     }
   }
 }

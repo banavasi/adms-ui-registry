@@ -1,12 +1,13 @@
 <script setup lang="ts" generic="T extends Record<string, unknown>">
 import type { HTMLAttributes } from 'vue'
 import { RadioGroupIndicator, RadioGroupItem, RadioGroupRoot } from 'reka-ui'
-import { computed, onMounted, watch } from 'vue'
+import { computed, onMounted, toRef, watch } from 'vue'
 import { InputError } from '@/components/ui/InputError'
 import { InputHelp } from '@/components/ui/InputHelp'
 import { InputRoot } from '@/components/ui/InputRoot'
 import { Label } from '@/components/ui/Label'
 import { cn } from '@/lib/util'
+import { useRadioKeyboard } from '@/lib/useRadioKeyboard'
 
 interface Props {
   /** Unique identifier for the radio group */
@@ -37,6 +38,12 @@ interface Props {
   errorText?: string
   /** Make the radio group read-only */
   readonly?: boolean
+  /**
+   * Whether this radiogroup is inside a toolbar.
+   * - false (default): Arrow keys navigate AND check
+   * - true: Arrow keys only navigate; Space/Enter check
+   */
+  isInToolbar?: boolean
   /** Additional CSS classes for the root element */
   class?: HTMLAttributes['class']
 }
@@ -47,6 +54,7 @@ const props = withDefaults(defineProps<Props>(), {
   required: false,
   optional: false,
   readonly: false,
+  isInToolbar: false,
 })
 
 const emit = defineEmits<{
@@ -92,6 +100,12 @@ const handleValueChange = (value: string) => {
   model.value = selectedOption
   emit('change', selectedOption)
 }
+
+// Use the keyboard navigation composable
+const { handleKeyDown } = useRadioKeyboard({
+  isInToolbar: toRef(props, 'isInToolbar'),
+  orientation: 'horizontal',
+})
 
 /** Check if an option is currently selected */
 const isSelected = (option: T): boolean => {
@@ -150,6 +164,7 @@ watch(
       :aria-required="props.required"
       :aria-invalid="props.invalid ? 'true' : undefined"
       orientation="horizontal"
+      @keydown.capture="handleKeyDown"
       @update:model-value="handleValueChange"
       @focusin="emit('focus', $event)"
       @focusout="emit('blur', $event)"
