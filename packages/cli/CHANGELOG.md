@@ -1,5 +1,11 @@
 # @adms-rds-ui/cli
 
+## 3.2.1
+
+### Patch Changes
+
+- [#26](https://github.com/banavasi/adms-ui-registry/pull/26) [`cd7911d`](https://github.com/banavasi/adms-ui-registry/commit/cd7911d7736b9a8b3182ea4bc07232f17d780ec7) Thanks [@banavasi](https://github.com/banavasi)! - Fixed keyboard naviagation for radio buttons and added scoped for all the styles
+
 ## 3.2.0
 
 ### Minor Changes
