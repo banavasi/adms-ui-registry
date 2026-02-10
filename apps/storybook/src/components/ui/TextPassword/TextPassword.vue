@@ -114,7 +114,7 @@ function toggleVisibility(visible: boolean) {
   </InputRoot>
 </template>
 
-<style>
+<style scoped>
 .password-requirements {
   color: var(--rds-dark-2, #484848);
   font-size: 0.875rem;
