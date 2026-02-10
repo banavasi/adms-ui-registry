@@ -5,7 +5,10 @@ pre-commit:
   parallel: true
   commands:
     format:
-      glob: "*.{js,ts,vue,json,md,css,scss}"
+      glob: "*.{js,ts,vue,json}"
+      # Skip when no staged files match format glob (avoids Biome "No files were processed" error)
+      skip:
+        - run: 'bash -c "! git diff --cached --name-only --diff-filter=ACMR | grep -qE \"\\.(js|ts|vue|json)$\""'
       run: pnpm biome format --write {staged_files}
       stage_fixed: true
     lint:
