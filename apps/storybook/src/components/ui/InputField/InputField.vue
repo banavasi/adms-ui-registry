@@ -100,7 +100,7 @@ const inputClasses = computed(() =>
   </div>
 </template>
 
-<style>
+<style scoped>
 .input-wrapper {
   position: relative;
   display: flex;
@@ -129,7 +129,6 @@ const inputClasses = computed(() =>
 .is-invalid {
   border-bottom-width: 0.25rem;
   /* Remove Bootstrap's default error icon */
-  background-image: none !important;
   padding-right: 3rem !important;
 }
 
