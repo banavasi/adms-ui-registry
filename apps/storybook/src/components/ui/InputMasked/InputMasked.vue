@@ -269,7 +269,7 @@ const ariaDescribedBy = computed(() => {
   </div>
 </template>
 
-<style>
+<style scoped>
 .input-wrapper {
   position: relative;
   display: flex;
