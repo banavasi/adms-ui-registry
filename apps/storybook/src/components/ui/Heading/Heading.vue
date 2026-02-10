@@ -76,7 +76,7 @@ const HeadingTag = computed(() => props.level || 'h3')
   </component>
 </template>
 
-<style>
+<style scoped>
 .heading-text {
   font-weight: bold;
 }

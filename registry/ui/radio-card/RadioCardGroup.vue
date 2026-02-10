@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import type { HTMLAttributes } from 'vue'
 import { RadioGroupRoot } from 'reka-ui'
-import { provide, computed } from 'vue'
+import { provide, computed, toRef } from 'vue'
 import { InputRoot } from '@/components/ui/InputRoot'
 import { InputError } from '@/components/ui/InputError'
 import { InputHelp } from '@/components/ui/InputHelp'
 import { Label } from '@/components/ui/Label'
 import { cn } from '@/lib/util'
+import { useRadioKeyboard } from '@/lib/useRadioKeyboard'
 
 interface Props {
   /** Unique identifier for the radio group */
@@ -33,6 +34,12 @@ interface Props {
   cardLayout?: 'vertical' | 'horizontal'
   /** Whether cards are stacked vertically. If false, cards are side-by-side (stacks on mobile via CSS) */
   stacked?: boolean
+  /**
+   * Whether this radiogroup is inside a toolbar.
+   * - false (default): Arrow keys navigate AND check
+   * - true: Arrow keys only navigate; Space/Enter check
+   */
+  isInToolbar?: boolean
   /** Additional CSS classes for the root element */
   class?: HTMLAttributes['class']
 }
@@ -45,6 +52,7 @@ const props = withDefaults(defineProps<Props>(), {
   variant: 'default',
   cardLayout: 'horizontal',
   stacked: true,
+  isInToolbar: false,
 })
 
 const emit = defineEmits<{
@@ -60,6 +68,14 @@ const handleValueChange = (value: string) => {
   model.value = value
   emit('change', value)
 }
+
+// Use the keyboard navigation composable with dynamic orientation
+const { handleKeyDown } = useRadioKeyboard({
+  isInToolbar: toRef(props, 'isInToolbar'),
+  orientation: computed(() => (props.stacked ? 'vertical' : 'horizontal')).value as
+    | 'vertical'
+    | 'horizontal',
+})
 
 // Provide context to child RadioCard components
 provide('radioCardContext', {
@@ -105,6 +121,7 @@ provide('radioCardContext', {
       :aria-required="props.required"
       :aria-invalid="props.invalid ? 'true' : undefined"
       :orientation="props.stacked ? 'vertical' : 'horizontal'"
+      @keydown.capture="handleKeyDown"
       @update:model-value="handleValueChange"
       @focusin="emit('focus', $event)"
       @focusout="emit('blur', $event)"

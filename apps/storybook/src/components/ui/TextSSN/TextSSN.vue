@@ -142,7 +142,7 @@ function handleBlur(event: FocusEvent) {
   </InputRoot>
 </template>
 
-<style>
+<style scoped>
 .input-wrapper {
   position: relative;
   display: flex;
