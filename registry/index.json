@@ -51,6 +51,18 @@
       "dependencies": ["reka-ui"],
       "registryDependencies": ["tooltip"]
     },
+    "checkbox": {
+      "name": "Checkbox",
+      "files": [
+        "ui/checkbox/Checkbox.vue",
+        "ui/checkbox/CheckboxGroup.vue",
+        "ui/checkbox/CheckboxPrimitive.vue",
+        "ui/checkbox/checkbox.scss",
+        "ui/checkbox/index.ts"
+      ],
+      "dependencies": ["reka-ui"],
+      "registryDependencies": ["input-root", "input-error", "input-help", "label"]
+    },
     "label": {
       "name": "Label",
       "files": ["ui/label/Label.vue", "ui/label/index.ts"],
@@ -171,6 +183,17 @@
         "lib/useRadioKeyboard"
       ]
     },
+    "radio": {
+      "name": "Radio",
+      "files": [
+        "ui/radio/RadioGroup.vue",
+        "ui/radio/RadioPrimitive.vue",
+        "ui/radio/radio.scss",
+        "ui/radio/index.ts"
+      ],
+      "dependencies": ["reka-ui"],
+      "registryDependencies": ["input-root", "input-error", "input-help", "label"]
+    },
     "combobox": {
       "name": "Combobox",
       "files": [
@@ -184,6 +207,7 @@
         "ui/combobox/ComboboxLabel.vue",
         "ui/combobox/ComboboxSeparator.vue",
         "ui/combobox/ComboboxEmpty.vue",
+        "ui/combobox/ComboboxMultiSelect.vue",
         "ui/combobox/ComboboxSelect.vue",
         "ui/combobox/index.ts"
       ],
@@ -192,9 +216,21 @@
     },
     "listbox": {
       "name": "ListBox",
-      "files": ["ui/listbox/ListBoxSelect.vue", "ui/listbox/index.ts"],
+      "files": [
+        "ui/listbox/ListBoxSelectIcon.vue",
+        "ui/listbox/ListBoxSelect.vue",
+        "ui/listbox/ListBoxMultiSelect.vue",
+        "ui/listbox/index.ts"
+      ],
       "dependencies": ["reka-ui"],
-      "registryDependencies": ["combobox", "input-root", "input-error", "input-help", "label"]
+      "registryDependencies": [
+        "checkbox",
+        "combobox",
+        "input-root",
+        "input-error",
+        "input-help",
+        "label"
+      ]
     }
   }
 }
