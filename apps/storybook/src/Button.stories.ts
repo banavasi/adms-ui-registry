@@ -1,6 +1,41 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
 import { Button } from '@/components/ui/Button'
 
+const ArrowRightIcon = `
+  <svg viewBox="0 0 17 15" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <path d="M1 7.5h13" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+    <path d="M8.5 1.5L15 7.5 8.5 13.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>
+`
+
+const EditIcon = `
+  <svg viewBox="0 0 9 9" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <path d="M1.2 7.8h1.2l4.3-4.3-1.2-1.2L1.2 6.6v1.2Z" fill="currentColor"/>
+    <path d="M6.1 1.5 7.3 2.7" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/>
+  </svg>
+`
+
+const SignOutIcon = `
+  <svg viewBox="0 0 25 17" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <path d="M1 8.5h19" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+    <path d="M13.8 1.6L23.2 8.5 13.8 15.4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>
+`
+
+const CloseIcon = `
+  <svg viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <path d="M3 3L11 11M11 3L3 11" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+  </svg>
+`
+
+const HelpIcon = `
+  <svg viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <circle cx="9" cy="9" r="8" fill="currentColor" opacity="0.14"/>
+    <path d="M7.8 6.5a1.6 1.6 0 1 1 2.2 1.5c-.8.4-1 1-1 1.8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+    <circle cx="9" cy="12.8" r="1" fill="currentColor"/>
+  </svg>
+`
+
 const meta: Meta<typeof Button> = {
   title: 'Components/Button',
   component: Button,
@@ -9,86 +44,31 @@ const meta: Meta<typeof Button> = {
     layout: 'centered',
     docs: {
       description: {
-        component: `Buttons allow users to take actions, make choices, and submit data.
-
-## Installation
-
-\`\`\`bash
-adms-rds-ui add button
-\`\`\`
-
-## Import
-
-\`\`\`vue
-<script setup lang="ts">
-import { Button } from '@/components/ui/Button'
-</script>
-
-<template>
-  <Button variant="primary">Click me</Button>
-</template>
-\`\`\`
-
-## Available Variants
-
-- **Solid**: primary, secondary, success, danger, warning, info, light, dark
-- **Outline**: outline-primary, outline-secondary, outline-success, outline-danger, outline-warning, outline-info, outline-light, outline-dark
-- **Link**: link
-
-## Sizes
-
-sm, md (default), lg`,
+        component:
+          'Figma-aligned button system including core color pills, status chips, sign-out, tag, feedback, and help-footer variants.',
       },
     },
   },
   argTypes: {
     variant: {
       control: 'select',
-      description: 'Button style variant',
       options: [
-        'primary',
-        'secondary',
-        'success',
-        'danger',
-        'warning',
-        'info',
-        'light',
-        'dark',
-        'outline-primary',
-        'outline-secondary',
-        'outline-success',
-        'outline-danger',
-        'outline-warning',
-        'outline-info',
-        'outline-light',
-        'outline-dark',
-        'link',
+        'maroon',
+        'gold',
+        'gray',
+        'black',
+        'white',
+        'complete',
+        'incomplete',
+        'edit',
+        'signout',
+        'tag',
+        'tag-mobile',
+        'feedback-maroon',
+        'feedback-gold',
+        'help-footer',
+        'help-footer-mobile',
       ],
-      table: {
-        defaultValue: { summary: 'primary' },
-      },
-    },
-    size: {
-      control: 'select',
-      description: 'Button size',
-      options: ['sm', 'md', 'lg'],
-      table: {
-        defaultValue: { summary: 'md' },
-      },
-    },
-    loading: {
-      control: 'boolean',
-      description: 'Show loading state with spinner',
-      table: {
-        defaultValue: { summary: 'false' },
-      },
-    },
-    disabled: {
-      control: 'boolean',
-      description: 'Disable the button',
-      table: {
-        defaultValue: { summary: 'false' },
-      },
     },
   },
 }
@@ -96,336 +76,171 @@ sm, md (default), lg`,
 export default meta
 type Story = StoryObj<typeof meta>
 
-export const Primary: Story = {
-  args: {
-    variant: 'primary',
-  },
-  render: (args) => ({
+export const ColorMatrix: Story = {
+  render: () => ({
     components: { Button },
-    setup() {
-      return { args }
+    data() {
+      return { ArrowRightIcon }
     },
-    template: '<Button v-bind="args">Primary Button</Button>',
-  }),
-}
-
-export const Secondary: Story = {
-  args: {
-    variant: 'secondary',
-  },
-  render: (args) => ({
-    components: { Button },
-    setup() {
-      return { args }
-    },
-    template: '<Button v-bind="args">Secondary Button</Button>',
-  }),
-}
-
-export const Success: Story = {
-  args: {
-    variant: 'success',
-  },
-  render: (args) => ({
-    components: { Button },
-    setup() {
-      return { args }
-    },
-    template: '<Button v-bind="args">Success</Button>',
-  }),
-}
-
-export const Danger: Story = {
-  args: {
-    variant: 'danger',
-  },
-  render: (args) => ({
-    components: { Button },
-    setup() {
-      return { args }
-    },
-    template: '<Button v-bind="args">Danger</Button>',
-  }),
-}
-
-export const AllVariants: Story = {
-  name: 'All Variants',
-  render: () => ({
-    components: { Button },
     template: `
-      <div class="d-flex flex-wrap gap-2 p-4">
-        <div class="w-100">
-          <h6 class="mb-2">Solid Variants</h6>
-          <div class="d-flex flex-wrap gap-2 mb-3">
-            <Button variant="primary">Primary</Button>
-            <Button variant="secondary">Secondary</Button>
-            <Button variant="success">Success</Button>
-            <Button variant="danger">Danger</Button>
-            <Button variant="warning">Warning</Button>
-            <Button variant="info">Info</Button>
-            <Button variant="light">Light</Button>
-            <Button variant="dark">Dark</Button>
-          </div>
-        </div>
-        <div class="w-100">
-          <h6 class="mb-2">Outline Variants</h6>
-          <div class="d-flex flex-wrap gap-2 mb-3">
-            <Button variant="outline-primary">Primary</Button>
-            <Button variant="outline-secondary">Secondary</Button>
-            <Button variant="outline-success">Success</Button>
-            <Button variant="outline-danger">Danger</Button>
-            <Button variant="outline-warning">Warning</Button>
-            <Button variant="outline-info">Info</Button>
-            <Button variant="outline-light">Light</Button>
-            <Button variant="outline-dark">Dark</Button>
-          </div>
-        </div>
-        <div class="w-100">
-          <h6 class="mb-2">Link Variant</h6>
-          <div class="d-flex flex-wrap gap-2">
-            <Button variant="link">Link Button</Button>
-          </div>
-        </div>
-      </div>
-    `,
-  }),
-}
+      <div style="width: 640px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px 36px;">
+        <Button variant="maroon">Default Button</Button>
+        <Button variant="maroon">
+          Default Button
+          <template #trailing><span v-html="ArrowRightIcon" /></template>
+        </Button>
 
-export const OutlineVariants: Story = {
-  name: 'Outline Variants',
-  render: () => ({
-    components: { Button },
-    template: `
-      <div class="d-flex flex-wrap gap-2 p-4">
-        <Button variant="outline-primary">Primary</Button>
-        <Button variant="outline-secondary">Secondary</Button>
-        <Button variant="outline-success">Success</Button>
-        <Button variant="outline-danger">Danger</Button>
-        <Button variant="outline-warning">Warning</Button>
-        <Button variant="outline-info">Info</Button>
-        <Button variant="outline-light">Light</Button>
-        <Button variant="outline-dark">Dark</Button>
-      </div>
-    `,
-  }),
-}
+        <Button variant="gold">Default Button</Button>
+        <Button variant="gold">
+          Default Button
+          <template #trailing><span v-html="ArrowRightIcon" /></template>
+        </Button>
 
-export const Sizes: Story = {
-  name: 'Button Sizes',
-  render: () => ({
-    components: { Button },
-    template: `
-      <div class="d-flex align-items-center gap-2 p-4">
-        <Button size="sm" variant="primary">Small</Button>
-        <Button size="md" variant="primary">Medium</Button>
-        <Button size="lg" variant="primary">Large</Button>
-      </div>
-    `,
-  }),
-}
+        <Button variant="gray">Default Button</Button>
+        <Button variant="gray">
+          Default Button
+          <template #trailing><span v-html="ArrowRightIcon" /></template>
+        </Button>
 
-export const AllSizes: Story = {
-  name: 'All Size Combinations',
-  render: () => ({
-    components: { Button },
-    template: `
-      <div class="p-4">
-        <div class="mb-4">
-          <h6 class="mb-2">Small (sm)</h6>
-          <div class="d-flex flex-wrap gap-2">
-            <Button size="sm" variant="primary">Primary</Button>
-            <Button size="sm" variant="secondary">Secondary</Button>
-            <Button size="sm" variant="outline-primary">Outline</Button>
-          </div>
-        </div>
-        <div class="mb-4">
-          <h6 class="mb-2">Medium (md) - Default</h6>
-          <div class="d-flex flex-wrap gap-2">
-            <Button size="md" variant="primary">Primary</Button>
-            <Button size="md" variant="secondary">Secondary</Button>
-            <Button size="md" variant="outline-primary">Outline</Button>
-          </div>
-        </div>
-        <div>
-          <h6 class="mb-2">Large (lg)</h6>
-          <div class="d-flex flex-wrap gap-2">
-            <Button size="lg" variant="primary">Primary</Button>
-            <Button size="lg" variant="secondary">Secondary</Button>
-            <Button size="lg" variant="outline-primary">Outline</Button>
-          </div>
-        </div>
-      </div>
-    `,
-  }),
-}
+        <Button variant="black">Default Button</Button>
+        <Button variant="black">
+          Default Button
+          <template #trailing><span v-html="ArrowRightIcon" /></template>
+        </Button>
 
-export const Loading: Story = {
-  args: {
-    loading: true,
-  },
-  render: (args) => ({
-    components: { Button },
-    setup() {
-      return { args }
-    },
-    template: '<Button v-bind="args">Loading...</Button>',
-  }),
-}
+        <Button variant="white">Default Button</Button>
+        <Button variant="white">
+          Default Button
+          <template #trailing><span v-html="ArrowRightIcon" /></template>
+        </Button>
 
-export const AllLoadingStates: Story = {
-  name: 'Loading States',
-  render: () => ({
-    components: { Button },
-    template: `
-      <div class="d-flex flex-wrap gap-2 p-4">
-        <Button loading variant="primary">Loading Primary</Button>
-        <Button loading variant="secondary">Loading Secondary</Button>
-        <Button loading variant="success">Loading Success</Button>
-        <Button loading variant="danger">Loading Danger</Button>
-        <Button loading variant="outline-primary">Loading Outline</Button>
-      </div>
-    `,
-  }),
-}
+        <Button variant="maroon" disabled>Default Button</Button>
+        <Button variant="maroon" disabled>
+          Default Button
+          <template #trailing><span v-html="ArrowRightIcon" /></template>
+        </Button>
 
-export const Disabled: Story = {
-  args: {
-    disabled: true,
-  },
-  render: (args) => ({
-    components: { Button },
-    setup() {
-      return { args }
-    },
-    template: '<Button v-bind="args">Disabled</Button>',
-  }),
-}
+        <Button variant="gold" disabled>Default Button</Button>
+        <Button variant="gold" disabled>
+          Default Button
+          <template #trailing><span v-html="ArrowRightIcon" /></template>
+        </Button>
 
-export const AllDisabledStates: Story = {
-  name: 'Disabled States',
-  render: () => ({
-    components: { Button },
-    template: `
-      <div class="d-flex flex-wrap gap-2 p-4">
-        <Button disabled variant="primary">Primary</Button>
-        <Button disabled variant="secondary">Secondary</Button>
-        <Button disabled variant="success">Success</Button>
-        <Button disabled variant="danger">Danger</Button>
-        <Button disabled variant="outline-primary">Outline</Button>
-        <Button disabled variant="link">Link</Button>
-      </div>
-    `,
-  }),
-}
+        <Button variant="gray" disabled>Default Button</Button>
+        <Button variant="gray" disabled>
+          Default Button
+          <template #trailing><span v-html="ArrowRightIcon" /></template>
+        </Button>
 
-export const AsLink: Story = {
-  name: 'Button as Link',
-  render: () => ({
-    components: { Button },
-    template: `
-      <div class="p-4">
-        <Button as-child variant="primary">
-          <a href="https://asu.edu" target="_blank">ASU.edu (opens in new tab)</a>
+        <Button variant="black" disabled>Default Button</Button>
+        <Button variant="black" disabled>
+          Default Button
+          <template #trailing><span v-html="ArrowRightIcon" /></template>
+        </Button>
+
+        <Button variant="white" disabled>Default Button</Button>
+        <Button variant="white" disabled>
+          Default Button
+          <template #trailing><span v-html="ArrowRightIcon" /></template>
         </Button>
       </div>
     `,
   }),
 }
 
-export const WithIcons: Story = {
-  name: 'Button with Icons',
+export const StatusButtons: Story = {
   render: () => ({
     components: { Button },
-    template: `
-      <div class="d-flex flex-wrap gap-2 p-4">
-        <Button variant="primary">
-          <span class="me-2">+</span> Add Item
-        </Button>
-        <Button variant="success">
-          <span class="me-2">✓</span> Save
-        </Button>
-        <Button variant="danger">
-          <span class="me-2">✕</span> Delete
-        </Button>
-        <Button variant="outline-primary">
-          <span class="me-2">→</span> Continue
-        </Button>
-      </div>
-    `,
-  }),
-}
-
-export const IconOnly: Story = {
-  name: 'Icon Only Buttons',
-  render: () => ({
-    components: { Button },
-    template: `
-      <div class="d-flex flex-wrap gap-2 p-4">
-        <Button variant="primary" class="btn-icon">+</Button>
-        <Button variant="secondary" class="btn-icon">?</Button>
-        <Button variant="success" class="btn-icon">✓</Button>
-        <Button variant="danger" class="btn-icon">✕</Button>
-        <Button variant="outline-primary" class="btn-icon">→</Button>
-        <Button variant="outline-secondary" class="btn-icon">⚙</Button>
-      </div>
-    `,
-  }),
-}
-
-export const ButtonGroups: Story = {
-  name: 'Button Groups',
-  render: () => ({
-    components: { Button },
-    template: `
-      <div class="p-4">
-        <div class="mb-3">
-          <h6 class="mb-2">Horizontal Button Group</h6>
-          <div class="btn-group" role="group">
-            <Button variant="primary">Left</Button>
-            <Button variant="primary">Middle</Button>
-            <Button variant="primary">Right</Button>
-          </div>
-        </div>
-        <div class="mb-3">
-          <h6 class="mb-2">Outline Button Group</h6>
-          <div class="btn-group" role="group">
-            <Button variant="outline-primary">Option 1</Button>
-            <Button variant="outline-primary">Option 2</Button>
-            <Button variant="outline-primary">Option 3</Button>
-          </div>
-        </div>
-        <div>
-          <h6 class="mb-2">Vertical Button Group</h6>
-          <div class="btn-group-vertical" role="group">
-            <Button variant="secondary">Top</Button>
-            <Button variant="secondary">Middle</Button>
-            <Button variant="secondary">Bottom</Button>
-          </div>
-        </div>
-      </div>
-    `,
-  }),
-}
-
-export const UsageExample: Story = {
-  name: 'Usage Example - Form Actions',
-  parameters: {
-    docs: {
-      description: {
-        story: 'Common form action button pattern with primary and secondary actions.',
-      },
+    data() {
+      return { EditIcon }
     },
-  },
+    template: `
+      <div style="display: flex; flex-direction: column; gap: 18px; width: 220px;">
+        <Button variant="complete">Complete</Button>
+        <Button variant="incomplete">Incomplete</Button>
+        <Button variant="edit">
+          <template #leading><span v-html="EditIcon" /></template>
+          Edit Information
+        </Button>
+      </div>
+    `,
+  }),
+}
+
+export const GoldSignOutStates: Story = {
+  render: () => ({
+    components: { Button },
+    data() {
+      return { SignOutIcon }
+    },
+    template: `
+      <div style="display: flex; flex-direction: column; gap: 20px; width: 260px;">
+        <Button variant="signout">
+          Sign out
+          <template #trailing><span v-html="SignOutIcon" /></template>
+        </Button>
+        <Button variant="signout">
+          Sign out
+          <template #trailing><span v-html="SignOutIcon" /></template>
+        </Button>
+      </div>
+    `,
+  }),
+}
+
+export const Tags: Story = {
   render: () => ({
     components: { Button },
     template: `
-      <div class="p-4 border rounded" style="max-width: 400px;">
-        <h5 class="mb-3">Confirm Action</h5>
-        <p class="text-muted mb-4">Are you sure you want to proceed with this action?</p>
-        <div class="d-flex justify-content-end gap-2">
-          <Button variant="outline-secondary">Cancel</Button>
-          <Button variant="primary">Confirm</Button>
-        </div>
+      <div style="display: flex; flex-direction: column; gap: 20px; width: 180px;">
+        <Button variant="tag">Optional</Button>
+        <Button variant="tag-mobile">Optional</Button>
+      </div>
+    `,
+  }),
+}
+
+export const FeedbackButtons: Story = {
+  render: () => ({
+    components: { Button },
+    data() {
+      return { CloseIcon }
+    },
+    template: `
+      <div style="display: flex; flex-direction: column; gap: 10px; width: 170px;">
+        <Button variant="feedback-maroon">
+          Provide
+          <br />
+          Feedback
+          <template #close><span v-html="CloseIcon" /></template>
+        </Button>
+        <Button variant="feedback-gold">
+          How Is Your
+          <br />
+          Experience?
+          <template #close><span v-html="CloseIcon" /></template>
+        </Button>
+      </div>
+    `,
+  }),
+}
+
+export const HelpFooterButtons: Story = {
+  render: () => ({
+    components: { Button },
+    data() {
+      return { HelpIcon }
+    },
+    template: `
+      <div style="display: flex; flex-direction: column; gap: 18px;">
+        <Button variant="help-footer" style="flex-direction: column; gap: 0;">
+          <template #leading><span v-html="HelpIcon" /></template>
+          Help
+        </Button>
+        <Button variant="help-footer-mobile" style="flex-direction: column; gap: 0;">
+          <template #leading><span v-html="HelpIcon" /></template>
+          Help
+        </Button>
       </div>
     `,
   }),

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { HTMLAttributes } from 'vue'
-import { computed, nextTick, ref, useSlots, watch } from 'vue'
+import { computed, ref, useSlots, watch } from 'vue'
 import {
   Combobox,
   ComboboxContent,
@@ -14,14 +14,16 @@ import { InputRoot } from '@/components/ui/InputRoot'
 import { Label } from '@/components/ui/Label'
 import { cn } from '@/lib/util'
 
-export interface ListBoxOption {
+export interface ListBoxIconOption {
   label: string
   value: unknown
+  icon?: string
+  iconAlt?: string
   description?: string
   disabled?: boolean
 }
 
-type InputOption = ListBoxOption | string | number | boolean | Record<string, unknown>
+type InputOption = ListBoxIconOption | string | number | boolean | Record<string, unknown>
 
 interface Props {
   id: string
@@ -41,6 +43,8 @@ interface Props {
   optionLabelKey?: string
   optionValueKey?: string
   optionDescriptionKey?: string
+  optionIconKey?: string
+  optionIconAltKey?: string
   class?: HTMLAttributes['class']
 }
 
@@ -55,6 +59,8 @@ const props = withDefaults(defineProps<Props>(), {
   optionLabelKey: 'label',
   optionValueKey: 'value',
   optionDescriptionKey: 'description',
+  optionIconKey: 'icon',
+  optionIconAltKey: 'iconAlt',
 })
 
 const emit = defineEmits<{
@@ -67,11 +73,8 @@ const slots = useSlots()
 
 watch(
   () => model.value,
-  (value, previousValue) => {
+  (value) => {
     emit('change', value)
-    if (!isSameValue(value, previousValue)) {
-      clearInputTextSelection()
-    }
   }
 )
 
@@ -79,7 +82,7 @@ function hasOwn(obj: Record<string, unknown>, key: string) {
   return Object.prototype.hasOwnProperty.call(obj, key)
 }
 
-function normalizeOption(option: InputOption): ListBoxOption {
+function normalizeOption(option: InputOption): ListBoxIconOption {
   if (typeof option === 'string' || typeof option === 'number' || typeof option === 'boolean') {
     return {
       label: String(option),
@@ -92,6 +95,8 @@ function normalizeOption(option: InputOption): ListBoxOption {
     return {
       label: String(option.label),
       value: option.value,
+      icon: typeof option.icon === 'string' ? option.icon : undefined,
+      iconAlt: typeof option.iconAlt === 'string' ? option.iconAlt : undefined,
       description:
         typeof option.description === 'string' && option.description.length > 0
           ? option.description
@@ -108,10 +113,14 @@ function normalizeOption(option: InputOption): ListBoxOption {
   const value = record[props.optionValueKey] ?? record.value ?? record.id ?? rawLabel
 
   const rawDescription = record[props.optionDescriptionKey] ?? record.description
+  const rawIcon = record[props.optionIconKey] ?? record.icon
+  const rawIconAlt = record[props.optionIconAltKey] ?? record.iconAlt
 
   return {
     label: String(rawLabel),
     value,
+    icon: typeof rawIcon === 'string' && rawIcon.length > 0 ? rawIcon : undefined,
+    iconAlt: typeof rawIconAlt === 'string' && rawIconAlt.length > 0 ? rawIconAlt : undefined,
     description:
       typeof rawDescription === 'string' && rawDescription.length > 0 ? rawDescription : undefined,
     disabled: Boolean(record.disabled),
@@ -145,12 +154,13 @@ const selectedOption = computed(
   () => normalizedOptions.value.find((option) => isSameValue(option.value, model.value)) ?? null
 )
 
+const selectedLabel = computed(() => selectedOption.value?.label ?? '')
+const inputDisplayValue = computed(() => (_value: unknown) => selectedLabel.value)
+
 const hasValue = computed(
   () => model.value !== null && model.value !== undefined && model.value !== ''
 )
 const showClearButton = computed(() => props.clearable && !props.disabled && hasValue.value)
-const selectedLabel = computed(() => selectedOption.value?.label ?? '')
-const inputDisplayValue = computed(() => (_value: unknown) => selectedLabel.value)
 
 const ariaDescribedBy = computed(() => {
   const ids: string[] = []
@@ -168,48 +178,14 @@ const ariaDescribedBy = computed(() => {
 
 function clearSelection() {
   model.value = null
-  nextTick(() => {
-    const input = document.getElementById(props.id) as HTMLInputElement | null
-    if (!input) {
-      return
-    }
-    input.focus({ preventScroll: true })
-    const textLength = input.value.length
-    input.setSelectionRange(textLength, textLength)
-  })
-}
-
-function clearInputTextSelection() {
-  const collapseSelection = () => {
-    const input = document.getElementById(props.id) as HTMLInputElement | null
-    if (!input || document.activeElement !== input) {
-      return
-    }
-    const textLength = input.value.length
-    input.setSelectionRange(textLength, textLength)
-  }
-
-  nextTick(() => {
-    collapseSelection()
-    requestAnimationFrame(collapseSelection)
-  })
-}
-
-function handleInputClick() {
-  clearInputTextSelection()
-}
-
-function handleInputFocus() {
-  clearInputTextSelection()
-}
-
-function handleInputMouseUp(event: MouseEvent) {
-  event.preventDefault()
-  clearInputTextSelection()
 }
 
 function handleOpenChange(value: boolean) {
   isOpen.value = value
+}
+
+function isImageSource(icon: string) {
+  return /^(?:https?:\/\/|data:image\/|\/|\.\/|\.\.\/)/.test(icon)
 }
 
 const instructionsId = computed(() => `${props.id}-instructions`)
@@ -242,7 +218,7 @@ const describedBy = computed(() =>
       :name="props.name"
       :ignore-filter="true"
       :open-on-click="true"
-      class="listbox-select-root"
+      class="listbox-select-icon-root"
       @update:open="handleOpenChange"
     >
       <div class="position-relative search-input drop-down-toggle w-100 d-flex">
@@ -255,20 +231,18 @@ const describedBy = computed(() =>
             :aria-describedby="describedBy"
             :readonly="true"
             :class="
-              cn('listbox-select-input search-input-field', {
-                'listbox-select-has-clear': showClearButton,
-                'listbox-select-input-invalid': props.invalid,
+              cn('listbox-select-icon-input search-input-field', {
+                'listbox-select-icon-has-clear': showClearButton,
+                'listbox-select-icon-input-invalid': props.invalid,
+                'listbox-select-icon-input-selected': hasValue,
               })
             "
-            @click="handleInputClick"
-            @focus="handleInputFocus"
-            @mouseup="handleInputMouseUp"
           >
             <button
               v-if="showClearButton"
               type="button"
               aria-label="Clear selected value"
-              class="listbox-select-clear ms-auto me-space-sm pe-space-xxs"
+              class="listbox-select-icon-clear ms-auto me-space-sm pe-space-xxs"
               @mousedown.prevent
               @click="clearSelection"
             >
@@ -292,7 +266,7 @@ const describedBy = computed(() =>
             <ComboboxTrigger as-child>
               <button
                 type="button"
-                class="listbox-select-toggle dropdown-chevron my-auto"
+                class="listbox-select-icon-toggle dropdown-chevron my-auto"
                 :aria-label="isOpen ? 'Collapse options' : 'Expand options'"
                 @mousedown.prevent
               >
@@ -302,7 +276,7 @@ const describedBy = computed(() =>
                   viewBox="41 169 430 238"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
-                  class="listbox-select-chevron"
+                  class="listbox-select-icon-chevron"
                   aria-hidden="true"
                 >
                   <path
@@ -316,25 +290,39 @@ const describedBy = computed(() =>
         </div>
       </div>
 
-      <ComboboxContent class="listbox-select-content">
+      <ComboboxContent class="listbox-select-icon-content">
         <ComboboxItem
           v-for="(option, index) in normalizedOptions"
           :key="`${option.label}-${index}`"
           :value="option.value"
           :disabled="option.disabled"
-          class="listbox-select-option"
+          class="listbox-select-icon-option"
         >
-          <div class="listbox-select-item-content">
-            <span class="listbox-select-item-label">{{ option.label }}</span>
-            <span v-if="option.description" class="listbox-select-item-description">
-              {{ option.description }}
-            </span>
+          <div class="listbox-select-icon-item-content">
+            <div v-if="option.icon || $slots['option-icon']" class="listbox-select-icon-media">
+              <slot name="option-icon" :option="option">
+                <img
+                  v-if="option.icon && isImageSource(option.icon)"
+                  :src="option.icon"
+                  :alt="option.iconAlt || ''"
+                  class="listbox-select-icon-image"
+                >
+                <span v-else-if="option.icon" class="listbox-select-icon-glyph">{{ option.icon }}</span>
+              </slot>
+            </div>
+
+            <div class="listbox-select-icon-item-text">
+              <span class="listbox-select-icon-item-label">{{ option.label }}</span>
+              <span v-if="option.description" class="listbox-select-icon-item-description">
+                {{ option.description }}
+              </span>
+            </div>
           </div>
         </ComboboxItem>
       </ComboboxContent>
     </Combobox>
 
-    <div :id="instructionsId" class="listbox-select-sr-only">
+    <div :id="instructionsId" class="listbox-select-icon-sr-only">
       Press Enter, Space, or Arrow Down to expand. Use Arrow keys to move through options.
       Press Enter to select and Escape to close.
     </div>
@@ -350,7 +338,36 @@ const describedBy = computed(() =>
 </template>
 
 <style scoped>
-.listbox-select-clear {
+.listbox-select-icon-root {
+  width: 100%;
+}
+
+:deep(.listbox-select-icon-input) {
+  height: 3.3125rem;
+  background: #fff;
+  border: 1px solid var(--rds-light-4, #d0d0d0);
+  color: var(--rds-dark-1, #747474);
+  font-size: 14px;
+  line-height: 1.5;
+  padding-left: 1rem;
+  padding-right: 5.5rem;
+  cursor: pointer;
+}
+
+:deep(.listbox-select-icon-input-invalid) {
+  border-color: var(--rds-danger, #cc2f2f);
+  border-bottom-width: 0.25rem;
+}
+
+:deep(.listbox-select-icon-input-invalid:focus) {
+  border-color: var(--rds-danger, #cc2f2f);
+}
+
+:deep(.listbox-select-icon-input-selected) {
+  color: var(--rds-dark-3, #191919);
+}
+
+.listbox-select-icon-clear {
   position: absolute;
   right: 3.25rem;
   top: 50%;
@@ -364,14 +381,9 @@ const describedBy = computed(() =>
   cursor: pointer;
   padding: 0.25rem;
   line-height: 1;
-  transition: color 0.15s ease;
 }
 
-.listbox-select-clear:hover {
-  color: var(--rds-dark-2, #484848);
-}
-
-.listbox-select-toggle {
+.listbox-select-icon-toggle {
   position: absolute;
   right: 1rem;
   top: 50%;
@@ -387,55 +399,22 @@ const describedBy = computed(() =>
   height: 20px;
   padding: 0;
   line-height: 1;
-  transition: transform 0.2s ease, color 0.15s ease;
+  transition: transform 0.2s ease;
 }
 
-.listbox-select-toggle[data-state='open'] {
+.listbox-select-icon-toggle[data-state='open'],
+.listbox-select-icon-toggle[aria-expanded='true'] {
   transform: translateY(-50%) rotate(180deg);
 }
 
-.listbox-select-toggle[aria-expanded='true'] {
-  transform: translateY(-50%) rotate(180deg);
-}
-
-.listbox-select-chevron {
+.listbox-select-icon-chevron {
   forced-color-adjust: auto;
   display: block;
   width: 20px;
   height: 20px;
-  flex: 0 0 20px;
 }
 
-.listbox-select-root {
-  width: 100%;
-}
-
-:deep(.listbox-select-input) {
-  height: 3.3125rem;
-  background: #fff;
-  border: 1px solid var(--rds-light-4, #d0d0d0);
-  color: var(--rds-dark-1, #747474);
-  font-size: 14px;
-  line-height: 1.5;
-  padding-left: 1rem;
-  padding-right: 5.5rem;
-  cursor: pointer;
-}
-
-:deep(.listbox-select-input-invalid) {
-  border-color: var(--rds-danger, #cc2f2f);
-  border-bottom-width: 0.25rem;
-}
-
-:deep(.listbox-select-input-invalid:focus) {
-  border-color: var(--rds-danger, #cc2f2f);
-}
-
-:deep(.search-input-field) {
-  position: relative;
-}
-
-:deep(.listbox-select-content) {
+:deep(.listbox-select-icon-content) {
   margin-top: 0;
   width: 100%;
   min-width: 100%;
@@ -446,13 +425,12 @@ const describedBy = computed(() =>
   box-shadow: none;
 }
 
-:deep(.listbox-select-content .combobox-viewport) {
+:deep(.listbox-select-icon-content .combobox-viewport) {
   max-height: 19rem;
   background: #fff;
-  cursor: pointer;
 }
 
-:deep(.listbox-select-option) {
+:deep(.listbox-select-icon-option) {
   padding: 1rem;
   border-bottom: 0;
   color: var(--rds-dark-3, #191919);
@@ -460,33 +438,63 @@ const describedBy = computed(() =>
   cursor: pointer;
 }
 
-:deep(.listbox-select-option[data-state='checked']) {
-  background: var(--rds-secondary, #ffc627);
-  border-top: 2px solid var(--rds-dark-3, #191919);
-  border-bottom: 2px solid var(--rds-dark-3, #191919);
-  padding-top: calc(1rem - 2px);
-  padding-bottom: calc(1rem - 2px);
+:deep(.listbox-select-icon-option[data-highlighted]) {
+  background: #fff;
+  color: var(--rds-dark-3, #191919);
+  outline: 2px solid #000;
+  outline-offset: -2px;
 }
 
-.listbox-select-item-content {
+:deep(.listbox-select-icon-option[data-state='checked']) {
+  background: var(--rds-secondary, #ffc627);
+}
+
+.listbox-select-icon-item-content {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-width: 0;
+}
+
+.listbox-select-icon-media {
+  width: 2rem;
+  height: 2rem;
+  flex: 0 0 2rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.listbox-select-icon-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.listbox-select-icon-glyph {
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+.listbox-select-icon-item-text {
   display: flex;
   flex-direction: column;
   gap: 0.125rem;
   min-width: 0;
 }
 
-.listbox-select-item-label {
+.listbox-select-icon-item-label {
   font-size: 16px;
   line-height: 1.3;
 }
 
-.listbox-select-item-description {
+.listbox-select-icon-item-description {
   font-size: 0.875rem;
   line-height: 1.3;
   color: var(--rds-dark-1, #747474);
 }
 
-.listbox-select-sr-only {
+.listbox-select-icon-sr-only {
   position: absolute;
   width: 1px;
   height: 1px;

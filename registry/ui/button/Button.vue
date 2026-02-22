@@ -1,8 +1,10 @@
 <script setup lang="ts">
+import type { PrimitiveProps } from 'reka-ui'
 import type { HTMLAttributes } from 'vue'
-import { Primitive, type PrimitiveProps } from 'reka-ui'
-import { type ButtonVariants, buttonVariants } from '.'
+import type { ButtonVariants } from '.'
+import { Primitive } from 'reka-ui'
 import { cn } from '@/lib/util'
+import { buttonVariants } from '.'
 
 interface Props extends PrimitiveProps {
   variant?: ButtonVariants['variant']
@@ -28,21 +30,227 @@ const props = withDefaults(defineProps<Props>(), {
     :disabled="props.loading || props.disabled"
     :class="cn(buttonVariants({ variant: props.variant, size: props.size }), props.class)"
   >
-    <span
-      v-if="props.loading"
-      class="spinner-border spinner-border-sm me-2"
-      role="status"
-      aria-hidden="true"
-    />
-    <slot />
+    <span v-if="props.loading" class="rds-button__spinner" role="status" aria-hidden="true" />
+    <span v-if="$slots.leading" class="rds-button__icon rds-button__icon--leading">
+      <slot name="leading" />
+    </span>
+    <span class="rds-button__label">
+      <slot />
+    </span>
+    <span v-if="$slots.trailing" class="rds-button__icon rds-button__icon--trailing">
+      <slot name="trailing" />
+    </span>
+    <span v-if="$slots.close" class="rds-button__close-icon">
+      <slot name="close" />
+    </span>
   </Primitive>
 </template>
 
 <style scoped>
+.rds-button-reset {
+  text-decoration: none;
+}
+
+.rds-button {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border: 0;
+  font-family: Arial, sans-serif;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease,
+    opacity 0.15s ease,
+    transform 0.15s ease;
+}
+
+.rds-button:focus-visible,
 .btn:focus-visible {
   outline: 2px solid #000;
   outline-offset: 2px;
   box-shadow: none;
+}
+
+.rds-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.rds-button--pill {
+  min-height: 40px;
+  border-radius: 25px;
+  padding: 8px 16px;
+  font-size: 16px;
+  line-height: 24px;
+}
+
+.rds-button--maroon {
+  background: #8c1d40;
+  color: #fafafa;
+}
+
+.rds-button--gold {
+  background: #ffc627;
+  color: #000;
+}
+
+.rds-button--gray {
+  background: #e8e5e5;
+  color: #000;
+}
+
+.rds-button--black {
+  background: #191919;
+  color: #fafafa;
+}
+
+.rds-button--white {
+  background: #fff;
+  color: #747474;
+}
+
+.rds-button--status {
+  min-height: 27px;
+  border-width: 1px;
+  border-style: solid;
+  border-radius: 25px;
+  padding: 8px 16px;
+  font-size: 10px;
+  line-height: 1;
+  color: #191919;
+}
+
+.rds-button--complete {
+  background: rgba(135, 194, 62, 0.3);
+  border-color: #78be20;
+}
+
+.rds-button--incomplete {
+  background: #f7dddd;
+  border-color: #cc2f2f;
+}
+
+.rds-button--edit {
+  background: rgba(255, 198, 39, 0.55);
+  border-color: #ffc627;
+  gap: 4px;
+}
+
+.rds-button--signout {
+  min-height: 39px;
+  font-size: 17px;
+  line-height: 1.2;
+}
+
+.rds-button--signout:hover:not(:disabled) {
+  filter: brightness(0.98);
+}
+
+.rds-button--tag,
+.rds-button--tag-mobile {
+  background: #e8e8e8;
+  border-radius: 0;
+  color: #191919;
+  font-weight: 400;
+}
+
+.rds-button--tag {
+  min-height: 26px;
+  padding: 4px 8px;
+  font-size: 12px;
+  line-height: 18px;
+}
+
+.rds-button--tag-mobile {
+  min-height: 17px;
+  padding: 2px 6px;
+  font-size: 11px;
+  line-height: 1;
+}
+
+.rds-button--feedback {
+  min-height: 72px;
+  border-radius: 4px;
+  padding: 12px 24px 12px 12px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
+  text-align: center;
+  white-space: normal;
+}
+
+.rds-button--feedback-maroon {
+  background: #8c1d40;
+  color: #fafafa;
+}
+
+.rds-button--feedback-gold {
+  background: #ffc627;
+  color: #191919;
+}
+
+.rds-button--help-footer {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  padding: 0;
+  background: #191919;
+  color: #fafafa;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.28);
+  font-size: 12px;
+  line-height: 18px;
+}
+
+.rds-button__label {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.rds-button__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 17px;
+  height: 15px;
+  flex: 0 0 auto;
+}
+
+.rds-button__icon :deep(svg),
+.rds-button__icon :deep(img) {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.rds-button__close-icon {
+  position: absolute;
+  top: 6px;
+  right: 5px;
+  width: 14px;
+  height: 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.rds-button__spinner {
+  width: 0.9rem;
+  height: 0.9rem;
+  border: 2px solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: rds-button-spin 0.6s linear infinite;
+}
+
+@keyframes rds-button-spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .btn-secondary,
