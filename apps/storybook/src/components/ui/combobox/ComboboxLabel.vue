@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import type {ComboboxLabelProps} from 'reka-ui';
+import type { ComboboxLabelProps } from 'reka-ui'
 import type { HTMLAttributes } from 'vue'
-import { ComboboxLabel  } from 'reka-ui'
+import { ComboboxLabel } from 'reka-ui'
 import { cn } from '@/lib/util'
 
 interface Props extends ComboboxLabelProps {
