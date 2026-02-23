@@ -133,7 +133,7 @@ const resolvedInvalid = computed(() => props.invalid || Boolean(props.errorText)
           :disabled="isOptionDisabled(option)"
           @update:model-value="(val) => handleChange(option.value, val)"
         />
-        <span :class="{ 'checkbox-option-label-error': resolvedInvalid && !isOptionDisabled(option) }">
+        <span :class="{ 'text-danger': resolvedInvalid && !isOptionDisabled(option) }">
           {{ option.label }}
         </span>
       </label>
