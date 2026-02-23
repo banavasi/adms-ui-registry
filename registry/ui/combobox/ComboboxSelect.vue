@@ -373,6 +373,7 @@ const liveMessage = computed(() => {
             :class="
               cn('combobox-select-input search-input-field', {
                 'combobox-select-has-clear': showClearButton,
+                'combobox-select-input-invalid': props.invalid,
                 'combobox-select-input-selected': hasSelectedDisplayValue,
               })
             "
@@ -603,6 +604,16 @@ const liveMessage = computed(() => {
   padding-left: 1rem;
   padding-right: 4.75rem;
   cursor: pointer;
+}
+
+:deep(.combobox-select-input-invalid) {
+  border-color: var(--rds-danger, #cc2f2f);
+  border-bottom-width: 0.25rem;
+  padding-right: 4.75rem;
+}
+
+:deep(.combobox-select-input-invalid:focus) {
+  border-color: var(--rds-danger, #cc2f2f);
 }
 
 :deep(.combobox-select-input-selected) {
