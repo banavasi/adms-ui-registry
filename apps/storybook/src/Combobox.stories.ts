@@ -1,6 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
 import { computed, ref } from 'vue'
-import { ComboboxSelect } from '@/components/ui/combobox'
+import { ComboboxMultiSelect, ComboboxSelect } from '@/components/ui/combobox'
+import { ListBoxSelect } from '@/components/ui/listbox'
+import { TextInput } from '@/components/ui/TextInput'
 
 const meta: Meta<typeof ComboboxSelect> = {
   title: 'Components/Combobox',
@@ -235,6 +237,165 @@ export const LoadingState: Story = {
           loading-text="Fetching programs from SIS..."
           placeholder="Search programs"
         />
+      </div>
+    `,
+  }),
+}
+
+export const MultiSelectBadges: Story = {
+  render: () => ({
+    components: { ComboboxMultiSelect },
+    setup() {
+      const selectedEthnicities = ref<string[]>([
+        'asian',
+        'black-african-american',
+        'native-hawaiian-pacific-islander',
+      ])
+
+      const ethnicityOptions = [
+        { label: 'American Indian/Alaska Native', value: 'american-indian-alaska-native' },
+        { label: 'Asian', value: 'asian' },
+        { label: 'Black or African American', value: 'black-african-american' },
+        { label: 'Native Hawaiian/Pacific Islander', value: 'native-hawaiian-pacific-islander' },
+        { label: 'White', value: 'white' },
+      ]
+
+      return { selectedEthnicities, ethnicityOptions }
+    },
+    template: `
+      <div style="width: 640px">
+        <ComboboxMultiSelect
+          id="ethnicity-multiselect"
+          v-model="selectedEthnicities"
+          label="Please choose all that apply:"
+          :options="ethnicityOptions"
+          placeholder="Type to search and select"
+          help-text="Selected options appear as badges and wrap automatically."
+          clearable
+        />
+
+        <p class="mt-2" style="font-size: 0.875rem; color: var(--rds-dark-2, #484848)">
+          Selected: {{ selectedEthnicities.join(', ') || 'None' }}
+        </p>
+      </div>
+    `,
+  }),
+}
+
+export const SearchEmptyState: Story = {
+  render: () => ({
+    components: { ComboboxSelect },
+    setup() {
+      const selectedCountry = ref<string | null>(null)
+      const searchTerm = ref('zzzzz')
+      const countryOptions = [
+        { label: 'United States', value: 'us' },
+        { label: 'India', value: 'in' },
+        { label: 'Canada', value: 'ca' },
+        { label: 'Mexico', value: 'mx' },
+      ]
+      return { selectedCountry, searchTerm, countryOptions }
+    },
+    template: `
+      <div style="width: 440px">
+        <ComboboxSelect
+          id="country-empty-search"
+          v-model="selectedCountry"
+          v-model:search-term="searchTerm"
+          label="Country"
+          :options="countryOptions"
+          placeholder="Type to search country"
+          empty-text="No countries match your search."
+          clearable
+        />
+
+        <p class="mt-2" style="font-size: 0.875rem; color: var(--rds-dark-2, #484848)">
+          Search term: {{ searchTerm || 'None' }}
+        </p>
+      </div>
+    `,
+  }),
+}
+
+export const SearchErrorState: Story = {
+  render: () => ({
+    components: { ComboboxSelect },
+    setup() {
+      const selectedProgram = ref<string | null>(null)
+      const programOptions = [
+        { label: 'Computer Science', value: 'cs' },
+        { label: 'Data Science', value: 'ds' },
+        { label: 'Business Analytics', value: 'ba' },
+      ]
+      return { selectedProgram, programOptions }
+    },
+    template: `
+      <div style="width: 440px">
+        <ComboboxSelect
+          id="program-error-state"
+          v-model="selectedProgram"
+          label="Program"
+          :options="programOptions"
+          placeholder="Search program"
+          :invalid="true"
+          error-text="Please select a valid option from the list."
+          help-text="Start typing to search available programs."
+          required
+        />
+      </div>
+    `,
+  }),
+}
+
+export const FormHeightAlignment: Story = {
+  render: () => ({
+    components: { ComboboxSelect, ListBoxSelect, TextInput },
+    setup() {
+      const email = ref('')
+      const country = ref<string | null>('in')
+      const suffix = ref<string | null>('mr')
+
+      const countries = [
+        { label: 'India', value: 'in' },
+        { label: 'United States', value: 'us' },
+        { label: 'Canada', value: 'ca' },
+      ]
+
+      const suffixes = [
+        { label: 'Mr.', value: 'mr' },
+        { label: 'Ms.', value: 'ms' },
+        { label: 'Mx.', value: 'mx' },
+        { label: 'Dr.', value: 'dr' },
+      ]
+
+      return { email, country, suffix, countries, suffixes }
+    },
+    template: `
+      <div style="width: 980px">
+        <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; align-items: start;">
+          <TextInput
+            id="alignment-email"
+            v-model="email"
+            label="Email Address"
+            placeholder="name@asu.edu"
+          />
+
+          <ComboboxSelect
+            id="alignment-combobox"
+            v-model="suffix"
+            label="Suffix"
+            :options="suffixes"
+            placeholder="Select suffix"
+          />
+
+          <ListBoxSelect
+            id="alignment-listbox"
+            v-model="country"
+            label="Home country"
+            :options="countries"
+            placeholder="Select country"
+          />
+        </div>
       </div>
     `,
   }),
