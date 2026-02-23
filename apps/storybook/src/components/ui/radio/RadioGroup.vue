@@ -133,14 +133,7 @@ const resolvedInvalid = computed(() => props.invalid || Boolean(props.errorText)
           :variant="props.variant"
           :size="props.size"
         />
-        <span
-          :class="
-            cn(
-              'radio-option-label',
-              resolvedInvalid && !isOptionDisabled(option) && 'radio-option-label-error',
-            )
-          "
-        >
+        <span :class="cn('radio-option-label', resolvedInvalid && !isOptionDisabled(option) && 'text-danger')">
           {{ option.label }}
         </span>
       </label>

@@ -77,7 +77,7 @@ const resolvedInvalid = computed(() => props.invalid || Boolean(props.errorText)
         :size="props.size"
         :disabled="props.disabled"
       />
-      <span class="checkbox-label-text" :class="{ 'checkbox-label-error': resolvedInvalid }">
+      <span class="checkbox-label-text" :class="{ 'text-danger': resolvedInvalid }">
         <slot>{{ props.label }}</slot>
       </span>
     </label>
