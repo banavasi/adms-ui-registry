@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { HTMLAttributes } from 'vue'
 import { computed, nextTick, ref, useSlots, watch } from 'vue'
+import { CheckboxPrimitive } from '@/components/ui/checkbox'
 import {
   Combobox,
   ComboboxContent,
@@ -26,11 +27,12 @@ type InputOption = ListBoxOption | string | number | boolean | Record<string, un
 interface Props {
   id: string
   options: InputOption[]
-  modelValue?: unknown | null
+  modelValue?: unknown[]
   label?: string
   tooltip?: string
   optional?: boolean
   placeholder?: string
+  pluralLabel?: string
   invalid?: boolean
   disabled?: boolean
   required?: boolean
@@ -45,34 +47,30 @@ interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  modelValue: null,
+  modelValue: () => [],
   optional: false,
-  placeholder: 'Select an option',
+  placeholder: 'Select options',
+  pluralLabel: 'selected',
   invalid: false,
   disabled: false,
   required: false,
-  clearable: false,
+  clearable: true,
   optionLabelKey: 'label',
   optionValueKey: 'value',
   optionDescriptionKey: 'description',
 })
 
 const emit = defineEmits<{
-  change: [value: unknown | null]
+  change: [value: unknown[]]
 }>()
 
-const model = defineModel<unknown | null>({ default: null })
+const model = defineModel<unknown[]>({ default: () => [] })
 const isOpen = ref(false)
 const slots = useSlots()
 
 watch(
   () => model.value,
-  (value, previousValue) => {
-    emit('change', value)
-    if (!isSameValue(value, previousValue)) {
-      clearInputTextSelection()
-    }
-  }
+  (value) => emit('change', value)
 )
 
 function hasOwn(obj: Record<string, unknown>, key: string) {
@@ -141,16 +139,27 @@ function isSameValue(a: unknown, b: unknown) {
   return false
 }
 
-const selectedOption = computed(
-  () => normalizedOptions.value.find((option) => isSameValue(option.value, model.value)) ?? null
+const selectedOptions = computed(() =>
+  normalizedOptions.value.filter((option) =>
+    model.value.some((value) => isSameValue(value, option.value))
+  )
 )
 
-const hasValue = computed(
-  () => model.value !== null && model.value !== undefined && model.value !== ''
-)
+const selectedSummary = computed(() => {
+  const count = selectedOptions.value.length
+  if (count === 0) {
+    return ''
+  }
+
+  if (count === 1) {
+    return selectedOptions.value[0]?.label ?? ''
+  }
+
+  return `${count} ${props.pluralLabel}`
+})
+
+const hasValue = computed(() => model.value.length > 0)
 const showClearButton = computed(() => props.clearable && !props.disabled && hasValue.value)
-const selectedLabel = computed(() => selectedOption.value?.label ?? '')
-const inputDisplayValue = computed(() => (_value: unknown) => selectedLabel.value)
 
 const ariaDescribedBy = computed(() => {
   const ids: string[] = []
@@ -166,46 +175,19 @@ const ariaDescribedBy = computed(() => {
   return ids.length > 0 ? ids.join(' ') : undefined
 })
 
+function isSelected(value: unknown) {
+  return model.value.some((item) => isSameValue(item, value))
+}
+
 function clearSelection() {
-  model.value = null
+  model.value = []
   nextTick(() => {
     const input = document.getElementById(props.id) as HTMLInputElement | null
     if (!input) {
       return
     }
     input.focus({ preventScroll: true })
-    const textLength = input.value.length
-    input.setSelectionRange(textLength, textLength)
   })
-}
-
-function clearInputTextSelection() {
-  const collapseSelection = () => {
-    const input = document.getElementById(props.id) as HTMLInputElement | null
-    if (!input || document.activeElement !== input) {
-      return
-    }
-    const textLength = input.value.length
-    input.setSelectionRange(textLength, textLength)
-  }
-
-  nextTick(() => {
-    collapseSelection()
-    requestAnimationFrame(collapseSelection)
-  })
-}
-
-function handleInputClick() {
-  clearInputTextSelection()
-}
-
-function handleInputFocus() {
-  clearInputTextSelection()
-}
-
-function handleInputMouseUp(event: MouseEvent) {
-  event.preventDefault()
-  clearInputTextSelection()
 }
 
 function handleOpenChange(value: boolean) {
@@ -242,33 +224,46 @@ const describedBy = computed(() =>
       :name="props.name"
       :ignore-filter="true"
       :open-on-click="true"
-      class="listbox-select-root"
+      :multiple="true"
+      class="listbox-multi-root"
       @update:open="handleOpenChange"
     >
       <div class="position-relative search-input drop-down-toggle w-100 d-flex">
         <div class="selected-options d-flex w-100">
           <ComboboxInput
             :id="props.id"
-            :placeholder="props.placeholder"
-            :display-value="inputDisplayValue"
+            :placeholder="hasValue ? '' : props.placeholder"
+            :display-value="() => ''"
             :aria-invalid="props.invalid ? 'true' : undefined"
             :aria-describedby="describedBy"
             :readonly="true"
             :class="
-              cn('listbox-select-input search-input-field', {
-                'listbox-select-has-clear': showClearButton,
-                'listbox-select-input-invalid': props.invalid,
+              cn('listbox-multi-input search-input-field', {
+                'listbox-multi-has-clear': showClearButton,
+                'listbox-multi-input-invalid': props.invalid,
+                'listbox-multi-input-selected': hasValue,
               })
             "
-            @click="handleInputClick"
-            @focus="handleInputFocus"
-            @mouseup="handleInputMouseUp"
           >
+            <p
+              v-if="hasValue"
+              class="listbox-multi-summary mb-0"
+            >
+              <slot
+                name="summary"
+                :count="selectedOptions.length"
+                :selected-options="selectedOptions"
+                :default-summary="selectedSummary"
+              >
+                {{ selectedSummary }}
+              </slot>
+            </p>
+
             <button
               v-if="showClearButton"
               type="button"
-              aria-label="Clear selected value"
-              class="listbox-select-clear ms-auto me-space-sm pe-space-xxs"
+              aria-label="Clear selected values"
+              class="listbox-multi-clear ms-auto me-space-sm pe-space-xxs"
               @mousedown.prevent
               @click="clearSelection"
             >
@@ -292,7 +287,7 @@ const describedBy = computed(() =>
             <ComboboxTrigger as-child>
               <button
                 type="button"
-                class="listbox-select-toggle dropdown-chevron my-auto"
+                class="listbox-multi-toggle dropdown-chevron my-auto"
                 :aria-label="isOpen ? 'Collapse options' : 'Expand options'"
                 @mousedown.prevent
               >
@@ -302,7 +297,7 @@ const describedBy = computed(() =>
                   viewBox="41 169 430 238"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
-                  class="listbox-select-chevron"
+                  class="listbox-multi-chevron"
                   aria-hidden="true"
                 >
                   <path
@@ -316,27 +311,38 @@ const describedBy = computed(() =>
         </div>
       </div>
 
-      <ComboboxContent class="listbox-select-content">
+      <ComboboxContent class="listbox-multi-content">
         <ComboboxItem
           v-for="(option, index) in normalizedOptions"
           :key="`${option.label}-${index}`"
           :value="option.value"
           :disabled="option.disabled"
-          class="listbox-select-option"
-        >
-          <div class="listbox-select-item-content">
-            <span class="listbox-select-item-label">{{ option.label }}</span>
-            <span v-if="option.description" class="listbox-select-item-description">
-              {{ option.description }}
-            </span>
+          class="listbox-multi-option"
+          >
+            <div class="listbox-multi-item-content">
+              <CheckboxPrimitive
+                :model-value="isSelected(option.value) ? 'Y' : 'N'"
+                size="sm"
+                variant="rds-dark-3"
+                readonly-visual
+                class="listbox-multi-option-checkbox"
+                aria-hidden="true"
+              />
+
+              <div class="listbox-multi-item-text">
+                <span class="listbox-multi-item-label">{{ option.label }}</span>
+                <span v-if="option.description" class="listbox-multi-item-description">
+                  {{ option.description }}
+                </span>
+              </div>
           </div>
         </ComboboxItem>
       </ComboboxContent>
     </Combobox>
 
-    <div :id="instructionsId" class="listbox-select-sr-only">
+    <div :id="instructionsId" class="listbox-multi-sr-only">
       Press Enter, Space, or Arrow Down to expand. Use Arrow keys to move through options.
-      Press Enter to select and Escape to close.
+      Press Enter to toggle selection and Escape to close.
     </div>
 
     <InputHelp v-if="props.helpText || $slots.help">
@@ -350,7 +356,53 @@ const describedBy = computed(() =>
 </template>
 
 <style scoped>
-.listbox-select-clear {
+.listbox-multi-root {
+  width: 100%;
+}
+
+:deep(.listbox-multi-input) {
+  height: 3.3125rem;
+  background: #fff;
+  border: 1px solid var(--rds-light-4, #d0d0d0);
+  color: transparent;
+  caret-color: transparent;
+  font-size: 14px;
+  line-height: 1.5;
+  padding-left: 1rem;
+  padding-right: 5.5rem;
+  cursor: pointer;
+}
+
+:deep(.listbox-multi-input-invalid) {
+  border-color: var(--rds-danger, #cc2f2f);
+  border-bottom-width: 0.25rem;
+}
+
+:deep(.listbox-multi-input-invalid:focus) {
+  border-color: var(--rds-danger, #cc2f2f);
+}
+
+:deep(.listbox-multi-input-selected) {
+  color: transparent;
+}
+
+.listbox-multi-summary {
+  position: absolute;
+  left: 1rem;
+  right: 5.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--rds-dark-3, #191919);
+  font-size: 14px;
+  line-height: 1.5;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  pointer-events: none;
+}
+
+
+.listbox-multi-clear {
   position: absolute;
   right: 3.25rem;
   top: 50%;
@@ -364,14 +416,9 @@ const describedBy = computed(() =>
   cursor: pointer;
   padding: 0.25rem;
   line-height: 1;
-  transition: color 0.15s ease;
 }
 
-.listbox-select-clear:hover {
-  color: var(--rds-dark-2, #484848);
-}
-
-.listbox-select-toggle {
+.listbox-multi-toggle {
   position: absolute;
   right: 1rem;
   top: 50%;
@@ -387,55 +434,22 @@ const describedBy = computed(() =>
   height: 20px;
   padding: 0;
   line-height: 1;
-  transition: transform 0.2s ease, color 0.15s ease;
+  transition: transform 0.2s ease;
 }
 
-.listbox-select-toggle[data-state='open'] {
+.listbox-multi-toggle[data-state='open'],
+.listbox-multi-toggle[aria-expanded='true'] {
   transform: translateY(-50%) rotate(180deg);
 }
 
-.listbox-select-toggle[aria-expanded='true'] {
-  transform: translateY(-50%) rotate(180deg);
-}
-
-.listbox-select-chevron {
+.listbox-multi-chevron {
   forced-color-adjust: auto;
   display: block;
   width: 20px;
   height: 20px;
-  flex: 0 0 20px;
 }
 
-.listbox-select-root {
-  width: 100%;
-}
-
-:deep(.listbox-select-input) {
-  height: 3.3125rem;
-  background: #fff;
-  border: 1px solid var(--rds-light-4, #d0d0d0);
-  color: var(--rds-dark-1, #747474);
-  font-size: 14px;
-  line-height: 1.5;
-  padding-left: 1rem;
-  padding-right: 5.5rem;
-  cursor: pointer;
-}
-
-:deep(.listbox-select-input-invalid) {
-  border-color: var(--rds-danger, #cc2f2f);
-  border-bottom-width: 0.25rem;
-}
-
-:deep(.listbox-select-input-invalid:focus) {
-  border-color: var(--rds-danger, #cc2f2f);
-}
-
-:deep(.search-input-field) {
-  position: relative;
-}
-
-:deep(.listbox-select-content) {
+:deep(.listbox-multi-content) {
   margin-top: 0;
   width: 100%;
   min-width: 100%;
@@ -446,13 +460,12 @@ const describedBy = computed(() =>
   box-shadow: none;
 }
 
-:deep(.listbox-select-content .combobox-viewport) {
+:deep(.listbox-multi-content .combobox-viewport) {
   max-height: 19rem;
   background: #fff;
-  cursor: pointer;
 }
 
-:deep(.listbox-select-option) {
+:deep(.listbox-multi-option) {
   padding: 1rem;
   border-bottom: 0;
   color: var(--rds-dark-3, #191919);
@@ -460,33 +473,46 @@ const describedBy = computed(() =>
   cursor: pointer;
 }
 
-:deep(.listbox-select-option[data-state='checked']) {
-  background: var(--rds-secondary, #ffc627);
-  border-top: 2px solid var(--rds-dark-3, #191919);
-  border-bottom: 2px solid var(--rds-dark-3, #191919);
-  padding-top: calc(1rem - 2px);
-  padding-bottom: calc(1rem - 2px);
+:deep(.listbox-multi-option[data-highlighted]) {
+  background: #fff;
+  color: var(--rds-dark-3, #191919);
+  outline: 2px solid #000;
+  outline-offset: -2px;
 }
 
-.listbox-select-item-content {
+:deep(.listbox-multi-option[data-state='checked']) {
+  background: var(--rds-secondary, #ffc627);
+}
+
+.listbox-multi-item-content {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.listbox-multi-option-checkbox {
+  margin-top: 0;
+  flex: 0 0 auto;
+}
+
+.listbox-multi-item-text {
   display: flex;
   flex-direction: column;
   gap: 0.125rem;
-  min-width: 0;
 }
 
-.listbox-select-item-label {
+.listbox-multi-item-label {
   font-size: 16px;
   line-height: 1.3;
 }
 
-.listbox-select-item-description {
+.listbox-multi-item-description {
   font-size: 0.875rem;
   line-height: 1.3;
   color: var(--rds-dark-1, #747474);
 }
 
-.listbox-select-sr-only {
+.listbox-multi-sr-only {
   position: absolute;
   width: 1px;
   height: 1px;

@@ -111,6 +111,7 @@ const inputClasses = computed(() =>
 .form-control {
   border-radius: 0;
   width: 100%;
+  height: 3.3125rem;
 }
 
 .form-control.has-suffix {

@@ -257,6 +257,7 @@ const describedBy = computed(() =>
             :class="
               cn('listbox-select-input search-input-field', {
                 'listbox-select-has-clear': showClearButton,
+                'listbox-select-input-invalid': props.invalid,
               })
             "
             @click="handleInputClick"
@@ -419,6 +420,15 @@ const describedBy = computed(() =>
   padding-left: 1rem;
   padding-right: 5.5rem;
   cursor: pointer;
+}
+
+:deep(.listbox-select-input-invalid) {
+  border-color: var(--rds-danger, #cc2f2f);
+  border-bottom-width: 0.25rem;
+}
+
+:deep(.listbox-select-input-invalid:focus) {
+  border-color: var(--rds-danger, #cc2f2f);
 }
 
 :deep(.search-input-field) {
