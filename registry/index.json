@@ -214,6 +214,12 @@
       "dependencies": ["reka-ui", "fuse.js"],
       "registryDependencies": []
     },
+    "base-select": {
+      "name": "BaseSelect",
+      "files": ["ui/base-select/BaseSelect.vue", "ui/base-select/index.ts"],
+      "dependencies": ["reka-ui"],
+      "registryDependencies": ["combobox"]
+    },
     "listbox": {
       "name": "ListBox",
       "files": [

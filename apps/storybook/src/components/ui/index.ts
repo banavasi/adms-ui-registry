@@ -1,3 +1,4 @@
+export * from './base-select'
 export * from './Button'
 export * from './checkbox'
 export * from './combobox'
