@@ -1,5 +1,17 @@
 # @adms-rds-ui/cli
 
+## 3.2.3
+
+### Patch Changes
+
+- [#31](https://github.com/banavasi/adms-ui-registry/pull/31) [`1e5431f`](https://github.com/banavasi/adms-ui-registry/commit/1e5431f50c0d095c2d06f3e62e0238a5006fa906) Thanks [@banavasi](https://github.com/banavasi)! - Add a reusable `BaseSelect` component to the UI registry and Storybook.
+
+  - support single and multi-select modes through one API
+  - normalize option values for robust model binding across object/value forms
+  - emit `change`, `remove`, and `search` events for parent integration
+  - export `base-select` from registry and register it in `registry/index.json`
+  - add Storybook stories for default, multi-select, and validation states
+
 ## 3.2.2
 
 ### Patch Changes
