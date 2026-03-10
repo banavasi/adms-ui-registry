@@ -1,5 +1,14 @@
 # @adms-rds-ui/cli
 
+## 3.2.2
+
+### Patch Changes
+
+- Add a reusable `BaseSelect` component to the UI registry and Storybook with shared single and multi-select behavior.
+- Add new `combobox` and `listbox` components to the UI registry with improved accessibility and keyboard behavior.
+- Polish the form controls and button system to better match Figma, including expanded button variants and more consistent error styling.
+- Fix `adms-rds-ui init` for Vite and similar projects whose `tsconfig` files use JSONC comments or trailing commas.
+
 ## 3.2.1
 
 ### Patch Changes

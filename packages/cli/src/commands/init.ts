@@ -4,6 +4,7 @@ import fs from 'fs-extra'
 import pc from 'picocolors'
 import prompts from 'prompts'
 import { configExists, getDefaultConfig, saveConfig } from '../utils/config.js'
+import { readJsoncSync } from '../utils/jsonc.js'
 import { detectPackageManager, installDependencies } from '../utils/package-manager.js'
 import { fetchFile, fetchRegistry } from '../utils/registry.js'
 
@@ -280,7 +281,7 @@ async function updateTsConfig(cwd: string, config: RdsConfig) {
     return
   }
 
-  const tsConfig = fs.readJsonSync(tsConfigPath)
+  const tsConfig = readJsoncSync<Record<string, any>>(tsConfigPath)
 
   // Check if using TypeScript project references
   const usesProjectReferences =
@@ -299,7 +300,7 @@ async function updateTsConfig(cwd: string, config: RdsConfig) {
 
       if (!fs.existsSync(refConfigPath)) continue
 
-      const refConfig = fs.readJsonSync(refConfigPath)
+      const refConfig = readJsoncSync<Record<string, any>>(refConfigPath)
 
       // Check if this config includes src files
       const includesSrc =
