@@ -4,10 +4,28 @@
 
 ### Patch Changes
 
-- Add a reusable `BaseSelect` component to the UI registry and Storybook with shared single and multi-select behavior.
-- Add new `combobox` and `listbox` components to the UI registry with improved accessibility and keyboard behavior.
-- Polish the form controls and button system to better match Figma, including expanded button variants and more consistent error styling.
+- [#31](https://github.com/banavasi/adms-ui-registry/pull/31) [`1e5431f`](https://github.com/banavasi/adms-ui-registry/commit/1e5431f50c0d095c2d06f3e62e0238a5006fa906) Thanks [@banavasi](https://github.com/banavasi)! - Add a reusable `BaseSelect` component to the UI registry and Storybook.
+
+  - support single and multi-select modes through one API
+  - normalize option values for robust model binding across object/value forms
+  - emit `change`, `remove`, and `search` events for parent integration
+  - export `base-select` from registry and register it in `registry/index.json`
+  - add Storybook stories for default, multi-select, and validation states
+
 - Fix `adms-rds-ui init` for Vite and similar projects whose `tsconfig` files use JSONC comments or trailing commas.
+
+## 3.2.2
+
+### Patch Changes
+
+- [#28](https://github.com/banavasi/adms-ui-registry/pull/28) [`f3e77c8`](https://github.com/banavasi/adms-ui-registry/commit/f3e77c854f4d4b6a258e7e175f686f11309931ab) Thanks [@banavasi](https://github.com/banavasi)! - Add new `combobox` and `listbox` components to the UI registry with Storybook stories and improved accessibility/keyboard behavior for business form dropdowns.
+
+- [#30](https://github.com/banavasi/adms-ui-registry/pull/30) [`fe82397`](https://github.com/banavasi/adms-ui-registry/commit/fe82397c67c6865859ef6004a447fed17b1d78e2) Thanks [@banavasi](https://github.com/banavasi)! - Polish form controls and button system to align with Figma:
+
+  - add expanded button variants (core color buttons, status chips, feedback, tag, help footer, sign-out)
+  - improve combobox and listbox error treatment consistency
+  - add radio and checkbox error text styling updates
+  - enhance listbox variants and stories for icon and custom summary patterns
 
 ## 3.2.1
 
