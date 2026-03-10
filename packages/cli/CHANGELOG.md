@@ -12,6 +12,8 @@
   - export `base-select` from registry and register it in `registry/index.json`
   - add Storybook stories for default, multi-select, and validation states
 
+- Fix `adms-rds-ui init` for Vite and similar projects whose `tsconfig` files use JSONC comments or trailing commas.
+
 ## 3.2.2
 
 ### Patch Changes
