@@ -12,6 +12,19 @@ interface InitOptions {
   yes?: boolean
 }
 
+interface TsConfigFile {
+  compilerOptions?: {
+    baseUrl?: string
+    paths?: Record<string, string[]>
+    [key: string]: unknown
+  }
+  exclude?: string[]
+  files?: string[]
+  include?: string[]
+  references?: Array<{ path: string }>
+  [key: string]: unknown
+}
+
 export async function init(options: InitOptions) {
   console.log(pc.cyan('\n🚀 Initializing ADMS RDS UI...\n'))
 
@@ -281,7 +294,7 @@ async function updateTsConfig(cwd: string, config: RdsConfig) {
     return
   }
 
-  const tsConfig = readJsoncSync<Record<string, any>>(tsConfigPath)
+  const tsConfig = readJsoncSync<TsConfigFile>(tsConfigPath)
 
   // Check if using TypeScript project references
   const usesProjectReferences =
@@ -300,7 +313,7 @@ async function updateTsConfig(cwd: string, config: RdsConfig) {
 
       if (!fs.existsSync(refConfigPath)) continue
 
-      const refConfig = readJsoncSync<Record<string, any>>(refConfigPath)
+      const refConfig = readJsoncSync<TsConfigFile>(refConfigPath)
 
       // Check if this config includes src files
       const includesSrc =
