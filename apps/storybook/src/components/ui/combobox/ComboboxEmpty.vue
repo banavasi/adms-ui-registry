@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import type {ComboboxEmptyProps} from 'reka-ui';
+import type { ComboboxEmptyProps } from 'reka-ui'
 import type { HTMLAttributes } from 'vue'
-import { ComboboxEmpty  } from 'reka-ui'
+import { ComboboxEmpty } from 'reka-ui'
 import { cn } from '@/lib/util'
 
 interface Props extends ComboboxEmptyProps {

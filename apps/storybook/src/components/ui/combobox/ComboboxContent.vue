@@ -1,12 +1,7 @@
 <script setup lang="ts">
-import type {ComboboxContentProps} from 'reka-ui';
+import type { ComboboxContentProps } from 'reka-ui'
 import type { HTMLAttributes } from 'vue'
-import {
-  ComboboxContent,
-  
-  ComboboxPortal,
-  ComboboxViewport
-} from 'reka-ui'
+import { ComboboxContent, ComboboxPortal, ComboboxViewport } from 'reka-ui'
 import { cn } from '@/lib/util'
 
 interface Props extends ComboboxContentProps {
