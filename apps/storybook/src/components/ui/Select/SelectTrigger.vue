@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import type {SelectTriggerProps} from 'reka-ui';
+import type { SelectTriggerProps } from 'reka-ui'
 import type { HTMLAttributes } from 'vue'
-import { SelectTrigger  } from 'reka-ui'
+import { SelectTrigger } from 'reka-ui'
 import { cn } from '@/lib/util'
 
 interface Props extends SelectTriggerProps {
