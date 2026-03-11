@@ -212,7 +212,7 @@
         "ui/combobox/index.ts"
       ],
       "dependencies": ["reka-ui", "fuse.js"],
-      "registryDependencies": []
+      "registryDependencies": ["input-root", "input-error", "input-help", "label"]
     },
     "base-select": {
       "name": "BaseSelect",
