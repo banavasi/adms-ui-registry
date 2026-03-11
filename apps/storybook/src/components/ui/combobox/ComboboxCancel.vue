@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import type { ComboboxCancelProps } from 'reka-ui'
+import type {ComboboxCancelProps} from 'reka-ui';
 import type { HTMLAttributes } from 'vue'
-import { ComboboxCancel } from 'reka-ui'
+import { ComboboxCancel  } from 'reka-ui'
 import { cn } from '@/lib/util'
 
 interface Props extends ComboboxCancelProps {
