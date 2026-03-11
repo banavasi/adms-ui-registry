@@ -205,6 +205,64 @@ export const IconOptions: Story = {
   }),
 }
 
+export const MultiSelectEmitArray: Story = {
+  render: () => ({
+    components: { ListBoxMultiSelect },
+    setup() {
+      const selected = ref<string[]>([])
+      const emittedLog = ref<Array<{ label: string; value: string }>>([])
+
+      const fruitOptions = [
+        { label: 'Apple', value: 'apple' },
+        { label: 'Banana', value: 'banana' },
+        { label: 'Cherry', value: 'cherry' },
+        { label: 'Dragonfruit', value: 'dragonfruit' },
+        { label: 'Elderberry', value: 'elderberry' },
+      ]
+
+      function handleChange(values: string[]) {
+        emittedLog.value = values.map((val) => {
+          const match = fruitOptions.find((o) => o.value === val)
+          return { label: match?.label ?? val, value: val }
+        })
+      }
+
+      return { selected, fruitOptions, emittedLog, handleChange }
+    },
+    template: `
+      <div style="width: 540px">
+        <ListBoxMultiSelect
+          id="fruit-emit-demo"
+          v-model="selected"
+          label="Pick your fruits"
+          :options="fruitOptions"
+          placeholder="Select one or more fruits"
+          plural-label="fruits"
+          clearable
+          @change="handleChange"
+        />
+
+        <div
+          class="mt-3"
+          style="
+            padding: 1rem;
+            background: var(--rds-light-1, #fafafa);
+            border: 1px solid var(--rds-light-4, #d0d0d0);
+            border-radius: 4px;
+            font-size: 0.875rem;
+          "
+        >
+          <strong>Emitted array (label + value):</strong>
+          <pre v-if="emittedLog.length" style="margin: 0.5rem 0 0; white-space: pre-wrap;">{{ JSON.stringify(emittedLog, null, 2) }}</pre>
+          <p v-else style="margin: 0.5rem 0 0; color: var(--rds-dark-1, #747474);">
+            No items selected yet. Click menu items to see the emitted array.
+          </p>
+        </div>
+      </div>
+    `,
+  }),
+}
+
 export const MultiSelectCustomSummaryLabel: Story = {
   render: () => ({
     components: { ListBoxMultiSelect },
