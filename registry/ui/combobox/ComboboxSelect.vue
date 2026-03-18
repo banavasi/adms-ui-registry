@@ -221,7 +221,7 @@ function clearSelection() {
   model.value = null
   searchTermModel.value = ''
   nextTick(() => {
-    const input = document.getElementById(props.id) as HTMLInputElement | null
+    const input = getInputElement()
     if (!input) {
       return
     }
@@ -240,9 +240,19 @@ function handleInput(event: Event) {
   searchTermModel.value = target.value
 }
 
+function getInputElement() {
+  return document.getElementById(props.id) as HTMLInputElement | null
+}
+
+function getTriggerElement() {
+  return getInputElement()
+    ?.closest('.combobox-anchor')
+    ?.querySelector('button[aria-haspopup="listbox"]') as HTMLButtonElement | null
+}
+
 function clearInputTextSelection() {
   const collapseSelection = () => {
-    const input = document.getElementById(props.id) as HTMLInputElement | null
+    const input = getInputElement()
     if (!input || document.activeElement !== input) {
       return
     }
@@ -275,14 +285,28 @@ function handleInputMouseUp(event: MouseEvent) {
   clearInputTextSelection()
 }
 
+function handleEscapeKeydown(event: KeyboardEvent) {
+  if (event.key !== 'Escape') {
+    return
+  }
+
+  clearInputTextSelection()
+
+  if (!isOpen.value) {
+    return
+  }
+
+  event.preventDefault()
+  getTriggerElement()?.click()
+}
+
 function handleInputKeydown(event: KeyboardEvent) {
-  // let Reka manage keyboard open/highlight logic so selected item stays active on open
-  if (event.key === 'Escape') clearInputTextSelection()
+  // Keep default Reka keyboard behavior, but force a close from the first Escape press.
+  handleEscapeKeydown(event)
 }
 
 function handleComboboxKeydown(event: KeyboardEvent) {
-  // let Reka manage close behavior
-  if (event.key === 'Escape') clearInputTextSelection()
+  handleEscapeKeydown(event)
 }
 
 function handleOpenChange(value: boolean) {
