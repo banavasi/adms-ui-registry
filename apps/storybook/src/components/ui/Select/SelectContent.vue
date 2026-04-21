@@ -1,17 +1,19 @@
 <script setup lang="ts">
-import type { ComboboxContentProps } from 'reka-ui'
+import type { SelectContentProps } from 'reka-ui'
 import type { HTMLAttributes } from 'vue'
-import { ComboboxContent, ComboboxPortal, ComboboxViewport } from 'reka-ui'
+import { SelectContent, SelectPortal, SelectViewport } from 'reka-ui'
 import { cn } from '@/lib/util'
+import SelectScrollDownButton from './SelectScrollDownButton.vue'
+import SelectScrollUpButton from './SelectScrollUpButton.vue'
 
-interface Props extends ComboboxContentProps {
+interface Props extends SelectContentProps {
   class?: HTMLAttributes['class']
 }
 
 const props = withDefaults(defineProps<Props>(), {
   position: 'popper',
   side: 'bottom',
-  sideOffset: 4,
+  sideOffset: 0,
   align: 'start',
   alignOffset: 0,
   avoidCollisions: true,
@@ -22,10 +24,10 @@ const props = withDefaults(defineProps<Props>(), {
 </script>
 
 <template>
-  <ComboboxPortal>
-    <ComboboxContent
-      data-slot="combobox-content"
-      :class="cn('combobox-content', props.class)"
+  <SelectPortal>
+    <SelectContent
+      data-slot="select-content"
+      :class="cn('select-content', props.class)"
       :position="position"
       :side="side"
       :side-offset="sideOffset"
@@ -36,58 +38,58 @@ const props = withDefaults(defineProps<Props>(), {
       :collision-padding="collisionPadding"
       :sticky="sticky"
     >
-      <slot name="beforeViewport" />
-      <ComboboxViewport class="combobox-viewport">
+      <SelectScrollUpButton />
+      <SelectViewport class="select-viewport">
         <slot />
-      </ComboboxViewport>
-    </ComboboxContent>
-  </ComboboxPortal>
+      </SelectViewport>
+      <SelectScrollDownButton />
+    </SelectContent>
+  </SelectPortal>
 </template>
 
 <style>
-.combobox-content {
+.select-content {
   z-index: 1000;
-  min-width: var(--reka-combobox-trigger-width, 300px);
-  width: var(--reka-combobox-trigger-width, 300px);
+  min-width: var(--reka-select-trigger-width, 300px);
+  width: var(--reka-select-trigger-width, 300px);
   background: #fff;
   border: 1px solid var(--rds-light-4, #d0d0d0);
   border-radius: 0;
   box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
 }
 
-.combobox-content[data-state='open'] {
-  animation: slideDownAndFade 0.2s ease-out;
+.select-content[data-state='open'] {
+  animation: selectSlideDownAndFade 0.2s ease-out;
 }
 
-.combobox-content[data-state='closed'] {
-  animation: slideUpAndFade 0.15s ease-in;
+.select-content[data-state='closed'] {
+  animation: selectSlideUpAndFade 0.15s ease-in;
 }
 
-.combobox-viewport {
+.select-viewport {
   padding: 0;
   max-height: 300px;
   overflow-y: auto;
 }
 
-/* Smooth scrollbar styling */
-.combobox-viewport::-webkit-scrollbar {
+.select-viewport::-webkit-scrollbar {
   width: 8px;
 }
 
-.combobox-viewport::-webkit-scrollbar-track {
+.select-viewport::-webkit-scrollbar-track {
   background: var(--rds-light-1, #fafafa);
 }
 
-.combobox-viewport::-webkit-scrollbar-thumb {
+.select-viewport::-webkit-scrollbar-thumb {
   background: var(--rds-light-4, #d0d0d0);
   border-radius: 4px;
 }
 
-.combobox-viewport::-webkit-scrollbar-thumb:hover {
+.select-viewport::-webkit-scrollbar-thumb:hover {
   background: var(--rds-light-5, #bfbfbf);
 }
 
-@keyframes slideDownAndFade {
+@keyframes selectSlideDownAndFade {
   from {
     opacity: 0;
     transform: translateY(-8px);
@@ -98,7 +100,7 @@ const props = withDefaults(defineProps<Props>(), {
   }
 }
 
-@keyframes slideUpAndFade {
+@keyframes selectSlideUpAndFade {
   from {
     opacity: 1;
     transform: translateY(0);

@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import type { HTMLAttributes } from 'vue'
-import { computed, nextTick, ref, useSlots, watch } from 'vue'
+import { computed, ref, useSlots, watch } from 'vue'
 import {
-  Combobox,
-  ComboboxContent,
-  ComboboxInput,
-  ComboboxItem,
-  ComboboxTrigger,
-} from '@/components/ui/combobox'
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/Select'
 import { InputError } from '@/components/ui/InputError'
 import { InputHelp } from '@/components/ui/InputHelp'
 import { InputRoot } from '@/components/ui/InputRoot'
@@ -67,11 +67,8 @@ const slots = useSlots()
 
 watch(
   () => model.value,
-  (value, previousValue) => {
+  (value) => {
     emit('change', value)
-    if (!isSameValue(value, previousValue)) {
-      clearInputTextSelection()
-    }
   }
 )
 
@@ -150,7 +147,6 @@ const hasValue = computed(
 )
 const showClearButton = computed(() => props.clearable && !props.disabled && hasValue.value)
 const selectedLabel = computed(() => selectedOption.value?.label ?? '')
-const inputDisplayValue = computed(() => (_value: unknown) => selectedLabel.value)
 
 const ariaDescribedBy = computed(() => {
   const ids: string[] = []
@@ -168,44 +164,6 @@ const ariaDescribedBy = computed(() => {
 
 function clearSelection() {
   model.value = null
-  nextTick(() => {
-    const input = document.getElementById(props.id) as HTMLInputElement | null
-    if (!input) {
-      return
-    }
-    input.focus({ preventScroll: true })
-    const textLength = input.value.length
-    input.setSelectionRange(textLength, textLength)
-  })
-}
-
-function clearInputTextSelection() {
-  const collapseSelection = () => {
-    const input = document.getElementById(props.id) as HTMLInputElement | null
-    if (!input || document.activeElement !== input) {
-      return
-    }
-    const textLength = input.value.length
-    input.setSelectionRange(textLength, textLength)
-  }
-
-  nextTick(() => {
-    collapseSelection()
-    requestAnimationFrame(collapseSelection)
-  })
-}
-
-function handleInputClick() {
-  clearInputTextSelection()
-}
-
-function handleInputFocus() {
-  clearInputTextSelection()
-}
-
-function handleInputMouseUp(event: MouseEvent) {
-  event.preventDefault()
-  clearInputTextSelection()
 }
 
 function handleOpenChange(value: boolean) {
@@ -235,93 +193,81 @@ const describedBy = computed(() =>
       <slot name="label">{{ props.label }}</slot>
     </Label>
 
-    <Combobox
+    <Select
       v-model="model"
       :disabled="props.disabled"
       :required="props.required"
       :name="props.name"
-      :ignore-filter="true"
-      :open-on-click="true"
       class="listbox-select-root"
       @update:open="handleOpenChange"
     >
-      <div class="position-relative search-input drop-down-toggle w-100 d-flex">
-        <div class="selected-options d-flex w-100">
-          <ComboboxInput
-            :id="props.id"
-            :placeholder="props.placeholder"
-            :display-value="inputDisplayValue"
-            :aria-invalid="props.invalid ? 'true' : undefined"
-            :aria-describedby="describedBy"
-            :readonly="true"
-            :class="
-              cn('listbox-select-input search-input-field', {
-                'listbox-select-has-clear': showClearButton,
-                'listbox-select-input-invalid': props.invalid,
-              })
-            "
-            @click="handleInputClick"
-            @focus="handleInputFocus"
-            @mouseup="handleInputMouseUp"
+      <SelectTrigger
+        :id="props.id"
+        :aria-invalid="props.invalid ? 'true' : undefined"
+        :aria-describedby="describedBy"
+        :class="
+          cn('listbox-select-trigger', {
+            'listbox-select-has-clear': showClearButton,
+            'listbox-select-trigger-invalid': props.invalid,
+          })
+        "
+      >
+        <SelectValue :placeholder="props.placeholder">
+          <span class="listbox-select-value-text">{{ selectedLabel }}</span>
+        </SelectValue>
+
+        <div class="listbox-select-actions">
+          <button
+            v-if="showClearButton"
+            type="button"
+            aria-label="Clear selected value"
+            class="listbox-select-clear"
+            @mousedown.prevent
+            @click.stop="clearSelection"
           >
-            <button
-              v-if="showClearButton"
-              type="button"
-              aria-label="Clear selected value"
-              class="listbox-select-clear ms-auto me-space-sm pe-space-xxs"
-              @mousedown.prevent
-              @click="clearSelection"
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 15 15"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              aria-hidden="true"
             >
-              <svg
-                width="16"
-                height="16"
-                viewBox="0 0 15 15"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-                aria-hidden="true"
-              >
-                <path
-                  d="M11.7816 4.03157C12.0062 3.80702 12.0062 3.44295 11.7816 3.2184C11.5571 2.99385 11.193 2.99385 10.9685 3.2184L7.50005 6.68682L4.03164 3.2184C3.80708 2.99385 3.44301 2.99385 3.21846 3.2184C2.99391 3.44295 2.99391 3.80702 3.21846 4.03157L6.68688 7.49999L3.21846 10.9684C2.99391 11.193 2.99391 11.557 3.21846 11.7816C3.44301 12.0061 3.80708 12.0061 4.03164 11.7816L7.50005 8.31316L10.9685 11.7816C11.193 12.0061 11.5571 12.0061 11.7816 11.7816C12.0062 11.557 12.0062 11.193 11.7816 10.9684L8.31322 7.49999L11.7816 4.03157Z"
-                  fill="currentColor"
-                  fill-rule="evenodd"
-                  clip-rule="evenodd"
-                />
-              </svg>
-            </button>
+              <path
+                d="M11.7816 4.03157C12.0062 3.80702 12.0062 3.44295 11.7816 3.2184C11.5571 2.99385 11.193 2.99385 10.9685 3.2184L7.50005 6.68682L4.03164 3.2184C3.80708 2.99385 3.44301 2.99385 3.21846 3.2184C2.99391 3.44295 2.99391 3.80702 3.21846 4.03157L6.68688 7.49999L3.21846 10.9684C2.99391 11.193 2.99391 11.557 3.21846 11.7816C3.44301 12.0061 3.80708 12.0061 4.03164 11.7816L7.50005 8.31316L10.9685 11.7816C11.193 12.0061 11.5571 12.0061 11.7816 11.7816C12.0062 11.557 12.0062 11.193 11.7816 10.9684L8.31322 7.49999L11.7816 4.03157Z"
+                fill="currentColor"
+                fill-rule="evenodd"
+                clip-rule="evenodd"
+              />
+            </svg>
+          </button>
 
-            <ComboboxTrigger as-child>
-              <button
-                type="button"
-                class="listbox-select-toggle dropdown-chevron my-auto"
-                :aria-label="isOpen ? 'Collapse options' : 'Expand options'"
-                @mousedown.prevent
-              >
-                <svg
-                  width="20"
-                  height="20"
-                  viewBox="41 169 430 238"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                  class="listbox-select-chevron"
-                  aria-hidden="true"
-                >
-                  <path
-                    d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z"
-                    fill="currentColor"
-                  />
-                </svg>
-              </button>
-            </ComboboxTrigger>
-          </ComboboxInput>
+          <span class="listbox-select-chevron-wrapper">
+            <svg
+              width="20"
+              height="20"
+              viewBox="41 169 430 238"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              class="listbox-select-chevron"
+              aria-hidden="true"
+            >
+              <path
+                d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z"
+                fill="currentColor"
+              />
+            </svg>
+          </span>
         </div>
-      </div>
+      </SelectTrigger>
 
-      <ComboboxContent class="listbox-select-content">
-        <ComboboxItem
+      <SelectContent class="listbox-select-content">
+        <SelectItem
           v-for="(option, index) in normalizedOptions"
           :key="`${option.label}-${index}`"
           :value="option.value"
           :disabled="option.disabled"
+          :text-value="option.label"
           class="listbox-select-option"
         >
           <div class="listbox-select-item-content">
@@ -330,9 +276,9 @@ const describedBy = computed(() =>
               {{ option.description }}
             </span>
           </div>
-        </ComboboxItem>
-      </ComboboxContent>
-    </Combobox>
+        </SelectItem>
+      </SelectContent>
+    </Select>
 
     <div :id="instructionsId" class="listbox-select-sr-only">
       Press Enter, Space, or Arrow Down to expand. Use Arrow keys to move through options.
@@ -350,11 +296,61 @@ const describedBy = computed(() =>
 </template>
 
 <style scoped>
+.listbox-select-root {
+  width: 100%;
+}
+
+:deep(.listbox-select-trigger) {
+  height: 3.3125rem;
+  background: #fff;
+  border: 1px solid var(--rds-light-4, #d0d0d0);
+  color: var(--rds-dark-1, #747474);
+  font-size: 14px;
+  line-height: 1.5;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  cursor: pointer;
+  outline: none;
+  text-align: left;
+}
+
+:deep(.listbox-select-trigger:focus) {
+  outline: 2px solid #000;
+  outline-offset: 2px;
+  box-shadow: none;
+}
+
+:deep(.listbox-select-trigger-invalid) {
+  border-color: var(--rds-danger, #cc2f2f);
+  border-bottom-width: 0.25rem;
+}
+
+:deep(.listbox-select-trigger-invalid:focus) {
+  border-color: var(--rds-danger, #cc2f2f);
+}
+
+:deep(.listbox-select-trigger[data-placeholder]) {
+  color: var(--rds-dark-1, #747474);
+}
+
+.listbox-select-value-text {
+  color: var(--rds-dark-3, #191919);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex: 1;
+  min-width: 0;
+}
+
+.listbox-select-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
 .listbox-select-clear {
-  position: absolute;
-  right: 3.25rem;
-  top: 50%;
-  transform: translateY(-50%);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -371,31 +367,19 @@ const describedBy = computed(() =>
   color: var(--rds-dark-2, #484848);
 }
 
-.listbox-select-toggle {
-  position: absolute;
-  right: 1rem;
-  top: 50%;
-  transform: translateY(-50%);
+.listbox-select-chevron-wrapper {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   color: var(--rds-dark-1, #747474);
-  background: transparent;
-  border: none;
-  cursor: pointer;
   width: 20px;
   height: 20px;
-  padding: 0;
-  line-height: 1;
-  transition: transform 0.2s ease, color 0.15s ease;
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
 }
 
-.listbox-select-toggle[data-state='open'] {
-  transform: translateY(-50%) rotate(180deg);
-}
-
-.listbox-select-toggle[aria-expanded='true'] {
-  transform: translateY(-50%) rotate(180deg);
+:deep(.listbox-select-trigger[data-state='open']) .listbox-select-chevron-wrapper {
+  transform: rotate(180deg);
 }
 
 .listbox-select-chevron {
@@ -404,35 +388,6 @@ const describedBy = computed(() =>
   width: 20px;
   height: 20px;
   flex: 0 0 20px;
-}
-
-.listbox-select-root {
-  width: 100%;
-}
-
-:deep(.listbox-select-input) {
-  height: 3.3125rem;
-  background: #fff;
-  border: 1px solid var(--rds-light-4, #d0d0d0);
-  color: var(--rds-dark-1, #747474);
-  font-size: 14px;
-  line-height: 1.5;
-  padding-left: 1rem;
-  padding-right: 5.5rem;
-  cursor: pointer;
-}
-
-:deep(.listbox-select-input-invalid) {
-  border-color: var(--rds-danger, #cc2f2f);
-  border-bottom-width: 0.25rem;
-}
-
-:deep(.listbox-select-input-invalid:focus) {
-  border-color: var(--rds-danger, #cc2f2f);
-}
-
-:deep(.search-input-field) {
-  position: relative;
 }
 
 :deep(.listbox-select-content) {
@@ -446,7 +401,7 @@ const describedBy = computed(() =>
   box-shadow: none;
 }
 
-:deep(.listbox-select-content .combobox-viewport) {
+:deep(.listbox-select-content .select-viewport) {
   max-height: 19rem;
   background: #fff;
   cursor: pointer;

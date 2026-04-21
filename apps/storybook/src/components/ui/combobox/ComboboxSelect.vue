@@ -77,6 +77,7 @@ const emit = defineEmits<{
 const model = defineModel<unknown | null>({ default: null })
 const searchTermModel = defineModel<string>('searchTerm', { default: '' })
 const isOpen = ref(false)
+const searchInputRef = ref<HTMLInputElement | null>(null)
 
 const slots = useSlots()
 
@@ -220,6 +221,10 @@ const ariaDescribedBy = computed(() => {
 function clearSelection() {
   model.value = null
   searchTermModel.value = ''
+  focusTriggerInput()
+}
+
+function focusTriggerInput() {
   nextTick(() => {
     const input = getInputElement()
     if (!input) {
@@ -231,13 +236,19 @@ function clearSelection() {
   })
 }
 
-function handleInput(event: Event) {
-  const target = event.target as HTMLInputElement | null
-  if (!target) {
-    return
-  }
+function focusSearchInput() {
+  nextTick(() => {
+    requestAnimationFrame(() => {
+      const input = searchInputRef.value
+      if (!input || !isOpen.value) {
+        return
+      }
 
-  searchTermModel.value = target.value
+      input.focus({ preventScroll: true })
+      const textLength = input.value.length
+      input.setSelectionRange(textLength, textLength)
+    })
+  })
 }
 
 function getInputElement() {
@@ -267,12 +278,7 @@ function clearInputTextSelection() {
   })
 }
 
-function openDropdown() {
-  // no-op: opening is handled by Reka internal logic
-}
-
 function handleInputClick() {
-  openDropdown()
   clearInputTextSelection()
 }
 
@@ -311,27 +317,71 @@ function handleComboboxKeydown(event: KeyboardEvent) {
 
 function handleOpenChange(value: boolean) {
   isOpen.value = value
+  searchTermModel.value = ''
+
   if (value) {
-    searchTermModel.value = ''
+    focusSearchInput()
   }
 }
 
 const instructionsId = computed(() => `${props.id}-instructions`)
+const searchInputId = computed(() => `${props.id}-panel-search`)
 const describedBy = computed(() =>
   [instructionsId.value, ariaDescribedBy.value].filter(Boolean).join(' ')
 )
 const selectedLabel = computed(() => selectedOption.value?.label ?? '')
-const hasSelectedDisplayValue = computed(
-  () => Boolean(selectedLabel.value) && !isOpen.value && searchTermModel.value.trim().length === 0
-)
-const inputDisplayValue = computed(
-  () => (_value: unknown) => (isOpen.value ? searchTermModel.value : selectedLabel.value)
-)
-const activePlaceholder = computed(() =>
-  isOpen.value && selectedLabel.value && searchTermModel.value.trim().length === 0
-    ? selectedLabel.value
-    : props.placeholder
-)
+const inputDisplayValue = computed(() => (_value: unknown) => selectedLabel.value)
+
+function handleSearchInput(event: Event) {
+  const target = event.target as HTMLInputElement | null
+  if (!target) {
+    return
+  }
+
+  searchTermModel.value = target.value
+}
+
+function focusPanelOption(direction: 'next' | 'prev') {
+  const content = searchInputRef.value?.closest('[data-slot="combobox-content"]')
+  if (!content) {
+    return
+  }
+
+  const options = Array.from(
+    content.querySelectorAll<HTMLElement>('[data-slot="combobox-item"]:not([data-disabled])')
+  )
+
+  if (options.length === 0) {
+    return
+  }
+
+  const target = direction === 'prev' ? options.at(-1) : options[0]
+  target?.focus()
+}
+
+function handleSearchInputKeydown(event: KeyboardEvent) {
+  if (event.key === 'ArrowDown') {
+    event.preventDefault()
+    focusPanelOption('next')
+    return
+  }
+
+  if (event.key === 'ArrowUp') {
+    event.preventDefault()
+    focusPanelOption('prev')
+    return
+  }
+
+  if (event.key === 'Escape') {
+    event.preventDefault()
+    isOpen.value = false
+    focusTriggerInput()
+  }
+}
+
+function isSelectedOption(value: unknown) {
+  return isSameValue(value, model.value)
+}
 
 const liveMessage = computed(() => {
   if (props.loading) {
@@ -380,6 +430,7 @@ const liveMessage = computed(() => {
       :name="props.name"
       :ignore-filter="true"
       :open-on-click="true"
+      :open="isOpen"
       class="combobox-select-root"
       @update:open="handleOpenChange"
       @keydown.capture="handleComboboxKeydown"
@@ -388,22 +439,22 @@ const liveMessage = computed(() => {
         <div class="selected-options d-flex w-100">
           <ComboboxInput
             :id="props.id"
-            :placeholder="activePlaceholder"
+            :placeholder="props.placeholder"
             :open-on-click="props.openOnClick"
             :open-on-focus="props.openOnFocus"
             :display-value="inputDisplayValue"
             :aria-invalid="props.invalid ? 'true' : undefined"
             :aria-describedby="describedBy"
+            :readonly="true"
             :class="
               cn('combobox-select-input search-input-field', {
                 'combobox-select-has-clear': showClearButton,
                 'combobox-select-input-invalid': props.invalid,
-                'combobox-select-input-selected': hasSelectedDisplayValue,
+                'combobox-select-input-selected': Boolean(selectedLabel),
               })
             "
             @click="handleInputClick"
             @focus="handleInputFocus"
-            @input="handleInput"
             @keydown="handleInputKeydown"
             @mouseup="handleInputMouseUp"
           >
@@ -460,6 +511,22 @@ const liveMessage = computed(() => {
       </div>
 
       <ComboboxContent class="combobox-select-content">
+        <template #beforeViewport>
+          <div class="combobox-select-search-shell">
+            <label :for="searchInputId" class="combobox-select-sr-only">Search options</label>
+            <input
+              :id="searchInputId"
+              ref="searchInputRef"
+              type="text"
+              class="combobox-select-search"
+              placeholder="Search..."
+              :value="searchTermModel"
+              @input="handleSearchInput"
+              @keydown="handleSearchInputKeydown"
+            >
+          </div>
+        </template>
+
         <div v-if="props.loading" class="combobox-select-status">
           {{ props.loadingText }}
         </div>
@@ -478,9 +545,18 @@ const liveMessage = computed(() => {
             class="combobox-select-option"
           >
             <div class="combobox-select-item-content">
-              <span class="combobox-select-item-label">{{ option.label }}</span>
-              <span v-if="option.description" class="combobox-select-item-description">
-                {{ option.description }}
+              <div class="combobox-select-item-copy">
+                <span class="combobox-select-item-label">{{ option.label }}</span>
+                <span v-if="option.description" class="combobox-select-item-description">
+                  {{ option.description }}
+                </span>
+              </div>
+              <span
+                v-if="isSelectedOption(option.value)"
+                class="combobox-select-item-check"
+                aria-hidden="true"
+              >
+                ✓
               </span>
             </div>
           </ComboboxItem>
@@ -489,8 +565,8 @@ const liveMessage = computed(() => {
     </Combobox>
 
     <div :id="instructionsId" class="combobox-select-sr-only">
-      Press Enter, Space, or Arrow Down to expand. Use Arrow keys to move through options.
-      Press Enter to select and Escape to close.
+      Press Enter, Space, or Arrow Down to expand. Search inside the dropdown, use Arrow keys to
+      move through options, Enter to select, and Escape to close.
     </div>
     <div aria-live="polite" aria-atomic="true" class="combobox-select-sr-only">
       {{ liveMessage }}
@@ -540,16 +616,59 @@ const liveMessage = computed(() => {
   background: #fff;
 }
 
+.combobox-select-search-shell {
+  padding: 0.625rem;
+  border-bottom: 1px solid var(--rds-light-3, #e8e8e8);
+  background: #fff;
+}
+
+.combobox-select-search {
+  width: 100%;
+  min-height: 3rem;
+  border: 1px solid var(--rds-light-4, #d0d0d0);
+  background: #fff;
+  color: var(--rds-dark-3, #191919);
+  font-size: 1rem;
+  line-height: 1.5;
+  padding: 0.75rem 1rem;
+}
+
+.combobox-select-search::placeholder {
+  color: var(--rds-dark-1, #747474);
+}
+
+.combobox-select-search:focus {
+  outline: 2px solid #000;
+  outline-offset: 2px;
+  box-shadow: none;
+}
+
 .combobox-select-item-content {
   display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  min-width: 0;
+}
+
+.combobox-select-item-copy {
+  display: flex;
+  flex: 1 1 auto;
+  min-width: 0;
   flex-direction: column;
   gap: 0.125rem;
-  min-width: 0;
 }
 
 .combobox-select-item-label {
   font-size: 16px;
   line-height: 1.3;
+}
+
+.combobox-select-item-check {
+  flex: 0 0 auto;
+  color: var(--rds-dark-3, #191919);
+  font-size: 1rem;
+  font-weight: 700;
 }
 
 .combobox-select-item-description {
@@ -622,8 +741,8 @@ const liveMessage = computed(() => {
   height: 3.3125rem;
   background: #fff;
   border: 1px solid var(--rds-light-4, #d0d0d0);
-  color: var(--rds-dark-1, #747474);
-  font-size: 14px;
+  color: var(--rds-dark-3, #191919);
+  font-size: 16px;
   line-height: 1.5;
   padding-left: 1rem;
   padding-right: 4.75rem;
@@ -659,14 +778,13 @@ const liveMessage = computed(() => {
 }
 
 :deep(.combobox-select-content) {
-  margin-top: 0;
+  margin-top: 0.375rem;
   width: 100%;
   min-width: 100%;
   background: #fff;
   border: 1px solid var(--rds-light-4, #d0d0d0);
-  border-top: 0;
   border-radius: 0;
-  box-shadow: none;
+  box-shadow: 0 10px 30px rgba(25, 25, 25, 0.12);
 }
 
 :deep(.combobox-select-content .combobox-viewport) {
@@ -677,7 +795,6 @@ const liveMessage = computed(() => {
 
 :deep(.combobox-select-option) {
   padding: 1rem;
-  border-bottom: 0;
   color: var(--rds-dark-3, #191919);
   background: #fff;
   cursor: pointer;
@@ -692,18 +809,14 @@ const liveMessage = computed(() => {
 }
 
 :deep(.combobox-select-option[data-highlighted]) {
-  background: #fff;
+  background: var(--rds-light-2, #f1f1f1);
   color: var(--rds-dark-3, #191919);
-  outline: 2px solid #000;
-  outline-offset: -2px;
+  outline: none;
 }
 
 :deep(.combobox-select-option[data-state='checked']) {
-  background: var(--rds-secondary, #ffc627);
-  border-top: 2px solid var(--rds-dark-3, #191919);
-  border-bottom: 2px solid var(--rds-dark-3, #191919);
-  padding-top: calc(1rem - 2px);
-  padding-bottom: calc(1rem - 2px);
+  background: #d9d9d9;
+  font-weight: 600;
 }
 
 :deep(.combobox-select-option[data-disabled]) {

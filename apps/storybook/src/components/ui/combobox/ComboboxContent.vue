@@ -36,6 +36,7 @@ const props = withDefaults(defineProps<Props>(), {
       :collision-padding="collisionPadding"
       :sticky="sticky"
     >
+      <slot name="beforeViewport" />
       <ComboboxViewport class="combobox-viewport">
         <slot />
       </ComboboxViewport>
