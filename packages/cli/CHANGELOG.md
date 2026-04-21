@@ -1,5 +1,22 @@
 # @adms-rds-ui/cli
 
+## 3.2.5
+
+### Patch Changes
+
+- [#38](https://github.com/banavasi/adms-ui-registry/pull/38) [`ab487e5`](https://github.com/banavasi/adms-ui-registry/commit/ab487e57dd4469fb83ec019c31f4cf7ebfdf3a0a) Thanks [@banavasi](https://github.com/banavasi)! - Refresh the combobox and base-select registry components with the new summary-trigger design, in-panel search behavior, and improved open-state focus handling.
+
+## 3.2.4
+
+### Patch Changes
+
+- [#34](https://github.com/banavasi/adms-ui-registry/pull/34) [`58c25c8`](https://github.com/banavasi/adms-ui-registry/commit/58c25c8abe89ce89444e8a2f8b03bc3bcb54af38) Thanks [@banavasi](https://github.com/banavasi)! - Rewrite ListBox to use Select primitives and fix install dependencies:
+
+  - rewrite ListBoxSelect, ListBoxMultiSelect, and ListBoxSelectIcon from Combobox to Reka UI Select primitives, fixing the two-press Escape key bug
+  - add new Select component primitives to the registry (Select, SelectTrigger, SelectValue, SelectContent, SelectItem, and scroll/group/label/separator helpers)
+  - fix combobox missing registryDependencies (input-root, input-error, input-help, label) that caused broken installs via CLI
+  - fix .gitignore pattern for storybook-static build output
+
 ## 3.2.3
 
 ### Patch Changes

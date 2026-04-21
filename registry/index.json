@@ -212,13 +212,31 @@
         "ui/combobox/index.ts"
       ],
       "dependencies": ["reka-ui", "fuse.js"],
-      "registryDependencies": []
+      "registryDependencies": ["input-root", "input-error", "input-help", "label"]
     },
     "base-select": {
       "name": "BaseSelect",
       "files": ["ui/base-select/BaseSelect.vue", "ui/base-select/index.ts"],
       "dependencies": ["reka-ui"],
       "registryDependencies": ["combobox"]
+    },
+    "select": {
+      "name": "Select",
+      "files": [
+        "ui/select/Select.vue",
+        "ui/select/SelectTrigger.vue",
+        "ui/select/SelectValue.vue",
+        "ui/select/SelectContent.vue",
+        "ui/select/SelectItem.vue",
+        "ui/select/SelectGroup.vue",
+        "ui/select/SelectLabel.vue",
+        "ui/select/SelectSeparator.vue",
+        "ui/select/SelectScrollUpButton.vue",
+        "ui/select/SelectScrollDownButton.vue",
+        "ui/select/index.ts"
+      ],
+      "dependencies": ["reka-ui"],
+      "registryDependencies": []
     },
     "listbox": {
       "name": "ListBox",
@@ -231,7 +249,7 @@
       "dependencies": ["reka-ui"],
       "registryDependencies": [
         "checkbox",
-        "combobox",
+        "select",
         "input-root",
         "input-error",
         "input-help",
