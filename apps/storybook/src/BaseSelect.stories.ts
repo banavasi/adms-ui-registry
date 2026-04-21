@@ -11,7 +11,7 @@ const meta: Meta<typeof BaseSelect> = {
     docs: {
       description: {
         component:
-          'Reusable select wrapper with a single API for single and multi-select scenarios, built on top of ComboboxSelect and ComboboxMultiSelect.',
+          'Reusable select wrapper with a single API for single and multi-select scenarios, built on top of the combobox primitives with a summary trigger and in-panel search.',
       },
     },
   },
@@ -53,6 +53,10 @@ export const SingleSelect: Story = {
 
         <p style="font-size: 0.875rem; color: var(--rds-dark-2, #484848); margin: 0;">
           Search term: {{ searchQuery || '—' }}
+        </p>
+
+        <p style="font-size: 0.875rem; color: var(--rds-dark-1, #747474); margin: 0;">
+          Open the dropdown to search; the closed field now acts as a summary trigger.
         </p>
       </div>
     `,
