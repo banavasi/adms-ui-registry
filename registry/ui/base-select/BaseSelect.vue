@@ -323,25 +323,5 @@ function handleMultiChange(value: unknown) {
     z-index: 1100;
   }
 
-  :deep(.combobox-select-item-content) {
-    gap: 0;
-  }
-
-  :deep(.combobox-select-item-description) {
-    display: none !important;
-  }
-
-  :deep(.combobox-select-option[data-state='checked']) {
-    border-top: 0 !important;
-    border-bottom: 0 !important;
-    padding-top: 1rem !important;
-    padding-bottom: 1rem !important;
-  }
-
-  :deep(.combobox-select-option[data-highlighted]) {
-    background: var(--rds-secondary, #ffc627) !important;
-    outline: none !important;
-    color: var(--rds-dark-3, #191919) !important;
-  }
 }
 </style>

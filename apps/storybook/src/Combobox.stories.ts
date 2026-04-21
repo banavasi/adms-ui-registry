@@ -12,7 +12,7 @@ const meta: Meta<typeof ComboboxSelect> = {
     layout: 'centered',
     docs: {
       description: {
-        component: `Select2-style combobox for business forms.\n\n- Searchable options\n- Keyboard navigation\n- Clear selection action\n- Works with existing InputRoot/Label/Help/Error styles`,
+        component: `Business-form combobox with a summary trigger and a dedicated search field inside the open dropdown panel.\n\n- Search lives inside the panel\n- Keyboard navigation and clear actions stay available\n- Single and multi-select share the same visual pattern\n- Works with existing InputRoot/Label/Help/Error styles`,
       },
     },
   },
@@ -118,7 +118,7 @@ export const SearchablePeople: Story = {
           v-model="selectedOwner"
           label="Ticket Owner"
           :options="owners"
-          placeholder="Search by name, team, or campus"
+          placeholder="Select a ticket owner"
           empty-text="No matching team member"
           clearable
         />
@@ -153,7 +153,7 @@ export const KeyboardInteractions: Story = {
           label="Suffix"
           :options="fields"
           placeholder="Select suffix"
-          help-text="Keyboard: use Space, ArrowDown, or ArrowUp to open. Click caret to toggle."
+          help-text="Use Space, Enter, or ArrowDown to open, then type in the dropdown search field."
         />
 
         <p class="mt-2" style="font-size: 0.875rem; color: var(--rds-dark-2, #484848)">
@@ -235,14 +235,14 @@ export const LoadingState: Story = {
           :options="[]"
           loading
           loading-text="Fetching programs from SIS..."
-          placeholder="Search programs"
+          placeholder="Select a program"
         />
       </div>
     `,
   }),
 }
 
-export const MultiSelectBadges: Story = {
+export const MultiSelectSummary: Story = {
   render: () => ({
     components: { ComboboxMultiSelect },
     setup() {
@@ -269,8 +269,8 @@ export const MultiSelectBadges: Story = {
           v-model="selectedEthnicities"
           label="Please choose all that apply:"
           :options="ethnicityOptions"
-          placeholder="Type to search and select"
-          help-text="Selected options appear as badges and wrap automatically."
+          placeholder="Choose one or more"
+          help-text="Selected values are summarized in the trigger; search stays in the dropdown panel."
           clearable
         />
 
@@ -304,7 +304,7 @@ export const SearchEmptyState: Story = {
           v-model:search-term="searchTerm"
           label="Country"
           :options="countryOptions"
-          placeholder="Type to search country"
+          placeholder="Select country"
           empty-text="No countries match your search."
           clearable
         />
@@ -336,10 +336,10 @@ export const SearchErrorState: Story = {
           v-model="selectedProgram"
           label="Program"
           :options="programOptions"
-          placeholder="Search program"
+          placeholder="Choose a program"
           :invalid="true"
           error-text="Please select a valid option from the list."
-          help-text="Start typing to search available programs."
+          help-text="Open the menu, then type in the panel search field to narrow results."
           required
         />
       </div>

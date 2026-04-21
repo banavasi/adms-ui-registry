@@ -73,6 +73,7 @@ const emit = defineEmits<{
 const model = defineModel<unknown[]>({ default: () => [] })
 const searchTermModel = defineModel<string>('searchTerm', { default: '' })
 const isOpen = ref(false)
+const searchInputRef = ref<HTMLInputElement | null>(null)
 
 const slots = useSlots()
 
@@ -195,10 +196,6 @@ const filteredOptions = computed(() => {
 })
 
 const showClearButton = computed(() => props.clearable && !props.disabled && model.value.length > 0)
-const inputPlaceholder = computed(() =>
-  model.value.length === 0 && searchTermModel.value.trim().length === 0 ? props.placeholder : ''
-)
-
 const ariaDescribedBy = computed(() => {
   const ids: string[] = []
 
@@ -214,11 +211,25 @@ const ariaDescribedBy = computed(() => {
 })
 
 const instructionsId = computed(() => `${props.id}-instructions`)
+const searchInputId = computed(() => `${props.id}-panel-search`)
 const describedBy = computed(() =>
   [instructionsId.value, ariaDescribedBy.value].filter(Boolean).join(' ')
 )
 
-const inputDisplayValue = computed(() => (_value: unknown) => searchTermModel.value)
+const selectedSummary = computed(() => {
+  if (selectedOptions.value.length === 0) {
+    return ''
+  }
+
+  if (selectedOptions.value.length <= 2) {
+    return selectedOptions.value.map((option) => option.label).join(', ')
+  }
+
+  return `${selectedOptions.value[0]?.label}, ${selectedOptions.value[1]?.label} +${selectedOptions.value.length - 2} more`
+})
+const triggerPlaceholder = computed(() =>
+  selectedOptions.value.length > 0 ? '' : props.placeholder
+)
 
 function focusInput() {
   const input = document.getElementById(props.id) as HTMLInputElement | null
@@ -230,6 +241,21 @@ function focusInput() {
   input.setSelectionRange(textLength, textLength)
 }
 
+function focusSearchInput() {
+  nextTick(() => {
+    requestAnimationFrame(() => {
+      const input = searchInputRef.value
+      if (!input || !isOpen.value) {
+        return
+      }
+
+      input.focus({ preventScroll: true })
+      const textLength = input.value.length
+      input.setSelectionRange(textLength, textLength)
+    })
+  })
+}
+
 function handleInput(event: Event) {
   const target = event.target as HTMLInputElement | null
   if (!target) {
@@ -239,23 +265,13 @@ function handleInput(event: Event) {
   searchTermModel.value = target.value
 }
 
-function handleInputClick() {
-  focusInput()
-}
-
-function handleRootClick() {
-  focusInput()
-}
-
 function handleOpenChange(value: boolean) {
   isOpen.value = value
-}
+  searchTermModel.value = ''
 
-function removeValue(value: unknown) {
-  model.value = model.value.filter((item) => !isSameValue(item, value))
-  nextTick(() => {
-    focusInput()
-  })
+  if (value) {
+    focusSearchInput()
+  }
 }
 
 function clearSelection() {
@@ -266,8 +282,46 @@ function clearSelection() {
   })
 }
 
-function handleBadgeMouseDown(event: MouseEvent) {
-  event.preventDefault()
+function handleInputClick() {
+  focusInput()
+}
+
+function focusPanelOption(direction: 'next' | 'prev') {
+  const content = searchInputRef.value?.closest('[data-slot="combobox-content"]')
+  if (!content) {
+    return
+  }
+
+  const options = Array.from(
+    content.querySelectorAll<HTMLElement>('[data-slot="combobox-item"]:not([data-disabled])')
+  )
+
+  if (options.length === 0) {
+    return
+  }
+
+  const target = direction === 'prev' ? options.at(-1) : options[0]
+  target?.focus()
+}
+
+function handleSearchInputKeydown(event: KeyboardEvent) {
+  if (event.key === 'ArrowDown') {
+    event.preventDefault()
+    focusPanelOption('next')
+    return
+  }
+
+  if (event.key === 'ArrowUp') {
+    event.preventDefault()
+    focusPanelOption('prev')
+    return
+  }
+
+  if (event.key === 'Escape') {
+    event.preventDefault()
+    isOpen.value = false
+    focusInput()
+  }
 }
 </script>
 
@@ -296,35 +350,33 @@ function handleBadgeMouseDown(event: MouseEvent) {
       :name="props.name"
       :ignore-filter="true"
       :open-on-click="true"
+      :open="isOpen"
       :multiple="true"
       class="combobox-multi-root"
-      @click.capture="handleRootClick"
       @update:open="handleOpenChange"
     >
       <ComboboxInput
         :id="props.id"
-        :placeholder="inputPlaceholder"
-        :display-value="inputDisplayValue"
+        :placeholder="triggerPlaceholder"
         :open-on-click="true"
         :open-on-focus="false"
         :aria-invalid="props.invalid ? 'true' : undefined"
         :aria-describedby="describedBy"
-        :class="cn('combobox-multi-input')"
+        :readonly="true"
+        :class="
+          cn('combobox-multi-input', {
+            'combobox-multi-input-selected': selectedOptions.length > 0,
+          })
+        "
         @click="handleInputClick"
-        @input="handleInput"
       >
-        <button
-          v-for="option in selectedOptions"
-          :key="String(option.value)"
-          type="button"
-          class="combobox-multi-badge"
-          :aria-label="`Remove ${option.label}`"
-          @mousedown="handleBadgeMouseDown"
-          @click.stop="removeValue(option.value)"
+        <span
+          v-if="selectedSummary"
+          class="combobox-multi-summary"
+          aria-hidden="true"
         >
-          <span class="combobox-multi-badge-label">{{ option.label }}</span>
-          <span class="combobox-multi-badge-close">×</span>
-        </button>
+          {{ selectedSummary }}
+        </span>
 
         <div class="combobox-multi-actions">
           <button
@@ -379,6 +431,22 @@ function handleBadgeMouseDown(event: MouseEvent) {
       </ComboboxInput>
 
       <ComboboxContent class="combobox-multi-content">
+        <template #beforeViewport>
+          <div class="combobox-multi-search-shell">
+            <label :for="searchInputId" class="combobox-multi-sr-only">Search options</label>
+            <input
+              :id="searchInputId"
+              ref="searchInputRef"
+              type="text"
+              class="combobox-multi-search"
+              placeholder="Search..."
+              :value="searchTermModel"
+              @input="handleInput"
+              @keydown="handleSearchInputKeydown"
+            >
+          </div>
+        </template>
+
         <div v-if="props.loading" class="combobox-multi-status">
           {{ props.loadingText }}
         </div>
@@ -397,8 +465,13 @@ function handleBadgeMouseDown(event: MouseEvent) {
             class="combobox-multi-option"
           >
             <div class="combobox-multi-option-content">
+              <div class="combobox-multi-option-copy">
+                <span class="combobox-multi-option-label">{{ option.label }}</span>
+                <span v-if="option.description" class="combobox-multi-option-description">
+                  {{ option.description }}
+                </span>
+              </div>
               <span v-if="isSelected(option)" class="combobox-multi-option-check" aria-hidden="true">✓</span>
-              <span class="combobox-multi-option-label">{{ option.label }}</span>
             </div>
           </ComboboxItem>
         </template>
@@ -406,7 +479,8 @@ function handleBadgeMouseDown(event: MouseEvent) {
     </Combobox>
 
     <div :id="instructionsId" class="combobox-multi-sr-only">
-      Type to filter options. Press Enter to toggle selection. Selected items appear as badges and wrap to a new line.
+      Press Enter, Space, or Arrow Down to expand. Search inside the dropdown, use Arrow keys to
+      move through options, Enter to toggle selection, and Escape to close.
     </div>
 
     <InputHelp v-if="props.helpText || $slots.help">
@@ -426,17 +500,13 @@ function handleBadgeMouseDown(event: MouseEvent) {
 
 :deep(.combobox-anchor) {
   position: relative;
-  display: flex;
-  flex-wrap: wrap;
+  display: inline-flex;
   align-items: center !important;
-  align-content: flex-start;
-  justify-content: flex-start;
-  gap: 0.375rem;
   min-height: 3.3125rem;
   border: 1px solid var(--rds-light-4, #d0d0d0);
   border-radius: 0;
   background: #fff;
-  padding: 0.5rem 5.75rem 0.5rem 0.75rem;
+  padding: 0 5.75rem 0 0;
 }
 
 :deep(.combobox-anchor:focus-within) {
@@ -445,57 +515,47 @@ function handleBadgeMouseDown(event: MouseEvent) {
 }
 
 :deep(.combobox-multi-input.combobox-input) {
-  order: 2;
-  flex: 1 1 2rem !important;
-  min-width: 2rem;
-  max-width: 100%;
-  width: auto !important;
-  min-height: 1.75rem !important;
-  height: 1.75rem !important;
+  flex: 1 1 auto !important;
+  min-width: 0;
+  width: 100% !important;
+  min-height: 3.3125rem !important;
+  height: 3.3125rem !important;
   border: none;
   box-shadow: none;
   outline: none;
   background: transparent;
   color: var(--rds-dark-3, #191919);
   caret-color: var(--rds-dark-3, #191919);
-  font-size: 14px;
-  line-height: 1.75rem;
-  padding: 0 !important;
+  font-size: 16px;
+  line-height: 1.5;
+  padding: 0 1rem !important;
   margin: 0 !important;
   vertical-align: middle;
+  cursor: pointer;
 }
 
 :deep(.combobox-multi-input.combobox-input::placeholder) {
   color: var(--rds-dark-1, #747474);
 }
 
-.combobox-multi-badge {
-  order: 1;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  max-width: 100%;
-  border: 1px solid var(--rds-light-4, #bdbdbd);
-  border-radius: 0.5rem;
-  padding: 0.1875rem 0.5rem;
-  background: #e6e6e6;
+:deep(.combobox-multi-input-selected.combobox-input) {
   color: var(--rds-dark-3, #191919);
-  font-size: 16px;
-  line-height: 1.25;
-  cursor: pointer;
 }
 
-.combobox-multi-badge-label {
+.combobox-multi-summary {
+  position: absolute;
+  left: 1rem;
+  right: 5.75rem;
+  top: 50%;
+  transform: translateY(-50%);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-}
-
-.combobox-multi-badge-close {
-  color: var(--rds-dark-1, #747474);
-  font-size: 1.75rem;
-  line-height: 1;
-  margin-top: -0.125rem;
+  pointer-events: none;
+  color: var(--rds-dark-3, #191919);
+  font-size: 16px;
+  line-height: 1.5;
+  z-index: 1;
 }
 
 .combobox-multi-actions {
@@ -540,15 +600,41 @@ function handleBadgeMouseDown(event: MouseEvent) {
   height: 20px;
 }
 
+.combobox-multi-search-shell {
+  padding: 0.625rem;
+  border-bottom: 1px solid var(--rds-light-3, #e8e8e8);
+  background: #fff;
+}
+
+.combobox-multi-search {
+  width: 100%;
+  min-height: 3rem;
+  border: 1px solid var(--rds-light-4, #d0d0d0);
+  background: #fff;
+  color: var(--rds-dark-3, #191919);
+  font-size: 1rem;
+  line-height: 1.5;
+  padding: 0.75rem 1rem;
+}
+
+.combobox-multi-search::placeholder {
+  color: var(--rds-dark-1, #747474);
+}
+
+.combobox-multi-search:focus {
+  outline: 2px solid #000;
+  outline-offset: 2px;
+  box-shadow: none;
+}
+
 :deep(.combobox-multi-content) {
-  margin-top: 0;
+  margin-top: 0.375rem;
   width: 100%;
   min-width: 100%;
   background: #fff;
   border: 1px solid var(--rds-light-4, #d0d0d0);
-  border-top: 0;
   border-radius: 0;
-  box-shadow: none;
+  box-shadow: 0 10px 30px rgba(25, 25, 25, 0.12);
 }
 
 :deep(.combobox-multi-content .combobox-viewport) {
@@ -558,32 +644,45 @@ function handleBadgeMouseDown(event: MouseEvent) {
 
 :deep(.combobox-multi-option) {
   padding: 1rem;
-  border-bottom: 0;
   color: var(--rds-dark-3, #191919);
   background: #fff;
   cursor: pointer;
 }
 
 :deep(.combobox-multi-option[data-highlighted]) {
-  background: #fff;
+  background: var(--rds-light-2, #f1f1f1);
   color: var(--rds-dark-3, #191919);
-  outline: 2px solid #000;
-  outline-offset: -2px;
+  outline: none;
 }
 
 :deep(.combobox-multi-option[data-state='checked']) {
-  background: var(--rds-secondary, #ffc627);
+  background: #d9d9d9;
 }
 
 .combobox-multi-option-content {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 0.75rem;
+}
+
+.combobox-multi-option-copy {
+  display: flex;
+  min-width: 0;
+  flex: 1 1 auto;
+  flex-direction: column;
+  gap: 0.125rem;
 }
 
 .combobox-multi-option-label {
   font-size: 16px;
   line-height: 1.3;
+}
+
+.combobox-multi-option-description {
+  font-size: 0.875rem;
+  line-height: 1.3;
+  color: var(--rds-dark-1, #747474);
 }
 
 .combobox-multi-option-check {

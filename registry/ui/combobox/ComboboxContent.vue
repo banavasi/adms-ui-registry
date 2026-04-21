@@ -1,11 +1,7 @@
 <script setup lang="ts">
+import type { ComboboxContentProps } from 'reka-ui'
 import type { HTMLAttributes } from 'vue'
-import {
-  ComboboxContent,
-  ComboboxPortal,
-  ComboboxViewport,
-  type ComboboxContentProps,
-} from 'reka-ui'
+import { ComboboxContent, ComboboxPortal, ComboboxViewport } from 'reka-ui'
 import { cn } from '@/lib/util'
 
 interface Props extends ComboboxContentProps {
@@ -40,6 +36,7 @@ const props = withDefaults(defineProps<Props>(), {
       :collision-padding="collisionPadding"
       :sticky="sticky"
     >
+      <slot name="beforeViewport" />
       <ComboboxViewport class="combobox-viewport">
         <slot />
       </ComboboxViewport>
