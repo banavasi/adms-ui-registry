@@ -1,5 +1,11 @@
 # @adms-rds-ui/cli
 
+## 3.2.5
+
+### Patch Changes
+
+- [#38](https://github.com/banavasi/adms-ui-registry/pull/38) [`ab487e5`](https://github.com/banavasi/adms-ui-registry/commit/ab487e57dd4469fb83ec019c31f4cf7ebfdf3a0a) Thanks [@banavasi](https://github.com/banavasi)! - Refresh the combobox and base-select registry components with the new summary-trigger design, in-panel search behavior, and improved open-state focus handling.
+
 ## 3.2.4
 
 ### Patch Changes
