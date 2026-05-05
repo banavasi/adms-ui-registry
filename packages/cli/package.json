@@ -1,6 +1,6 @@
 {
   "name": "@banavasi/adms-rds-ui-cli",
-  "version": "3.2.5",
+  "version": "3.2.6",
   "description": "CLI for adding ADMS RDS UI components to your project",
   "type": "module",
   "bin": {
