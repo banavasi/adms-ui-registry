@@ -2,6 +2,7 @@ import type { VariantProps } from '@/lib/util'
 import { cva } from '@/lib/util'
 
 export { default as Button } from './Button.vue'
+export { default as ButtonCloseIcon } from './ButtonCloseIcon.vue'
 
 export const buttonVariants = cva('rds-button-reset', {
   variants: {
@@ -15,12 +16,15 @@ export const buttonVariants = cva('rds-button-reset', {
       incomplete: 'rds-button rds-button--status rds-button--incomplete',
       edit: 'rds-button rds-button--status rds-button--edit',
       signout: 'rds-button rds-button--pill rds-button--signout',
+      exit: 'rds-button rds-button--icon-only rds-button--exit',
+      close: 'rds-button rds-button--icon-only rds-button--close',
       tag: 'rds-button rds-button--tag',
       'tag-mobile': 'rds-button rds-button--tag-mobile',
       'feedback-maroon': 'rds-button rds-button--feedback rds-button--feedback-maroon',
       'feedback-gold': 'rds-button rds-button--feedback rds-button--feedback-gold',
       'help-footer': 'rds-button rds-button--help-footer',
       'help-footer-mobile': 'rds-button rds-button--help-footer',
+      'outline-pill': 'rds-button rds-button--pill rds-button--outline-pill',
       primary: 'btn btn-primary text-white',
       secondary: 'btn btn-secondary',
       success: 'btn btn-success text-white',

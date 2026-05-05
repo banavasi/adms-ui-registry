@@ -1,13 +1,15 @@
 <script setup lang="ts">
 import type { HTMLAttributes } from 'vue'
-import { RadioGroupRoot, RadioGroupItem, RadioGroupIndicator } from 'reka-ui'
+import { faCheck } from '@fortawesome/pro-light-svg-icons'
+import { RadioGroupIndicator, RadioGroupItem, RadioGroupRoot } from 'reka-ui'
 import { toRef } from 'vue'
-import { InputRoot } from '@/components/ui/InputRoot'
+import { FontAwesomeIcon } from '@/components/ui/icon'
 import { InputError } from '@/components/ui/InputError'
 import { InputHelp } from '@/components/ui/InputHelp'
+import { InputRoot } from '@/components/ui/InputRoot'
 import { Label } from '@/components/ui/Label'
-import { cn } from '@/lib/util'
 import { useRadioKeyboard } from '@/lib/useRadioKeyboard'
+import { cn } from '@/lib/util'
 
 interface Props {
   /** Unique identifier for the radio group */
@@ -116,21 +118,11 @@ const { handleKeyDown } = useRadioKeyboard({
         <span class="radio-label">{{ yesLabel }}</span>
         <span class="radio-indicator-wrapper" aria-hidden="true">
           <RadioGroupIndicator class="radio-indicator">
-            <svg
+            <FontAwesomeIcon
+              :icon="faCheck"
               class="radio-indicator-check"
-              width="12"
-              height="12"
-              viewBox="0 0 16 16"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="3"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              xmlns="http://www.w3.org/2000/svg"
               aria-hidden="true"
-            >
-              <path d="M3 8.5 L6.5 12 L13 5" />
-            </svg>
+            />
           </RadioGroupIndicator>
         </span>
       </RadioGroupItem>
@@ -142,21 +134,11 @@ const { handleKeyDown } = useRadioKeyboard({
         <span class="radio-label">{{ noLabel }}</span>
         <span class="radio-indicator-wrapper" aria-hidden="true">
           <RadioGroupIndicator class="radio-indicator">
-            <svg
+            <FontAwesomeIcon
+              :icon="faCheck"
               class="radio-indicator-check"
-              width="12"
-              height="12"
-              viewBox="0 0 16 16"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="3"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              xmlns="http://www.w3.org/2000/svg"
               aria-hidden="true"
-            >
-              <path d="M3 8.5 L6.5 12 L13 5" />
-            </svg>
+            />
           </RadioGroupIndicator>
         </span>
       </RadioGroupItem>

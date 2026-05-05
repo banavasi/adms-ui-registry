@@ -1,7 +1,9 @@
 <script setup lang="ts">
-import type { HTMLAttributes, ComputedRef } from 'vue'
+import type { ComputedRef, HTMLAttributes } from 'vue'
+import { faCheck } from '@fortawesome/pro-light-svg-icons'
 import { RadioGroupItem } from 'reka-ui'
-import { inject, computed } from 'vue'
+import { computed, inject } from 'vue'
+import { FontAwesomeIcon } from '@/components/ui/icon'
 import { cn } from '@/lib/util'
 
 interface Props {
@@ -67,39 +69,22 @@ const handleLinkClick = (event: MouseEvent) => {
     "
   >
     <!-- Check indicator -->
-    <span class="radio-card-check">
-      <svg
-        v-if="isSelected"
-        class="radio-card-check-icon radio-card-check-icon-selected"
-        viewBox="0 0 24 24"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <circle cx="12" cy="12" r="10" fill="#ffc627" stroke="#ffc627" stroke-width="2" />
-        <path
-          d="M8 12l3 3 5-6"
-          stroke="#191919"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        />
-      </svg>
-      <svg
-        v-else
-        class="radio-card-check-icon"
-        viewBox="0 0 24 24"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" />
-        <path
-          d="M8 12l3 3 5-6"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        />
-      </svg>
+    <span
+      :class="
+        cn('radio-card-check', {
+          'radio-card-check-selected': isSelected,
+        })
+      "
+    >
+      <FontAwesomeIcon
+        :icon="faCheck"
+        :class="
+          cn('radio-card-check-icon', {
+            'radio-card-check-icon-selected': isSelected,
+          })
+        "
+        aria-hidden="true"
+      />
     </span>
 
     <!-- Icon slot (only for default variant) -->
@@ -205,20 +190,34 @@ const handleLinkClick = (event: MouseEvent) => {
 
 /* Check indicator positioning */
 .radio-card-check {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   flex-shrink: 0;
   width: 28px;
   height: 28px;
   order: 3;
   margin-left: auto;
-}
-
-.radio-card-check-icon {
-  width: 28px;
-  height: 28px;
+  border: 2px solid currentColor;
+  border-radius: 999px;
   color: var(--rds-light-4, #d0d0d0);
 }
 
-.radio-card:hover:not([data-disabled]) .radio-card-check-icon:not(.radio-card-check-icon-selected) {
+.radio-card-check-icon {
+  width: 14px;
+  height: 14px;
+}
+
+.radio-card-check-selected {
+  border-color: var(--rds-gold, #ffc627);
+  background: var(--rds-gold, #ffc627);
+}
+
+.radio-card-check-icon-selected {
+  color: var(--rds-dark-3, #191919);
+}
+
+.radio-card:hover:not([data-disabled]) .radio-card-check:not(.radio-card-check-selected) {
   color: var(--rds-dark-1, #747474);
 }
 

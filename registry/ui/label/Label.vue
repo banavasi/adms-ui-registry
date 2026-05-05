@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import type { HTMLAttributes } from 'vue'
 import type { LabelVariants } from '.'
+import { faCircleInfo } from '@fortawesome/pro-light-svg-icons'
 import { Label as RekaLabel } from 'reka-ui'
+import { FontAwesomeIcon } from '@/components/ui/icon'
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/Tooltip'
 import { cn } from '@/lib/util'
 import { labelVariants } from '.'
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/Tooltip'
 
 interface Props {
   for: string
@@ -45,24 +47,15 @@ const props = withDefaults(defineProps<Props>(), {
           <button
             type="button"
             class="btn btn-link p-0 tooltip-trigger"
-            :aria-label="`More information about this field`"
+            aria-label="More information about this field"
             :aria-describedby="`tooltip-${props.for}`"
           >
-            <svg
-              width="16"
-              height="16"
+            <FontAwesomeIcon
+              :icon="faCircleInfo"
               class="info-icon"
               aria-hidden="true"
               focusable="false"
-              role="img"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 512 512"
-            >
-              <path
-                fill="currentColor"
-                d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM216 336l24 0 0-64-24 0c-13.3 0-24-10.7-24-24s10.7-24 24-24l48 0c13.3 0 24 10.7 24 24l0 88 8 0c13.3 0 24 10.7 24 24s-10.7 24-24 24l-80 0c-13.3 0-24-10.7-24-24s10.7-24 24-24zm40-208a32 32 0 1 1 0 64 32 32 0 1 1 0-64z"
-              />
-            </svg>
+            />
           </button>
         </TooltipTrigger>
         <TooltipContent :id="`tooltip-${props.for}`" :side="tooltipPosition" role="tooltip">
