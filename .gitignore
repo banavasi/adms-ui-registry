@@ -9,6 +9,7 @@ storybook-static
 storybook-static/
 .storybook-static
 *.tsbuildinfo
+.playwright-mcp
 
 # Turbo
 .turbo

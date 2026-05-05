@@ -1,7 +1,0 @@
-- generic [ref=e3]:
-  - button "Close" [ref=e4] [cursor=pointer]:
-    - generic [ref=e5]: Close
-    - img [ref=e8]
-  - button "Close" [ref=e10] [cursor=pointer]:
-    - generic [ref=e11]: Close
-    - img [ref=e14]

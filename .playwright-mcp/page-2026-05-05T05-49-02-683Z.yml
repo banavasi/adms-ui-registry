@@ -1,9 +1,0 @@
-- generic [ref=e3]:
-  - button "Save changes" [ref=e4] [cursor=pointer]:
-    - generic [ref=e5]: Save changes
-    - img [ref=e8]
-  - button "Save changes" [disabled]:
-    - generic: Save changes
-    - generic:
-      - generic:
-        - img
