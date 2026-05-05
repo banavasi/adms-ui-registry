@@ -181,8 +181,24 @@ watch(
         "
       >
         <span class="radio-segment-label">{{ getOptionLabel(option) }}</span>
-        <span class="radio-segment-indicator-wrapper">
-          <RadioGroupIndicator class="radio-segment-indicator" />
+        <span class="radio-segment-indicator-wrapper" aria-hidden="true">
+          <RadioGroupIndicator class="radio-segment-indicator">
+            <svg
+              class="radio-segment-indicator-check"
+              width="12"
+              height="12"
+              viewBox="0 0 16 16"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="3"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              xmlns="http://www.w3.org/2000/svg"
+              aria-hidden="true"
+            >
+              <path d="M3 8.5 L6.5 12 L13 5" />
+            </svg>
+          </RadioGroupIndicator>
         </span>
       </RadioGroupItem>
     </RadioGroupRoot>
@@ -203,30 +219,33 @@ watch(
 .radio-segment-group {
   display: flex;
   flex-direction: row;
-  gap: 48px;
+  gap: 24px;
+  flex-wrap: wrap;
 }
 
+/* ─── Card chrome (sized by content + 16px padding) ───────────── */
 .radio-segment-card {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 8px;
+  justify-content: space-between;
+  gap: 16px;
   padding: 16px;
   background-color: #fff;
   border: 1px solid var(--rds-light-4, #d0d0d0);
-  border-radius: 4px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(25, 25, 25, 0.12);
   cursor: pointer;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  font-family: var(--rds-font-family, Arial, Helvetica, "Nimbus Sans L", "Liberation Sans", FreeSans, sans-serif);
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
 }
 
-.radio-segment-card:hover:not([data-disabled]) {
+.radio-segment-card:hover:not([data-disabled]):not(.radio-segment-card-selected) {
   border-color: var(--rds-dark-1, #747474);
 }
 
 .radio-segment-card:focus-visible {
   outline: 2px solid #000;
   outline-offset: 2px;
-  box-shadow: none;
 }
 
 .radio-segment-card[data-disabled] {
@@ -234,55 +253,82 @@ watch(
   cursor: not-allowed;
 }
 
+/* ─── Selected (solid maroon) ─────────────────────────────────── */
 .radio-segment-card-selected {
+  background-color: var(--rds-maroon, #8c1d40);
   border-color: var(--rds-maroon, #8c1d40);
-  box-shadow: 0 2px 4px rgba(140, 29, 64, 0.2);
+  box-shadow: 0 4px 8px rgba(140, 29, 64, 0.25);
 }
 
+.radio-segment-card-selected .radio-segment-label {
+  color: #fff;
+}
+
+/* ─── Invalid ─────────────────────────────────────────────────── */
 .radio-segment-card-invalid {
   border-bottom-width: 5px !important;
   border-color: var(--rds-danger, #cc2f2f);
 }
 
 .radio-segment-card-invalid.radio-segment-card-selected {
+  background-color: var(--rds-danger, #cc2f2f);
   border-color: var(--rds-danger, #cc2f2f);
-  box-shadow: 0 2px 4px rgba(204, 47, 47, 0.2);
+  box-shadow: 0 4px 8px rgba(204, 47, 47, 0.25);
 }
 
+/* ─── Label ───────────────────────────────────────────────────── */
+.radio-segment-label {
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--rds-dark-1, #747474);
+  transition: color 0.15s ease;
+}
+
+/* ─── Indicator (right side) ──────────────────────────────────── */
 .radio-segment-indicator-wrapper {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
   width: 16px;
   height: 16px;
-  border: 2px solid var(--rds-dark-1, #747474);
+  border: 1.5px solid var(--rds-dark-1, #747474);
   border-radius: 50%;
   background-color: #fff;
   flex-shrink: 0;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
 }
 
 .radio-segment-card-selected .radio-segment-indicator-wrapper {
-  border-color: var(--rds-maroon, #8c1d40);
+  border-color: #fff;
+  background-color: #fff;
 }
 
-.radio-segment-card-invalid .radio-segment-indicator-wrapper {
+.radio-segment-card-invalid:not(.radio-segment-card-selected) .radio-segment-indicator-wrapper {
   border-color: var(--rds-danger, #cc2f2f);
 }
 
-.radio-segment-indicator {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background-color: var(--rds-maroon, #8c1d40);
+.radio-segment-indicator,
+.radio-segment-card-selected .radio-segment-indicator {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--rds-maroon, #8c1d40);
+  line-height: 0;
 }
 
-.radio-segment-card-invalid .radio-segment-indicator {
-  background-color: var(--rds-danger, #cc2f2f);
+.radio-segment-card-invalid.radio-segment-card-selected .radio-segment-indicator {
+  color: var(--rds-danger, #cc2f2f);
 }
 
-.radio-segment-label {
-  font-size: 16px;
-  font-weight: 700;
-  color: var(--rds-dark-1, #747474);
+.radio-segment-indicator-check {
+  display: block;
+  width: 12px;
+  height: 12px;
+  color: inherit;
+}
+
+.radio-segment-indicator-check path {
+  stroke: currentColor;
 }
 </style>

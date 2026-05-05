@@ -219,75 +219,81 @@ const describedBy = computed(() =>
       class="listbox-multi-root"
       @update:open="handleOpenChange"
     >
-      <SelectTrigger
-        :id="props.id"
-        :aria-invalid="props.invalid ? 'true' : undefined"
-        :aria-describedby="describedBy"
-        :class="
-          cn('listbox-multi-trigger', {
-            'listbox-multi-has-clear': showClearButton,
-            'listbox-multi-trigger-invalid': props.invalid,
-            'listbox-multi-trigger-selected': hasValue,
-          })
-        "
-      >
-        <SelectValue :placeholder="props.placeholder">
-          <span class="listbox-multi-summary-text">
-            <slot
-              name="summary"
-              :count="selectedOptions.length"
-              :selected-options="selectedOptions"
-              :default-summary="selectedSummary"
-            >
-              {{ selectedSummary }}
-            </slot>
-          </span>
-        </SelectValue>
+      <div class="listbox-multi-trigger-shell">
+        <SelectTrigger
+          :id="props.id"
+          :aria-invalid="props.invalid ? 'true' : undefined"
+          :aria-describedby="describedBy"
+          :class="
+            cn('listbox-multi-trigger', {
+              'listbox-multi-has-clear': showClearButton,
+              'listbox-multi-trigger-invalid': props.invalid,
+              'listbox-multi-trigger-selected': hasValue,
+            })
+          "
+        >
+          <SelectValue :placeholder="props.placeholder">
+            <span class="listbox-multi-summary-text" style="font-weight: 400 !important;">
+              <slot
+                name="summary"
+                :count="selectedOptions.length"
+                :selected-options="selectedOptions"
+                :default-summary="selectedSummary"
+              >
+                {{ selectedSummary }}
+              </slot>
+            </span>
+          </SelectValue>
+        </SelectTrigger>
 
-        <div class="listbox-multi-actions">
-          <button
-            v-if="showClearButton"
-            type="button"
-            aria-label="Clear selected values"
-            class="listbox-multi-clear"
-            @mousedown.prevent
-            @click.stop="clearSelection"
+        <button
+          v-if="showClearButton"
+          type="button"
+          aria-label="Clear selected values"
+          class="listbox-multi-clear"
+          @mousedown.prevent
+          @click.stop="clearSelection"
+        >
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 15 15"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            aria-hidden="true"
           >
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 15 15"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-              aria-hidden="true"
-            >
-              <path
-                d="M11.7816 4.03157C12.0062 3.80702 12.0062 3.44295 11.7816 3.2184C11.5571 2.99385 11.193 2.99385 10.9685 3.2184L7.50005 6.68682L4.03164 3.2184C3.80708 2.99385 3.44301 2.99385 3.21846 3.2184C2.99391 3.44295 2.99391 3.80702 3.21846 4.03157L6.68688 7.49999L3.21846 10.9684C2.99391 11.193 2.99391 11.557 3.21846 11.7816C3.44301 12.0061 3.80708 12.0061 4.03164 11.7816L7.50005 8.31316L10.9685 11.7816C11.193 12.0061 11.5571 12.0061 11.7816 11.7816C12.0062 11.557 12.0062 11.193 11.7816 10.9684L8.31322 7.49999L11.7816 4.03157Z"
-                fill="currentColor"
-                fill-rule="evenodd"
-                clip-rule="evenodd"
-              />
-            </svg>
-          </button>
+            <path
+              d="M11.7816 4.03157C12.0062 3.80702 12.0062 3.44295 11.7816 3.2184C11.5571 2.99385 11.193 2.99385 10.9685 3.2184L7.50005 6.68682L4.03164 3.2184C3.80708 2.99385 3.44301 2.99385 3.21846 3.2184C2.99391 3.44295 2.99391 3.80702 3.21846 4.03157L6.68688 7.49999L3.21846 10.9684C2.99391 11.193 2.99391 11.557 3.21846 11.7816C3.44301 12.0061 3.80708 12.0061 4.03164 11.7816L7.50005 8.31316L10.9685 11.7816C11.193 12.0061 11.5571 12.0061 11.7816 11.7816C12.0062 11.557 12.0062 11.193 11.7816 10.9684L8.31322 7.49999L11.7816 4.03157Z"
+              fill="currentColor"
+              fill-rule="evenodd"
+              clip-rule="evenodd"
+            />
+          </svg>
+        </button>
 
-          <span class="listbox-multi-chevron-wrapper">
-            <svg
-              width="20"
-              height="20"
-              viewBox="41 169 430 238"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-              class="listbox-multi-chevron"
-              aria-hidden="true"
-            >
-              <path
-                d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z"
-                fill="currentColor"
-              />
-            </svg>
-          </span>
-        </div>
-      </SelectTrigger>
+        <span
+          :class="
+            cn('listbox-multi-chevron-wrapper', {
+              'listbox-multi-chevron-wrapper-open': isOpen,
+            })
+          "
+        >
+          <svg
+            width="16"
+            height="16"
+            viewBox="41 169 430 238"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            class="listbox-multi-chevron"
+            aria-hidden="true"
+          >
+            <path
+              d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z"
+              fill="currentColor"
+            />
+          </svg>
+        </span>
+      </div>
 
       <SelectContent class="listbox-multi-content">
         <SelectItem
@@ -340,15 +346,21 @@ const describedBy = computed(() =>
   width: 100%;
 }
 
+.listbox-multi-trigger-shell {
+  position: relative;
+}
+
 :deep(.listbox-multi-trigger) {
   height: 3.3125rem;
   background: #fff;
   border: 1px solid var(--rds-light-4, #d0d0d0);
   color: var(--rds-dark-1, #747474);
+  font-family: var(--rds-font-family, Arial, Helvetica, "Nimbus Sans L", "Liberation Sans", FreeSans, sans-serif);
   font-size: 14px;
+  font-weight: 400 !important;
   line-height: 1.5;
   padding-left: 1rem;
-  padding-right: 1rem;
+  padding-right: 5rem;
   cursor: pointer;
   outline: none;
   text-align: left;
@@ -379,6 +391,7 @@ const describedBy = computed(() =>
 
 .listbox-multi-summary-text {
   color: var(--rds-dark-3, #191919);
+  font-weight: 400 !important;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -386,46 +399,67 @@ const describedBy = computed(() =>
   min-width: 0;
 }
 
-.listbox-multi-actions {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin-left: auto;
-  flex-shrink: 0;
-}
-
 .listbox-multi-clear {
+  position: absolute;
+  right: 3.125rem; /* 24px between X icon and chevron */
+  top: 50%;
+  transform: translateY(-50%);
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
   background: transparent;
   border: none;
+  border-radius: 50%;
   color: var(--rds-dark-1, #747474);
   cursor: pointer;
-  padding: 0.25rem;
+  padding: 0;
   line-height: 1;
+  transition: background-color 0.15s ease, color 0.15s ease;
+  z-index: 1;
+}
+
+.listbox-multi-clear:hover {
+  background-color: var(--rds-light-3, #e8e8e8);
+  color: var(--rds-dark-2, #484848);
+}
+
+.listbox-multi-clear:focus {
+  outline: none;
+}
+
+.listbox-multi-clear:focus-visible {
+  outline: none;
+  background-color: var(--rds-light-5, #bfbfbf);
+  color: var(--rds-dark-3, #191919);
 }
 
 .listbox-multi-chevron-wrapper {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
   display: inline-flex;
   align-items: center;
   justify-content: center;
   color: var(--rds-dark-1, #747474);
-  width: 20px;
-  height: 20px;
+  width: 16px;
+  height: 16px;
   flex-shrink: 0;
+  pointer-events: none;
   transition: transform 0.2s ease;
 }
 
-:deep(.listbox-multi-trigger[data-state='open']) .listbox-multi-chevron-wrapper {
-  transform: rotate(180deg);
+.listbox-multi-chevron-wrapper-open {
+  transform: translateY(-50%) rotate(180deg);
 }
 
 .listbox-multi-chevron {
   forced-color-adjust: auto;
   display: block;
-  width: 20px;
-  height: 20px;
+  width: 16px;
+  height: 16px;
 }
 
 :deep(.listbox-multi-content) {

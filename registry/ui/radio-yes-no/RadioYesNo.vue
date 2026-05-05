@@ -114,8 +114,24 @@ const { handleKeyDown } = useRadioKeyboard({
         :class="cn('radio-card', { 'radio-card-selected': model === 'Y', 'radio-card-invalid': props.invalid })"
       >
         <span class="radio-label">{{ yesLabel }}</span>
-        <span class="radio-indicator-wrapper">
-          <RadioGroupIndicator class="radio-indicator" />
+        <span class="radio-indicator-wrapper" aria-hidden="true">
+          <RadioGroupIndicator class="radio-indicator">
+            <svg
+              class="radio-indicator-check"
+              width="12"
+              height="12"
+              viewBox="0 0 16 16"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="3"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              xmlns="http://www.w3.org/2000/svg"
+              aria-hidden="true"
+            >
+              <path d="M3 8.5 L6.5 12 L13 5" />
+            </svg>
+          </RadioGroupIndicator>
         </span>
       </RadioGroupItem>
 
@@ -124,8 +140,24 @@ const { handleKeyDown } = useRadioKeyboard({
         :class="cn('radio-card', { 'radio-card-selected': model === 'N', 'radio-card-invalid': props.invalid })"
       >
         <span class="radio-label">{{ noLabel }}</span>
-        <span class="radio-indicator-wrapper">
-          <RadioGroupIndicator class="radio-indicator" />
+        <span class="radio-indicator-wrapper" aria-hidden="true">
+          <RadioGroupIndicator class="radio-indicator">
+            <svg
+              class="radio-indicator-check"
+              width="12"
+              height="12"
+              viewBox="0 0 16 16"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="3"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              xmlns="http://www.w3.org/2000/svg"
+              aria-hidden="true"
+            >
+              <path d="M3 8.5 L6.5 12 L13 5" />
+            </svg>
+          </RadioGroupIndicator>
         </span>
       </RadioGroupItem>
     </RadioGroupRoot>
@@ -146,30 +178,32 @@ const { handleKeyDown } = useRadioKeyboard({
 .radio-yes-no-group {
   display: flex;
   flex-direction: row;
-  gap: 48px;
+  gap: 24px;
 }
 
+/* ─── Card chrome (sized by content + 16px padding) ───────────── */
 .radio-card {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 12px;
+  justify-content: space-between;
+  gap: 8px;
   padding: 16px;
   background-color: #fff;
   border: 1px solid var(--rds-light-4, #d0d0d0);
-  border-radius: 4px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(25, 25, 25, 0.12);
   cursor: pointer;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  font-family: var(--rds-font-family, Arial, Helvetica, "Nimbus Sans L", "Liberation Sans", FreeSans, sans-serif);
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
 }
 
-.radio-card:hover:not([data-disabled]) {
+.radio-card:hover:not([data-disabled]):not(.radio-card-selected) {
   border-color: var(--rds-dark-1, #747474);
 }
 
 .radio-card:focus-visible {
   outline: 2px solid #000;
   outline-offset: 2px;
-  box-shadow: none;
 }
 
 .radio-card[data-disabled] {
@@ -177,55 +211,87 @@ const { handleKeyDown } = useRadioKeyboard({
   cursor: not-allowed;
 }
 
+/* ─── Selected (solid maroon) ─────────────────────────────────── */
 .radio-card-selected {
+  background-color: var(--rds-maroon, #8c1d40);
   border-color: var(--rds-maroon, #8c1d40);
-  box-shadow: 0 2px 4px rgba(140, 29, 64, 0.2);
+  box-shadow: 0 4px 8px rgba(140, 29, 64, 0.25);
 }
 
+.radio-card-selected .radio-label {
+  color: #fff;
+}
+
+/* ─── Invalid ─────────────────────────────────────────────────── */
 .radio-card-invalid {
   border-bottom-width: 5px !important;
   border-color: var(--rds-danger, #cc2f2f);
 }
 
 .radio-card-invalid.radio-card-selected {
-  border-color: var(--rds-danger, #cc2f2f);
-  box-shadow: 0 2px 4px rgba(204, 47, 47, 0.2);
-}
-
-.radio-indicator-wrapper {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 20px;
-  height: 20px;
-  border: 2px solid var(--rds-dark-1, #747474);
-  border-radius: 50%;
-  background-color: #fff;
-  flex-shrink: 0;
-}
-
-.radio-card-selected .radio-indicator-wrapper {
-  border-color: var(--rds-maroon, #8c1d40);
-}
-
-.radio-card-invalid .radio-indicator-wrapper {
-  border-color: var(--rds-danger, #cc2f2f);
-}
-
-.radio-indicator {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background-color: var(--rds-maroon, #8c1d40);
-}
-
-.radio-card-invalid .radio-indicator {
   background-color: var(--rds-danger, #cc2f2f);
+  border-color: var(--rds-danger, #cc2f2f);
+  box-shadow: 0 4px 8px rgba(204, 47, 47, 0.25);
 }
 
+/* ─── Label ───────────────────────────────────────────────────── */
 .radio-label {
   font-size: 16px;
   font-weight: 700;
+  line-height: 1.2;
   color: var(--rds-dark-1, #747474);
+  transition: color 0.15s ease;
+}
+
+/* ─── Indicator (right side) ──────────────────────────────────── */
+.radio-indicator-wrapper {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  border: 1.5px solid var(--rds-dark-1, #747474);
+  border-radius: 50%;
+  background-color: #fff;
+  flex-shrink: 0;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+/* When selected, the wrapper becomes a solid white disc on the maroon card,
+   and the indicator paints a maroon checkmark inside it. */
+.radio-card-selected .radio-indicator-wrapper {
+  border-color: #fff;
+  background-color: #fff;
+}
+
+.radio-card-invalid:not(.radio-card-selected) .radio-indicator-wrapper {
+  border-color: var(--rds-danger, #cc2f2f);
+}
+
+/* RadioGroupIndicator only renders when the item is checked, so this rule
+   only applies in the selected state. Color drives the SVG checkmark via
+   currentColor. */
+.radio-indicator,
+.radio-card-selected .radio-indicator {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--rds-maroon, #8c1d40);
+  line-height: 0;
+}
+
+.radio-card-invalid.radio-card-selected .radio-indicator {
+  color: var(--rds-danger, #cc2f2f);
+}
+
+.radio-indicator-check {
+  display: block;
+  width: 12px;
+  height: 12px;
+  color: inherit;
+}
+
+.radio-indicator-check path {
+  stroke: currentColor;
 }
 </style>

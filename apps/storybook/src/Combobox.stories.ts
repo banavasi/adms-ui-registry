@@ -400,3 +400,125 @@ export const FormHeightAlignment: Story = {
     `,
   }),
 }
+
+export const ClearButtonStates: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Demonstrates the clear "X" interaction states. Hover the X for a light-gray circle (`--rds-light-3`); keyboard-focus it (Tab to it) for a darker `--rds-light-5` circle. The 28×28 hit area is larger than the 16×16 glyph for easier targeting.',
+      },
+    },
+  },
+  render: () => ({
+    components: { ComboboxSelect },
+    setup() {
+      const owner = ref<string>('noah.patel')
+      const owners = [
+        { label: 'Ava Thompson', value: 'ava.thompson' },
+        { label: 'Noah Patel', value: 'noah.patel' },
+        { label: 'Sophia Rivera', value: 'sophia.rivera' },
+        { label: 'Liam Chen', value: 'liam.chen' },
+      ]
+      return { owner, owners }
+    },
+    template: `
+      <div style="width: 440px">
+        <ComboboxSelect
+          id="clear-states"
+          v-model="owner"
+          label="Ticket owner"
+          :options="owners"
+          placeholder="Select an owner"
+          help-text="Hover the X for the light-gray circle. Tab to focus it for the darker circle."
+          clearable
+        />
+      </div>
+    `,
+  }),
+}
+
+export const ScrollableLongList: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Long option lists use a native scrollbar (no chevron scroll buttons). Open the dropdown to see the thin `--rds-light-5` thumb on a `--rds-light-2` track.',
+      },
+    },
+  },
+  render: () => ({
+    components: { ComboboxSelect },
+    setup() {
+      const country = ref<string | null>(null)
+      const countryOptions = Array.from({ length: 60 }, (_, i) => ({
+        label: `Country option ${i + 1}`,
+        value: `country-${i + 1}`,
+      }))
+      return { country, countryOptions }
+    },
+    template: `
+      <div style="width: 440px">
+        <ComboboxSelect
+          id="scrollable-long-list"
+          v-model="country"
+          label="Country"
+          :options="countryOptions"
+          placeholder="Select a country"
+          empty-text="No countries match your search."
+          clearable
+        />
+      </div>
+    `,
+  }),
+}
+
+export const TriggerComparisonAgainstListBox: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Side-by-side comparison of the combobox and listbox triggers. Both render the chevron at 16×16 to match the clear "X" icon, both use the RDS font stack so selected values render at the same visual weight, and both space the clear icon 24px from the chevron with the chevron pinned at the trigger edge.',
+      },
+    },
+  },
+  render: () => ({
+    components: { ComboboxSelect, ListBoxSelect },
+    setup() {
+      const suffix = ref<string | null>('ms')
+      const country = ref<string | null>('in')
+      const suffixes = [
+        { label: 'Mr.', value: 'mr' },
+        { label: 'Ms.', value: 'ms' },
+        { label: 'Mx.', value: 'mx' },
+        { label: 'Dr.', value: 'dr' },
+      ]
+      const countries = [
+        { label: 'India', value: 'in' },
+        { label: 'United States', value: 'us' },
+        { label: 'Canada', value: 'ca' },
+      ]
+      return { suffix, country, suffixes, countries }
+    },
+    template: `
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; width: 760px;">
+        <ComboboxSelect
+          id="comparison-combobox"
+          v-model="suffix"
+          label="Suffix (Combobox)"
+          :options="suffixes"
+          placeholder="Select suffix"
+          clearable
+        />
+        <ListBoxSelect
+          id="comparison-listbox"
+          v-model="country"
+          label="Country (ListBox)"
+          :options="countries"
+          placeholder="Select country"
+          clearable
+        />
+      </div>
+    `,
+  }),
+}
