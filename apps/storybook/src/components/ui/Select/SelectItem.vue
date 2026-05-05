@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import type { SelectItemProps } from 'reka-ui'
+import type {SelectItemProps} from 'reka-ui';
 import type { HTMLAttributes } from 'vue'
-import { SelectItem, SelectItemText } from 'reka-ui'
+import { SelectItem,  SelectItemText } from 'reka-ui'
 import { cn } from '@/lib/util'
 
 interface Props extends SelectItemProps {

@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import type { HTMLAttributes } from 'vue'
-import { computed, ref, useSlots, watch } from 'vue'
+import type { ComponentPublicInstance, HTMLAttributes } from 'vue'
+import { computed, nextTick, ref, useSlots, watch } from 'vue'
 import {
   Select,
   SelectContent,
@@ -64,6 +64,7 @@ const emit = defineEmits<{
 const model = defineModel<unknown | null>({ default: null })
 const isOpen = ref(false)
 const slots = useSlots()
+const triggerRef = ref<ComponentPublicInstance | HTMLElement | null>(null)
 
 watch(
   () => model.value,
@@ -164,6 +165,15 @@ const ariaDescribedBy = computed(() => {
 
 function clearSelection() {
   model.value = null
+  nextTick(() => {
+    const trigger =
+      triggerRef.value instanceof HTMLElement
+        ? triggerRef.value
+        : triggerRef.value?.$el instanceof HTMLElement
+          ? triggerRef.value.$el
+          : null
+    trigger?.focus({ preventScroll: true })
+  })
 }
 
 function handleOpenChange(value: boolean) {
@@ -201,65 +211,74 @@ const describedBy = computed(() =>
       class="listbox-select-root"
       @update:open="handleOpenChange"
     >
-      <SelectTrigger
-        :id="props.id"
-        :aria-invalid="props.invalid ? 'true' : undefined"
-        :aria-describedby="describedBy"
-        :class="
-          cn('listbox-select-trigger', {
-            'listbox-select-has-clear': showClearButton,
-            'listbox-select-trigger-invalid': props.invalid,
-          })
-        "
-      >
-        <SelectValue :placeholder="props.placeholder">
-          <span class="listbox-select-value-text">{{ selectedLabel }}</span>
-        </SelectValue>
+      <div class="listbox-select-trigger-shell">
+        <SelectTrigger
+          :id="props.id"
+          ref="triggerRef"
+          :aria-invalid="props.invalid ? 'true' : undefined"
+          :aria-describedby="describedBy"
+          :class="
+            cn('listbox-select-trigger', {
+              'listbox-select-has-clear': showClearButton,
+              'listbox-select-trigger-invalid': props.invalid,
+              'listbox-select-trigger-open': isOpen,
+              'listbox-select-trigger-selected': hasValue,
+            })
+          "
+        >
+          <SelectValue :placeholder="props.placeholder">
+            <span class="listbox-select-value-text" style="font-weight: 400 !important;">{{ selectedLabel }}</span>
+          </SelectValue>
+        </SelectTrigger>
 
-        <div class="listbox-select-actions">
-          <button
-            v-if="showClearButton"
-            type="button"
-            aria-label="Clear selected value"
-            class="listbox-select-clear"
-            @mousedown.prevent
-            @click.stop="clearSelection"
+        <button
+          v-if="showClearButton"
+          type="button"
+          aria-label="Clear selected value"
+          class="listbox-select-clear"
+          @mousedown.prevent
+          @click.stop="clearSelection"
+        >
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 15 15"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            aria-hidden="true"
           >
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 15 15"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-              aria-hidden="true"
-            >
-              <path
-                d="M11.7816 4.03157C12.0062 3.80702 12.0062 3.44295 11.7816 3.2184C11.5571 2.99385 11.193 2.99385 10.9685 3.2184L7.50005 6.68682L4.03164 3.2184C3.80708 2.99385 3.44301 2.99385 3.21846 3.2184C2.99391 3.44295 2.99391 3.80702 3.21846 4.03157L6.68688 7.49999L3.21846 10.9684C2.99391 11.193 2.99391 11.557 3.21846 11.7816C3.44301 12.0061 3.80708 12.0061 4.03164 11.7816L7.50005 8.31316L10.9685 11.7816C11.193 12.0061 11.5571 12.0061 11.7816 11.7816C12.0062 11.557 12.0062 11.193 11.7816 10.9684L8.31322 7.49999L11.7816 4.03157Z"
-                fill="currentColor"
-                fill-rule="evenodd"
-                clip-rule="evenodd"
-              />
-            </svg>
-          </button>
+            <path
+              d="M11.7816 4.03157C12.0062 3.80702 12.0062 3.44295 11.7816 3.2184C11.5571 2.99385 11.193 2.99385 10.9685 3.2184L7.50005 6.68682L4.03164 3.2184C3.80708 2.99385 3.44301 2.99385 3.21846 3.2184C2.99391 3.44295 2.99391 3.80702 3.21846 4.03157L6.68688 7.49999L3.21846 10.9684C2.99391 11.193 2.99391 11.557 3.21846 11.7816C3.44301 12.0061 3.80708 12.0061 4.03164 11.7816L7.50005 8.31316L10.9685 11.7816C11.193 12.0061 11.5571 12.0061 11.7816 11.7816C12.0062 11.557 12.0062 11.193 11.7816 10.9684L8.31322 7.49999L11.7816 4.03157Z"
+              fill="currentColor"
+              fill-rule="evenodd"
+              clip-rule="evenodd"
+            />
+          </svg>
+        </button>
 
-          <span class="listbox-select-chevron-wrapper">
-            <svg
-              width="20"
-              height="20"
-              viewBox="41 169 430 238"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-              class="listbox-select-chevron"
-              aria-hidden="true"
-            >
-              <path
-                d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z"
-                fill="currentColor"
-              />
-            </svg>
-          </span>
-        </div>
-      </SelectTrigger>
+        <span
+          :class="
+            cn('listbox-select-chevron-wrapper', {
+              'listbox-select-chevron-wrapper-open': isOpen,
+            })
+          "
+        >
+          <svg
+            width="16"
+            height="16"
+            viewBox="41 169 430 238"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            class="listbox-select-chevron"
+            aria-hidden="true"
+          >
+            <path
+              d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z"
+              fill="currentColor"
+            />
+          </svg>
+        </span>
+      </div>
 
       <SelectContent class="listbox-select-content">
         <SelectItem
@@ -300,21 +319,33 @@ const describedBy = computed(() =>
   width: 100%;
 }
 
+.listbox-select-trigger-shell {
+  position: relative;
+}
+
 :deep(.listbox-select-trigger) {
   height: 3.3125rem;
   background: #fff;
   border: 1px solid var(--rds-light-4, #d0d0d0);
   color: var(--rds-dark-1, #747474);
-  font-size: 14px;
+  font-family: var(--rds-font-family, Arial, Helvetica, "Nimbus Sans L", "Liberation Sans", FreeSans, sans-serif);
+  font-size: 16px;
+  font-weight: 400 !important;
   line-height: 1.5;
   padding-left: 1rem;
-  padding-right: 1rem;
+  padding-right: 5rem;
   cursor: pointer;
   outline: none;
   text-align: left;
 }
 
 :deep(.listbox-select-trigger:focus) {
+  outline: 2px solid #000;
+  outline-offset: 2px;
+  box-shadow: none;
+}
+
+:deep(.listbox-select-trigger:focus-visible) {
   outline: 2px solid #000;
   outline-offset: 2px;
   box-shadow: none;
@@ -333,8 +364,13 @@ const describedBy = computed(() =>
   color: var(--rds-dark-1, #747474);
 }
 
+:deep(.listbox-select-trigger-selected) {
+  color: var(--rds-dark-3, #191919);
+}
+
 .listbox-select-value-text {
   color: var(--rds-dark-3, #191919);
+  font-weight: 400 !important;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -342,52 +378,67 @@ const describedBy = computed(() =>
   min-width: 0;
 }
 
-.listbox-select-actions {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin-left: auto;
-  flex-shrink: 0;
-}
-
 .listbox-select-clear {
+  position: absolute;
+  right: 3.125rem; /* 24px between X icon and chevron */
+  top: 50%;
+  transform: translateY(-50%);
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
   background: transparent;
   border: none;
+  border-radius: 50%;
   color: var(--rds-dark-1, #747474);
   cursor: pointer;
-  padding: 0.25rem;
+  padding: 0;
   line-height: 1;
-  transition: color 0.15s ease;
+  transition: background-color 0.15s ease, color 0.15s ease;
 }
 
 .listbox-select-clear:hover {
+  background-color: var(--rds-light-3, #e8e8e8);
   color: var(--rds-dark-2, #484848);
 }
 
+.listbox-select-clear:focus {
+  outline: none;
+}
+
+.listbox-select-clear:focus-visible {
+  outline: none;
+  background-color: var(--rds-light-5, #bfbfbf);
+  color: var(--rds-dark-3, #191919);
+}
+
 .listbox-select-chevron-wrapper {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
   display: inline-flex;
   align-items: center;
   justify-content: center;
   color: var(--rds-dark-1, #747474);
-  width: 20px;
-  height: 20px;
+  width: 16px;
+  height: 16px;
   flex-shrink: 0;
-  transition: transform 0.2s ease;
+  pointer-events: none;
+  transition: transform 0.2s ease, color 0.15s ease;
 }
 
-:deep(.listbox-select-trigger[data-state='open']) .listbox-select-chevron-wrapper {
-  transform: rotate(180deg);
+.listbox-select-chevron-wrapper-open {
+  transform: translateY(-50%) rotate(180deg);
 }
 
 .listbox-select-chevron {
   forced-color-adjust: auto;
   display: block;
-  width: 20px;
-  height: 20px;
-  flex: 0 0 20px;
+  width: 16px;
+  height: 16px;
+  flex: 0 0 16px;
 }
 
 :deep(.listbox-select-content) {
@@ -413,6 +464,13 @@ const describedBy = computed(() =>
   color: var(--rds-dark-3, #191919);
   background: #fff;
   cursor: pointer;
+}
+
+:deep(.listbox-select-option[data-highlighted]) {
+  background: #fff;
+  color: var(--rds-dark-3, #191919);
+  outline: 2px solid #000;
+  outline-offset: -2px;
 }
 
 :deep(.listbox-select-option[data-state='checked']) {

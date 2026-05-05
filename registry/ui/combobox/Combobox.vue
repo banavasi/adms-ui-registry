@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import type { HTMLAttributes } from 'vue'
+import type { ComponentPublicInstance, HTMLAttributes } from 'vue'
 import { ComboboxRoot, type ComboboxRootProps, type ComboboxRootEmits } from 'reka-ui'
+import { ref } from 'vue'
 import { useForwardPropsEmits } from 'reka-ui'
 import { cn } from '@/lib/util'
 
@@ -23,10 +24,27 @@ const props = withDefaults(defineProps<Props>(), {
 const emits = defineEmits<ComboboxRootEmits>()
 
 const forwarded = useForwardPropsEmits(props, emits)
+const rootRef = ref<
+  | (ComponentPublicInstance & {
+      highlightFirstItem?: () => void
+      highlightItem?: (value: unknown) => void
+      highlightSelected?: () => void
+      highlightedElement?: HTMLElement | undefined
+    })
+  | null
+>(null)
+
+defineExpose({
+  highlightFirstItem: () => rootRef.value?.highlightFirstItem?.(),
+  highlightItem: (value: unknown) => rootRef.value?.highlightItem?.(value),
+  highlightSelected: () => rootRef.value?.highlightSelected?.(),
+  getHighlightedElement: () => rootRef.value?.highlightedElement,
+})
 </script>
 
 <template>
   <ComboboxRoot
+    ref="rootRef"
     v-slot="slotProps"
     data-slot="combobox"
     :class="cn('combobox-root', props.class)"

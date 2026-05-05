@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import type { SelectRootEmits, SelectRootProps } from 'reka-ui'
+import type {SelectRootEmits, SelectRootProps} from 'reka-ui';
 import type { HTMLAttributes } from 'vue'
-import { SelectRoot, useForwardPropsEmits } from 'reka-ui'
+import { SelectRoot, useForwardPropsEmits    } from 'reka-ui'
 import { cn } from '@/lib/util'
 
 interface Props extends SelectRootProps {

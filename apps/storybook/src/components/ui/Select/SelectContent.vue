@@ -1,10 +1,8 @@
 <script setup lang="ts">
-import type { SelectContentProps } from 'reka-ui'
+import type {SelectContentProps} from 'reka-ui';
 import type { HTMLAttributes } from 'vue'
-import { SelectContent, SelectPortal, SelectViewport } from 'reka-ui'
+import { SelectContent,  SelectPortal, SelectViewport } from 'reka-ui'
 import { cn } from '@/lib/util'
-import SelectScrollDownButton from './SelectScrollDownButton.vue'
-import SelectScrollUpButton from './SelectScrollUpButton.vue'
 
 interface Props extends SelectContentProps {
   class?: HTMLAttributes['class']
@@ -38,11 +36,9 @@ const props = withDefaults(defineProps<Props>(), {
       :collision-padding="collisionPadding"
       :sticky="sticky"
     >
-      <SelectScrollUpButton />
       <SelectViewport class="select-viewport">
         <slot />
       </SelectViewport>
-      <SelectScrollDownButton />
     </SelectContent>
   </SelectPortal>
 </template>
@@ -70,23 +66,29 @@ const props = withDefaults(defineProps<Props>(), {
   padding: 0;
   max-height: 300px;
   overflow-y: auto;
+  /* Override Reka UI's injected styles that hide the scrollbar */
+  scrollbar-width: thin !important;
+  scrollbar-color: var(--rds-light-5, #bfbfbf) var(--rds-light-2, #f1f1f1);
+  -ms-overflow-style: auto !important;
 }
 
+/* WebKit / Chromium — override Reka UI's display:none on scrollbar */
 .select-viewport::-webkit-scrollbar {
+  display: block !important;
   width: 8px;
 }
 
 .select-viewport::-webkit-scrollbar-track {
-  background: var(--rds-light-1, #fafafa);
+  background: var(--rds-light-2, #f1f1f1);
 }
 
 .select-viewport::-webkit-scrollbar-thumb {
-  background: var(--rds-light-4, #d0d0d0);
+  background: var(--rds-light-5, #bfbfbf);
   border-radius: 4px;
 }
 
 .select-viewport::-webkit-scrollbar-thumb:hover {
-  background: var(--rds-light-5, #bfbfbf);
+  background: var(--rds-dark-1, #747474);
 }
 
 @keyframes selectSlideDownAndFade {

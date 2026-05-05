@@ -196,7 +196,7 @@ const handleFocus = (event: FocusEvent) => {
 // Initialize display value from model
 watch(
   () => model.value,
-  (newValue: any) => {
+  (newValue) => {
     if (document.activeElement !== inputRef.value) {
       updateDisplayValue(newValue ?? null)
     }

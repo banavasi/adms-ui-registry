@@ -1,0 +1,8 @@
+<style>
+  /* Storybook's docs canvas inherits Nunito Sans (Storybook UI font), which only
+     loads heavy weights — that makes any 400-weight text render bold. Force the
+     story canvas to use the RDS font stack so weight values render as expected. */
+  html, body, .sb-show-main, .sbdocs, .sbdocs-content, .docs-story, .innerZoomElementWrapper {
+    font-family: var(--rds-font-family, Arial, Helvetica, "Nimbus Sans L", "Liberation Sans", FreeSans, sans-serif) !important;
+  }
+</style>
