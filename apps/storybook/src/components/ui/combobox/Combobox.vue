@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import type {ComboboxRootEmits, ComboboxRootProps} from 'reka-ui';
+import type { ComboboxRootEmits, ComboboxRootProps } from 'reka-ui'
 import type { ComponentPublicInstance, HTMLAttributes } from 'vue'
-import { ComboboxRoot, useForwardPropsEmits    } from 'reka-ui'
+import { ComboboxRoot, useForwardPropsEmits } from 'reka-ui'
 import { ref } from 'vue'
 import { cn } from '@/lib/util'
 

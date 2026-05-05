@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import type {SelectScrollUpButtonProps} from 'reka-ui';
+import type { SelectScrollUpButtonProps } from 'reka-ui'
 import type { HTMLAttributes } from 'vue'
-import { SelectScrollUpButton  } from 'reka-ui'
+import { SelectScrollUpButton } from 'reka-ui'
 import { cn } from '@/lib/util'
 
 interface Props extends SelectScrollUpButtonProps {

@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import type {SelectContentProps} from 'reka-ui';
+import type { SelectContentProps } from 'reka-ui'
 import type { HTMLAttributes } from 'vue'
-import { SelectContent,  SelectPortal, SelectViewport } from 'reka-ui'
+import { SelectContent, SelectPortal, SelectViewport } from 'reka-ui'
 import { cn } from '@/lib/util'
 
 interface Props extends SelectContentProps {
