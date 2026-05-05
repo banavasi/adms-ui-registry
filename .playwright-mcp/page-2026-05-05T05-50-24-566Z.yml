@@ -1,0 +1,3 @@
+- button "Close" [ref=e4] [cursor=pointer]:
+  - generic [ref=e5]: Close
+  - img [ref=e8]
