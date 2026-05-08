@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
-import type {PropType} from 'vue';
-import { defineComponent  } from 'vue'
+import type { PropType } from 'vue'
+import { defineComponent } from 'vue'
 import { Button } from '@/components/ui/Button'
 
 const ArrowRightIcon = `
