@@ -1,4 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
+import type {PropType} from 'vue';
+import { defineComponent  } from 'vue'
 import { Button } from '@/components/ui/Button'
 
 const ArrowRightIcon = `
@@ -220,6 +222,150 @@ export const GoldButtonStates: Story = {
           Save changes
           <template #trailing><span v-html="ArrowRightIcon" /></template>
         </Button>
+      </div>
+    `,
+  }),
+}
+
+const RouterLinkStub = defineComponent({
+  name: 'RouterLinkStub',
+  props: {
+    to: {
+      type: [String, Object] as PropType<string | Record<string, unknown>>,
+      required: false,
+      default: undefined,
+    },
+  },
+  computed: {
+    resolvedHref(): string {
+      if (typeof this.to === 'string') return this.to
+      if (this.to && typeof this.to === 'object' && 'path' in this.to) {
+        const path = (this.to as { path?: unknown }).path
+        return typeof path === 'string' ? path : '#'
+      }
+      return '#'
+    },
+  },
+  template: `<a :href="resolvedHref"><slot /></a>`,
+})
+
+export const LinkButtons: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Button supports link-style rendering for both plain anchors (`href`) and router navigation (`to`). The router-link example uses a local Storybook stub and maps directly to `vue-router` usage in apps.',
+      },
+    },
+  },
+  render: () => ({
+    components: { Button, 'router-link': RouterLinkStub },
+    template: `
+      <div style="display: flex; flex-direction: column; align-items: flex-start; gap: 16px; width: 360px;">
+        <Button href="https://www.asu.edu" variant="maroon">
+          External link button
+        </Button>
+        <Button :to="{ path: '/dashboard' }" variant="gold">
+          Router link button
+        </Button>
+        <Button :to="{ path: '/dashboard' }" variant="gold" disabled>
+          Disabled router link button
+        </Button>
+      </div>
+    `,
+  }),
+}
+
+export const EventEmitsTester: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Interactive event test harness for Button emits. Trigger mouse/keyboard/focus events and confirm both on-screen counters and Storybook Actions updates.',
+      },
+    },
+  },
+  render: () => ({
+    components: { Button },
+    data() {
+      return {
+        eventCounts: {
+          click: 0,
+          dblclick: 0,
+          mousedown: 0,
+          mouseup: 0,
+          mouseenter: 0,
+          mouseleave: 0,
+          mousemove: 0,
+          focus: 0,
+          blur: 0,
+          keydown: 0,
+          keyup: 0,
+          keypress: 0,
+          input: 0,
+          change: 0,
+          submit: 0,
+        } as Record<string, number>,
+        latestEvent: 'None',
+      }
+    },
+    methods: {
+      onEvent(eventName: string) {
+        this.eventCounts[eventName] += 1
+        this.latestEvent = eventName
+      },
+      resetCounts() {
+        Object.keys(this.eventCounts).forEach((key) => {
+          this.eventCounts[key] = 0
+        })
+        this.latestEvent = 'None'
+      },
+    },
+    template: `
+      <div style="display: flex; flex-direction: column; align-items: flex-start; gap: 16px; width: 520px;">
+        <p style="margin: 0;">
+          Latest event: <strong>{{ latestEvent }}</strong>
+        </p>
+        <Button
+          variant="maroon"
+          @click="onEvent('click')"
+          @dblclick="onEvent('dblclick')"
+          @mousedown="onEvent('mousedown')"
+          @mouseup="onEvent('mouseup')"
+          @mouseenter="onEvent('mouseenter')"
+          @mouseleave="onEvent('mouseleave')"
+          @mousemove="onEvent('mousemove')"
+          @focus="onEvent('focus')"
+          @blur="onEvent('blur')"
+          @keydown="onEvent('keydown')"
+          @keyup="onEvent('keyup')"
+          @keypress="onEvent('keypress')"
+          @input="onEvent('input')"
+          @change="onEvent('change')"
+          @submit="onEvent('submit')"
+        >
+          Interact with me
+        </Button>
+        <div style="display: grid; grid-template-columns: repeat(3, minmax(120px, 1fr)); gap: 8px 12px; width: 100%;">
+          <span>click: {{ eventCounts.click }}</span>
+          <span>dblclick: {{ eventCounts.dblclick }}</span>
+          <span>mousedown: {{ eventCounts.mousedown }}</span>
+          <span>mouseup: {{ eventCounts.mouseup }}</span>
+          <span>mouseenter: {{ eventCounts.mouseenter }}</span>
+          <span>mouseleave: {{ eventCounts.mouseleave }}</span>
+          <span>mousemove: {{ eventCounts.mousemove }}</span>
+          <span>focus: {{ eventCounts.focus }}</span>
+          <span>blur: {{ eventCounts.blur }}</span>
+          <span>keydown: {{ eventCounts.keydown }}</span>
+          <span>keyup: {{ eventCounts.keyup }}</span>
+          <span>keypress: {{ eventCounts.keypress }}</span>
+          <span>input: {{ eventCounts.input }}</span>
+          <span>change: {{ eventCounts.change }}</span>
+          <span>submit: {{ eventCounts.submit }}</span>
+        </div>
+        <button type="button" class="btn btn-outline-secondary btn-sm" @click="resetCounts">
+          Reset counters
+        </button>
       </div>
     `,
   }),
