@@ -3,6 +3,7 @@ import type { PrimitiveProps } from 'reka-ui'
 import type { HTMLAttributes } from 'vue'
 import type { ButtonVariants } from '.'
 import { Primitive } from 'reka-ui'
+import { computed } from 'vue'
 import { cn } from '@/lib/util'
 import { buttonVariants } from '.'
 
@@ -12,6 +13,8 @@ interface Props extends PrimitiveProps {
   class?: HTMLAttributes['class']
   loading?: boolean
   disabled?: boolean
+  to?: string | Record<string, unknown>
+  href?: string
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -20,15 +23,91 @@ const props = withDefaults(defineProps<Props>(), {
   loading: false,
   disabled: false,
 })
+const emit = defineEmits<{
+  (e: 'click', event: MouseEvent): void
+  (e: 'dblclick', event: MouseEvent): void
+  (e: 'mousedown', event: MouseEvent): void
+  (e: 'mouseup', event: MouseEvent): void
+  (e: 'mouseenter', event: MouseEvent): void
+  (e: 'mouseleave', event: MouseEvent): void
+  (e: 'mousemove', event: MouseEvent): void
+  (e: 'focus', event: FocusEvent): void
+  (e: 'blur', event: FocusEvent): void
+  (e: 'keydown', event: KeyboardEvent): void
+  (e: 'keyup', event: KeyboardEvent): void
+  (e: 'keypress', event: KeyboardEvent): void
+  (e: 'input', event: Event): void
+  (e: 'change', event: Event): void
+  (e: 'submit', event: Event): void
+}>()
+
+const isDisabled = computed(() => props.loading || props.disabled)
+const isLinkLike = computed(
+  () => Boolean(props.to) || Boolean(props.href) || props.as === 'a' || props.as === 'router-link'
+)
+const resolvedAs = computed(() => {
+  if (props.to) return 'router-link'
+  if (props.href) return 'a'
+  return props.as
+})
+
+const handleClick = (event: MouseEvent) => {
+  if (isLinkLike.value && isDisabled.value) {
+    event.preventDefault()
+    event.stopPropagation()
+    return
+  }
+  emit('click', event)
+}
+
+const handleDblClick = (event: MouseEvent) => emit('dblclick', event)
+const handleMouseDown = (event: MouseEvent) => emit('mousedown', event)
+const handleMouseUp = (event: MouseEvent) => emit('mouseup', event)
+const handleMouseEnter = (event: MouseEvent) => emit('mouseenter', event)
+const handleMouseLeave = (event: MouseEvent) => emit('mouseleave', event)
+const handleMouseMove = (event: MouseEvent) => emit('mousemove', event)
+const handleFocus = (event: FocusEvent) => emit('focus', event)
+const handleBlur = (event: FocusEvent) => emit('blur', event)
+const handleKeyDown = (event: KeyboardEvent) => emit('keydown', event)
+const handleKeyUp = (event: KeyboardEvent) => emit('keyup', event)
+const handleKeyPress = (event: KeyboardEvent) => emit('keypress', event)
+const handleInput = (event: Event) => emit('input', event)
+const handleChange = (event: Event) => emit('change', event)
+const handleSubmit = (event: Event) => emit('submit', event)
 </script>
 
 <template>
   <Primitive
     data-slot="button"
     :as-child="props.asChild"
-    :as="props.as"
-    :disabled="props.loading || props.disabled"
-    :class="cn(buttonVariants({ variant: props.variant, size: props.size }), props.class)"
+    :as="resolvedAs"
+    :to="props.to"
+    :href="props.href"
+    :disabled="isLinkLike ? undefined : isDisabled"
+    :aria-disabled="isLinkLike && isDisabled ? 'true' : undefined"
+    :tabindex="isLinkLike && isDisabled ? -1 : undefined"
+    :class="
+      cn(
+        buttonVariants({ variant: props.variant, size: props.size }),
+        isLinkLike && isDisabled && 'rds-button--disabled',
+        props.class,
+      )
+    "
+    @click="handleClick"
+    @dblclick="handleDblClick"
+    @mousedown="handleMouseDown"
+    @mouseup="handleMouseUp"
+    @mouseenter="handleMouseEnter"
+    @mouseleave="handleMouseLeave"
+    @mousemove="handleMouseMove"
+    @focus="handleFocus"
+    @blur="handleBlur"
+    @keydown="handleKeyDown"
+    @keyup="handleKeyUp"
+    @keypress="handleKeyPress"
+    @input="handleInput"
+    @change="handleChange"
+    @submit="handleSubmit"
   >
     <span v-if="props.loading" class="rds-button__spinner" role="status" aria-hidden="true" />
     <span v-if="$slots.leading" class="rds-button__icon rds-button__icon--leading">
@@ -77,6 +156,12 @@ const props = withDefaults(defineProps<Props>(), {
 }
 
 .rds-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.rds-button--disabled {
   opacity: 0.5;
   cursor: not-allowed;
   pointer-events: none;
