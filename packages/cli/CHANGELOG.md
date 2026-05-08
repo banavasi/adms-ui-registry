@@ -1,5 +1,13 @@
 # @adms-rds-ui/cli
 
+## 3.2.7
+
+### Patch Changes
+
+- [#43](https://github.com/banavasi/adms-ui-registry/pull/43) [`ac026cf`](https://github.com/banavasi/adms-ui-registry/commit/ac026cf295e5cf76c7ef77a148691fe5303527ac) Thanks [@banavasi](https://github.com/banavasi)! - Update the Button component in the registry to support link-style rendering with `to` (router-link) and `href` (anchor), while preserving disabled behavior for both button and link variants.
+
+  Add explicit native event forwarding from Button (`click`, mouse, focus/blur, keyboard, input/change/submit) and include Storybook stories to validate link behavior and emitted events.
+
 ## 3.2.6
 
 ### Patch Changes
