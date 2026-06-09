@@ -1,5 +1,15 @@
 # @adms-rds-ui/cli
 
+## 3.2.7
+
+### Patch Changes
+
+- [#43](https://github.com/banavasi/adms-ui-registry/pull/43) [`ac026cf`](https://github.com/banavasi/adms-ui-registry/commit/ac026cf295e5cf76c7ef77a148691fe5303527ac) Thanks [@banavasi](https://github.com/banavasi)! - Update the Button component in the registry to support link-style rendering with `to` (router-link) and `href` (anchor), while preserving disabled behavior for both button and link variants.
+
+  Add explicit native event forwarding from Button (`click`, mouse, focus/blur, keyboard, input/change/submit) and include Storybook stories to validate link behavior and emitted events.
+
+- [#45](https://github.com/banavasi/adms-ui-registry/pull/45) [`751379c`](https://github.com/banavasi/adms-ui-registry/commit/751379c2e785770aeed357d1b27f91c5ff1c8996) Thanks [@banavasi](https://github.com/banavasi)! - Fix the multiselect combobox (`ComboboxMultiSelect`) so its clear (×) and chevron icons align with the single-select combobox. The icons were wrapped in an absolutely positioned flex container that became the chevron's containing block, collapsing the two icons on top of each other in reversed order. The clear button now positions against the field anchor at the same offset as `ComboboxSelect`, rendering a properly spaced × then chevron.
+
 ## 3.2.6
 
 ### Patch Changes
