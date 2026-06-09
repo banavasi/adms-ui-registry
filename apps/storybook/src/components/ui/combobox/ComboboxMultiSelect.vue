@@ -506,45 +506,43 @@ const liveMessage = computed(() => {
           {{ selectedSummary }}
         </span>
 
-        <div class="combobox-multi-actions">
-          <Button
-            v-if="showClearButton"
-            variant="close"
-            aria-label="Clear selected values"
-            class="combobox-multi-clear"
-            @mousedown.prevent
-            @click.stop="clearSelection"
-          >
-            <template #close>
-              <ButtonCloseIcon aria-hidden="true" />
-            </template>
-            Clear selected values
-          </Button>
+        <Button
+          v-if="showClearButton"
+          variant="close"
+          aria-label="Clear selected values"
+          class="combobox-multi-clear"
+          @mousedown.prevent
+          @click.stop="clearSelection"
+        >
+          <template #close>
+            <ButtonCloseIcon aria-hidden="true" />
+          </template>
+          Clear selected values
+        </Button>
 
-          <ComboboxTrigger as-child>
-            <button
-              type="button"
-              class="combobox-multi-toggle"
-              :aria-label="isOpen ? 'Collapse options' : 'Expand options'"
-              @mousedown.prevent
+        <ComboboxTrigger as-child>
+          <button
+            type="button"
+            class="combobox-multi-toggle"
+            :aria-label="isOpen ? 'Collapse options' : 'Expand options'"
+            @mousedown.prevent
+          >
+            <svg
+              width="16"
+              height="16"
+              viewBox="41 169 430 238"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              class="combobox-multi-chevron"
+              aria-hidden="true"
             >
-              <svg
-                width="16"
-                height="16"
-                viewBox="41 169 430 238"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-                class="combobox-multi-chevron"
-                aria-hidden="true"
-              >
-                <path
-                  d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z"
-                  fill="currentColor"
-                />
-              </svg>
-            </button>
-          </ComboboxTrigger>
-        </div>
+              <path
+                d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z"
+                fill="currentColor"
+              />
+            </svg>
+          </button>
+        </ComboboxTrigger>
       </ComboboxInput>
 
       <ComboboxContent class="combobox-multi-content">
@@ -695,35 +693,16 @@ const liveMessage = computed(() => {
   z-index: 1;
 }
 
-.combobox-multi-actions {
+/* Clear (X) sits 24px to the left of the chevron, matching ComboboxSelect.
+   The chevron itself is rendered by ComboboxTrigger at right: 1rem relative
+   to .combobox-anchor, so the clear must position against the same ancestor
+   (not a nested wrapper) to keep the two icons from colliding. */
+.combobox-multi-clear {
   position: absolute;
-  right: 1rem;
+  right: 3.125rem;
   top: 50%;
   transform: translateY(-50%);
-  display: inline-flex;
-  align-items: center;
-  /* 1.125rem gap + 6px inside-clear-button padding = 24px between icon glyphs */
-  gap: 1.125rem;
   z-index: 2;
-}
-
-.combobox-multi-clear,
-.combobox-multi-toggle {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border: none;
-  background: transparent;
-  color: var(--rds-dark-1, #747474);
-  cursor: pointer;
-  width: 16px;
-  height: 16px;
-  padding: 0;
-}
-
-.combobox-multi-clear {
-  width: 2.75rem;
-  height: 2.75rem;
 }
 
 .combobox-multi-clear.rds-button--close {
