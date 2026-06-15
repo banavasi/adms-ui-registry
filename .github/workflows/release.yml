@@ -18,6 +18,9 @@ jobs:
   release:
     name: Release
     runs-on: ubuntu-latest
+    env:
+      # Required to install Font Awesome Pro packages (add this as a repo secret).
+      FONTAWESOME_NPM_AUTH_TOKEN: ${{ secrets.FONTAWESOME_NPM_AUTH_TOKEN }}
     outputs:
       published: ${{ steps.changeset.outputs.published }}
       publishedPackages: ${{ steps.changeset.outputs.publishedPackages }}
@@ -36,6 +39,9 @@ jobs:
           cache: "pnpm"
           registry-url: "https://npm.pkg.github.com"
           scope: "@banavasi"
+
+      - name: Authenticate Font Awesome Pro registry
+        run: echo "//npm.fontawesome.com/:_authToken=${FONTAWESOME_NPM_AUTH_TOKEN}" >> ~/.npmrc
 
       - name: Install dependencies
         run: pnpm install
