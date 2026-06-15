@@ -15,6 +15,9 @@ jobs:
   build:
     name: Build & Validate
     runs-on: ubuntu-latest
+    env:
+      # Required to install Font Awesome Pro packages (add this as a repo secret).
+      FONTAWESOME_NPM_AUTH_TOKEN: ${{ secrets.FONTAWESOME_NPM_AUTH_TOKEN }}
 
     steps:
       - name: Checkout
@@ -28,6 +31,9 @@ jobs:
         with:
           node-version: 20
           cache: "pnpm"
+
+      - name: Authenticate Font Awesome Pro registry
+        run: echo "//npm.fontawesome.com/:_authToken=${FONTAWESOME_NPM_AUTH_TOKEN}" >> ~/.npmrc
 
       - name: Install dependencies
         run: pnpm install
