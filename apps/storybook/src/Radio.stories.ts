@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
 import { ref } from 'vue'
-import { RadioGroup } from '@/components/ui/radio'
+import { RadioGroup } from '@/components/ui/Radio'
 
 const meta: Meta<typeof RadioGroup> = {
   title: 'Components/Radio',

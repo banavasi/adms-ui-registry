@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
 import { ref } from 'vue'
-import { BaseSelect } from '@/components/ui/base-select'
+import { BaseSelect } from '@/components/ui/BaseSelect'
 
 const meta: Meta<typeof BaseSelect> = {
   title: 'Components/BaseSelect',
