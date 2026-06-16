@@ -18,6 +18,7 @@ This is **not** a traditional npm component library. Instead, components are cop
 | Package | Version | Description |
 |---------|---------|-------------|
 | [`@banavasi/adms-rds-ui-cli`](packages/cli/README.md) | ![CLI](https://img.shields.io/npm/v/@banavasi/adms-rds-ui-cli) | CLI tool to add components to your project |
+| [`@banavasi/adms-rds-ui-icons`](packages/icons/README.md) | ![Icons](https://img.shields.io/npm/v/@banavasi/adms-rds-ui-icons) | Font Awesome Pro icons with a configurable Vite plugin |
 | [`@banavasi/eslint-config`](packages/eslint-config/README.md) | ![ESLint](https://img.shields.io/npm/v/@banavasi/eslint-config) | ESLint configuration for Vue + TypeScript projects |
 
 ---
@@ -114,6 +115,69 @@ adms-rds-ui add button --yes --overwrite
 | 2. Copies files | Places component in `src/components/ui/{ComponentName}/` |
 | 3. Installs deps | Adds component-specific dependencies |
 | 4. Updates imports | Transforms `@/` imports to your alias |
+
+---
+
+## Icons (FontAwesome Pro)
+
+Icons use **FontAwesome Pro** via [`@banavasi/adms-rds-ui-icons`](packages/icons/README.md) — configure which FA packages and icons to bundle in `vite.config.ts`.
+
+**`init` sets everything up:**
+- installs `@banavasi/adms-rds-ui-icons` and Font Awesome Pro base packages;
+- adds the `rdsIcons()` Vite plugin to `vite.config.ts`;
+- wires icon setup into your `src/main.ts`.
+
+**Configure icons in `vite.config.ts`:**
+
+```ts
+import { rdsIcons } from '@banavasi/adms-rds-ui-icons/vite'
+
+export default defineConfig({
+  plugins: [
+    vue(),
+    rdsIcons({
+      packages: ['light', 'solid'],
+      icons: {
+        light: ['star'],
+        solid: ['user'],
+      },
+    }),
+  ],
+})
+```
+
+**Load icons once in `main.ts`:**
+
+```ts
+import rdsIconsApp from '@banavasi/adms-rds-ui-icons/app'
+createApp(App).use(rdsIconsApp).mount('#app')
+```
+
+**Use in any template — no import needed:**
+
+```vue
+<FontAwesomeIcon :icon="['fal', 'star']" />
+```
+
+RDS component icons are included automatically (`rds: true` by default). Add your own icons under `icons` in the Vite plugin config — see [packages/icons/README.md](packages/icons/README.md).
+
+### FontAwesome Pro auth
+
+The Pro packages come from FontAwesome's private registry, so configure it (the
+token belongs in an **env var**, never committed):
+
+```ini
+# .npmrc
+@fortawesome:registry=https://npm.fontawesome.com/
+//npm.fontawesome.com/:_authToken=${FONTAWESOME_NPM_AUTH_TOKEN}
+```
+
+```bash
+export FONTAWESOME_NPM_AUTH_TOKEN=your-token   # in your shell / CI secrets
+```
+
+Without it, `init` still writes all files but the FontAwesome `npm install` step
+fails with a 404 — set the token and re-run the install.
 
 ---
 

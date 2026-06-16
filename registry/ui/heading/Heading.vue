@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type { HTMLAttributes } from 'vue'
 import type { HeadingVariants } from '.'
-import { faCircleInfo } from '@fortawesome/pro-light-svg-icons'
 import { computed } from 'vue'
 import { FontAwesomeIcon } from '@/components/ui/icon'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/Tooltip'
@@ -54,7 +53,7 @@ const HeadingTag = computed(() => props.level || 'h3')
             aria-label="More information"
           >
             <FontAwesomeIcon
-              :icon="faCircleInfo"
+              :icon="['fal', 'circle-info']"
               class="info-icon"
               aria-hidden="true"
               focusable="false"

@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import type { HTMLAttributes } from 'vue'
-import { faChevronDown } from '@fortawesome/pro-light-svg-icons'
 import { computed, ref, useSlots, watch } from 'vue'
 import { Button, ButtonCloseIcon } from '@/components/ui/Button'
-import { CheckboxPrimitive } from '@/components/ui/checkbox'
+import { CheckboxPrimitive } from '@/components/ui/Checkbox'
 import { FontAwesomeIcon } from '@/components/ui/icon'
 import { InputError } from '@/components/ui/InputError'
 import { InputHelp } from '@/components/ui/InputHelp'
@@ -271,7 +270,7 @@ const describedBy = computed(() =>
           "
         >
           <FontAwesomeIcon
-            :icon="faChevronDown"
+            :icon="['fal', 'chevron-down']"
             class="listbox-multi-chevron"
             aria-hidden="true"
           />

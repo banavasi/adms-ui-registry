@@ -22,9 +22,9 @@
   "components": {
     "button": {
       "name": "Button",
-      "files": ["ui/button/Button.vue", "ui/button/index.ts"],
+      "files": ["ui/button/Button.vue", "ui/button/ButtonCloseIcon.vue", "ui/button/index.ts"],
       "dependencies": ["reka-ui"],
-      "registryDependencies": []
+      "registryDependencies": ["icon"]
     },
     "tooltip": {
       "name": "Tooltip",
@@ -45,11 +45,17 @@
       "dependencies": ["reka-ui"],
       "registryDependencies": []
     },
+    "icon": {
+      "name": "icon",
+      "files": ["ui/icon/index.ts"],
+      "dependencies": ["@banavasi/adms-rds-ui-icons"],
+      "registryDependencies": []
+    },
     "heading": {
       "name": "Heading",
       "files": ["ui/heading/Heading.vue", "ui/heading/index.ts"],
       "dependencies": ["reka-ui"],
-      "registryDependencies": ["tooltip"]
+      "registryDependencies": ["tooltip", "icon"]
     },
     "checkbox": {
       "name": "Checkbox",
@@ -67,7 +73,7 @@
       "name": "Label",
       "files": ["ui/label/Label.vue", "ui/label/index.ts"],
       "dependencies": ["reka-ui"],
-      "registryDependencies": ["tooltip"]
+      "registryDependencies": ["tooltip", "icon"]
     },
     "input-root": {
       "name": "InputRoot",
@@ -89,7 +95,7 @@
       "name": "InputError",
       "files": ["ui/input-error/InputError.vue", "ui/input-error/index.ts"],
       "dependencies": [],
-      "registryDependencies": ["input-root"]
+      "registryDependencies": ["input-root", "icon"]
     },
     "input-help": {
       "name": "InputHelp",
@@ -110,7 +116,7 @@
         "ui/input-password-toggle/index.ts"
       ],
       "dependencies": [],
-      "registryDependencies": ["input-root"]
+      "registryDependencies": ["input-root", "icon"]
     },
     "text-password": {
       "name": "TextPassword",
@@ -152,6 +158,7 @@
         "input-error",
         "input-help",
         "label",
+        "icon",
         "lib/useRadioKeyboard"
       ]
     },
@@ -164,6 +171,7 @@
         "input-error",
         "input-help",
         "label",
+        "icon",
         "lib/useRadioKeyboard"
       ]
     },
@@ -180,6 +188,7 @@
         "input-error",
         "input-help",
         "label",
+        "icon",
         "lib/useRadioKeyboard"
       ]
     },
@@ -212,7 +221,7 @@
         "ui/combobox/index.ts"
       ],
       "dependencies": ["reka-ui", "fuse.js"],
-      "registryDependencies": ["input-root", "input-error", "input-help", "label"]
+      "registryDependencies": ["input-root", "input-error", "input-help", "label", "icon", "button"]
     },
     "base-select": {
       "name": "BaseSelect",
@@ -236,7 +245,7 @@
         "ui/select/index.ts"
       ],
       "dependencies": ["reka-ui"],
-      "registryDependencies": []
+      "registryDependencies": ["icon"]
     },
     "listbox": {
       "name": "ListBox",
@@ -253,7 +262,9 @@
         "input-root",
         "input-error",
         "input-help",
-        "label"
+        "label",
+        "icon",
+        "button"
       ]
     }
   }

@@ -38,8 +38,8 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - name: Build ESLint config
-        run: pnpm --filter @banavasi/eslint-config build
+      - name: Build packages
+        run: pnpm --filter @banavasi/eslint-config build && pnpm --filter @banavasi/adms-rds-ui-icons build
 
       - name: Check formatting
         run: pnpm format:check

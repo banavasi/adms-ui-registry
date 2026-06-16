@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { HTMLAttributes } from 'vue'
-import { faChevronDown } from '@fortawesome/pro-light-svg-icons'
 import { ComboboxTrigger } from 'reka-ui'
 import { useAttrs } from 'vue'
 import { FontAwesomeIcon } from '@/components/ui/icon'
@@ -22,7 +21,7 @@ const attrs = useAttrs()
     :class="cn('combobox-trigger', props.class)"
   >
     <FontAwesomeIcon
-      :icon="faChevronDown"
+      :icon="['fal', 'chevron-down']"
       class="combobox-chevron"
       aria-hidden="true"
     />

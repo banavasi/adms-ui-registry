@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { HTMLAttributes } from 'vue'
-import { faCheck } from '@fortawesome/pro-light-svg-icons'
 import { RadioGroupIndicator, RadioGroupItem, RadioGroupRoot } from 'reka-ui'
 import { toRef } from 'vue'
 import { FontAwesomeIcon } from '@/components/ui/icon'
@@ -119,7 +118,7 @@ const { handleKeyDown } = useRadioKeyboard({
         <span class="radio-indicator-wrapper" aria-hidden="true">
           <RadioGroupIndicator class="radio-indicator">
             <FontAwesomeIcon
-              :icon="faCheck"
+              :icon="['fal', 'check']"
               class="radio-indicator-check"
               aria-hidden="true"
             />
@@ -135,7 +134,7 @@ const { handleKeyDown } = useRadioKeyboard({
         <span class="radio-indicator-wrapper" aria-hidden="true">
           <RadioGroupIndicator class="radio-indicator">
             <FontAwesomeIcon
-              :icon="faCheck"
+              :icon="['fal', 'check']"
               class="radio-indicator-check"
               aria-hidden="true"
             />

@@ -1,1 +1,1 @@
-export { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+export { FontAwesomeIcon } from '@banavasi/adms-rds-ui-icons'

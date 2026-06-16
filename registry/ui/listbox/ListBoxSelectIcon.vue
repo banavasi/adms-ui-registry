@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { HTMLAttributes } from 'vue'
-import { faChevronDown } from '@fortawesome/pro-light-svg-icons'
 import { computed, ref, useSlots, watch } from 'vue'
 import { Button, ButtonCloseIcon } from '@/components/ui/Button'
 import { FontAwesomeIcon } from '@/components/ui/icon'
@@ -261,7 +260,7 @@ const describedBy = computed(() =>
           "
         >
           <FontAwesomeIcon
-            :icon="faChevronDown"
+            :icon="['fal', 'chevron-down']"
             class="listbox-select-icon-chevron"
             aria-hidden="true"
           />

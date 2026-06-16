@@ -1,5 +1,11 @@
 import type { Preview } from '@storybook/vue3'
+import rdsIconsApp from '@banavasi/adms-rds-ui-icons/app'
+import { setup } from '@storybook/vue3'
 import '@/styles/styles.scss'
+
+setup((app) => {
+  app.use(rdsIconsApp)
+})
 
 const preview: Preview = {
   parameters: {

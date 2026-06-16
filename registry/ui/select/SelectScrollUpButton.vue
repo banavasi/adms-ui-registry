@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type { SelectScrollUpButtonProps } from 'reka-ui'
 import type { HTMLAttributes } from 'vue'
-import { faChevronUp } from '@fortawesome/pro-light-svg-icons'
 import { SelectScrollUpButton } from 'reka-ui'
 import { FontAwesomeIcon } from '@/components/ui/icon'
 import { cn } from '@/lib/util'
@@ -20,7 +19,7 @@ const props = defineProps<Props>()
   >
     <slot>
       <FontAwesomeIcon
-        :icon="faChevronUp"
+        :icon="['fal', 'chevron-up']"
         aria-hidden="true"
       />
     </slot>

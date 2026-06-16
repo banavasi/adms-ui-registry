@@ -47,7 +47,7 @@ jobs:
         run: pnpm install
 
       - name: Build packages
-        run: pnpm --filter @banavasi/eslint-config build && pnpm --filter @banavasi/adms-rds-ui-cli build
+        run: pnpm --filter @banavasi/eslint-config build && pnpm --filter @banavasi/adms-rds-ui-icons build && pnpm --filter @banavasi/adms-rds-ui-cli build
 
       - name: Create Release PR or Publish
         id: changeset

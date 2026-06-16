@@ -10,6 +10,7 @@
     "sync-all": "node sync-components.mjs"
   },
   "dependencies": {
+    "@banavasi/adms-rds-ui-icons": "workspace:*",
     "@fortawesome/fontawesome-svg-core": "^7.2.0",
     "@fortawesome/pro-light-svg-icons": "^7.2.0",
     "@fortawesome/vue-fontawesome": "^3.2.0",

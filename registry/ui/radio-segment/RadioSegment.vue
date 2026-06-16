@@ -1,6 +1,5 @@
 <script setup lang="ts" generic="T extends Record<string, unknown>">
 import type { HTMLAttributes } from 'vue'
-import { faCheck } from '@fortawesome/pro-light-svg-icons'
 import { RadioGroupIndicator, RadioGroupItem, RadioGroupRoot } from 'reka-ui'
 import { computed, onMounted, toRef, watch } from 'vue'
 import { FontAwesomeIcon } from '@/components/ui/icon'
@@ -186,7 +185,7 @@ watch(
         <span class="radio-segment-indicator-wrapper" aria-hidden="true">
           <RadioGroupIndicator class="radio-segment-indicator">
             <FontAwesomeIcon
-              :icon="faCheck"
+              :icon="['fal', 'check']"
               class="radio-segment-indicator-check"
               aria-hidden="true"
             />

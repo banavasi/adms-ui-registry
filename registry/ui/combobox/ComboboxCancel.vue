@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type { ComboboxCancelProps } from 'reka-ui'
 import type { HTMLAttributes } from 'vue'
-import { faXmark } from '@fortawesome/pro-light-svg-icons'
 import { ComboboxCancel } from 'reka-ui'
 import { FontAwesomeIcon } from '@/components/ui/icon'
 import { cn } from '@/lib/util'
@@ -19,7 +18,7 @@ const props = defineProps<Props>()
     :class="cn('combobox-cancel', props.class)"
   >
     <FontAwesomeIcon
-      :icon="faXmark"
+      :icon="['fal', 'xmark']"
       aria-hidden="true"
     />
   </ComboboxCancel>
