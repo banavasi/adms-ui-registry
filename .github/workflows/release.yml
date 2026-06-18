@@ -42,9 +42,11 @@ jobs:
 
       - name: Authenticate Font Awesome Pro registry
         # setup-node sets registry-url, which creates a temp userconfig and
-        # points NPM_CONFIG_USERCONFIG at it — shadowing ~/.npmrc. Write the FA
-        # token into that same file (fallback to ~/.npmrc) so pnpm picks it up.
-        run: echo "//npm.fontawesome.com/:_authToken=${FONTAWESOME_NPM_AUTH_TOKEN}" >> "${NPM_CONFIG_USERCONFIG:-$HOME/.npmrc}"
+        # points NPM_CONFIG_USERCONFIG at it — shadowing ~/.npmrc. Append the FA
+        # token to that same file so pnpm picks it up. The leading newline is
+        # required: setup-node's generated .npmrc has no trailing newline, so a
+        # bare `echo >>` would concatenate the token onto its last line.
+        run: printf '\n//npm.fontawesome.com/:_authToken=%s\n' "${FONTAWESOME_NPM_AUTH_TOKEN}" >> "${NPM_CONFIG_USERCONFIG:-$HOME/.npmrc}"
 
       - name: Install dependencies
         run: pnpm install
