@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { faEye, faEyeSlash } from '@fortawesome/pro-light-svg-icons'
 import { inject } from 'vue'
 import { FontAwesomeIcon } from '@/components/ui/icon'
 import { INPUT_INJECTION_KEY } from '@/components/ui/InputRoot'
@@ -38,13 +37,13 @@ function handleToggle() {
   >
     <FontAwesomeIcon
       v-if="!props.visible"
-      :icon="faEye"
+      :icon="['fal', 'eye']"
       aria-hidden="true"
       class="input-password-toggle-icon"
     />
     <FontAwesomeIcon
       v-else
-      :icon="faEyeSlash"
+      :icon="['fal', 'eye-slash']"
       aria-hidden="true"
       class="input-password-toggle-icon"
     />

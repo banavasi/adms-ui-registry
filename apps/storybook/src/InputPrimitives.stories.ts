@@ -30,7 +30,10 @@ adms-rds-ui add input-field
 
 \`\`\`vue
 <script setup lang="ts">
-import { InputRoot, InputField, InputError, InputHelp } from '@/components/ui'
+import { InputError } from '@/components/ui/InputError'
+import { InputField } from '@/components/ui/InputField'
+import { InputHelp } from '@/components/ui/InputHelp'
+import { InputRoot } from '@/components/ui/InputRoot'
 import { Label } from '@/components/ui/Label'
 
 const email = ref('')

@@ -143,6 +143,14 @@ IMPORTANT: Never hardcode colors. Use these SCSS variables from `registry/styles
 6. Define variants with CVA in `index.ts`
 7. Validate against Figma screenshot for 1:1 visual parity
 
+### Icons (FontAwesome Pro — `@banavasi/adms-rds-ui-icons`)
+
+- IMPORTANT: Icons are configured via the `rdsIcons()` Vite plugin from `@banavasi/adms-rds-ui-icons/vite` — list which FA Pro packages and icon names to bundle.
+- In components, import `FontAwesomeIcon` from `@/components/ui/icon` and reference icons BY NAME: `<FontAwesomeIcon :icon="['fal', 'chevron-down']" />`
+- Do NOT `import { faX } from '@fortawesome/...'` inside a component.
+- Add `"icon"` to the component's `registryDependencies` in `registry/index.json`.
+- FontAwesome Pro packages are installed by `init` (light by default); add solid/regular packages to both `package.json` and `rdsIcons({ packages: [...] })`.
+
 ### Asset Handling
 
 - IMPORTANT: If Figma MCP returns a localhost source for images/SVGs, use that directly

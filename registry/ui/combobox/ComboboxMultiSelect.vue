@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { HTMLAttributes } from 'vue'
-import { faChevronDown } from '@fortawesome/pro-light-svg-icons'
 import Fuse from 'fuse.js'
 import { computed, nextTick, ref, useSlots, watch } from 'vue'
 import { Button, ButtonCloseIcon } from '@/components/ui/Button'
@@ -530,7 +529,7 @@ const liveMessage = computed(() => {
             @mousedown.prevent
           >
             <FontAwesomeIcon
-              :icon="faChevronDown"
+              :icon="['fal', 'chevron-down']"
               class="combobox-multi-chevron"
               aria-hidden="true"
             />

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { ComboboxRootProps } from 'reka-ui'
 import { computed, ref, watch } from 'vue'
-import { ComboboxMultiSelect, ComboboxSelect } from '@/components/ui/combobox'
+import { ComboboxMultiSelect, ComboboxSelect } from '@/components/ui/Combobox'
 
 type SelectOption = Record<string, unknown> | string | number | boolean
 

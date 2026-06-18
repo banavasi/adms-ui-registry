@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type { HTMLAttributes } from 'vue'
 import type { LabelVariants } from '.'
-import { faCircleInfo } from '@fortawesome/pro-light-svg-icons'
 import { Label as RekaLabel } from 'reka-ui'
 import { FontAwesomeIcon } from '@/components/ui/icon'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/Tooltip'
@@ -51,7 +50,7 @@ const props = withDefaults(defineProps<Props>(), {
             :aria-describedby="`tooltip-${props.for}`"
           >
             <FontAwesomeIcon
-              :icon="faCircleInfo"
+              :icon="['fal', 'circle-info']"
               class="info-icon"
               aria-hidden="true"
               focusable="false"

@@ -2,7 +2,7 @@
 import type { HTMLAttributes } from 'vue'
 import { computed, ref, useSlots, watch } from 'vue'
 import { Button, ButtonCloseIcon } from '@/components/ui/Button'
-import { CheckboxPrimitive } from '@/components/ui/checkbox'
+import { FontAwesomeIcon } from '@/components/ui/icon'
 import { InputError } from '@/components/ui/InputError'
 import { InputHelp } from '@/components/ui/InputHelp'
 import { InputRoot } from '@/components/ui/InputRoot'
@@ -16,24 +16,25 @@ import {
 } from '@/components/ui/Select'
 import { cn } from '@/lib/util'
 
-export interface ListBoxOption {
+export interface ListBoxIconOption {
   label: string
   value: unknown
+  icon?: string
+  iconAlt?: string
   description?: string
   disabled?: boolean
 }
 
-type InputOption = ListBoxOption | string | number | boolean | Record<string, unknown>
+type InputOption = ListBoxIconOption | string | number | boolean | Record<string, unknown>
 
 interface Props {
   id: string
   options: InputOption[]
-  modelValue?: unknown[]
+  modelValue?: unknown | null
   label?: string
   tooltip?: string
   optional?: boolean
   placeholder?: string
-  pluralLabel?: string
   invalid?: boolean
   disabled?: boolean
   required?: boolean
@@ -44,41 +45,46 @@ interface Props {
   optionLabelKey?: string
   optionValueKey?: string
   optionDescriptionKey?: string
+  optionIconKey?: string
+  optionIconAltKey?: string
   class?: HTMLAttributes['class']
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  modelValue: () => [],
+  modelValue: null,
   optional: false,
-  placeholder: 'Select options',
-  pluralLabel: 'selected',
+  placeholder: 'Select an option',
   invalid: false,
   disabled: false,
   required: false,
-  clearable: true,
+  clearable: false,
   optionLabelKey: 'label',
   optionValueKey: 'value',
   optionDescriptionKey: 'description',
+  optionIconKey: 'icon',
+  optionIconAltKey: 'iconAlt',
 })
 
 const emit = defineEmits<{
-  change: [value: unknown[]]
+  change: [value: unknown | null]
 }>()
 
-const model = defineModel<unknown[]>({ default: () => [] })
+const model = defineModel<unknown | null>({ default: null })
 const isOpen = ref(false)
 const slots = useSlots()
 
 watch(
   () => model.value,
-  (value) => emit('change', value)
+  (value) => {
+    emit('change', value)
+  }
 )
 
 function hasOwn(obj: Record<string, unknown>, key: string) {
   return Object.prototype.hasOwnProperty.call(obj, key)
 }
 
-function normalizeOption(option: InputOption): ListBoxOption {
+function normalizeOption(option: InputOption): ListBoxIconOption {
   if (typeof option === 'string' || typeof option === 'number' || typeof option === 'boolean') {
     return {
       label: String(option),
@@ -91,6 +97,8 @@ function normalizeOption(option: InputOption): ListBoxOption {
     return {
       label: String(option.label),
       value: option.value,
+      icon: typeof option.icon === 'string' ? option.icon : undefined,
+      iconAlt: typeof option.iconAlt === 'string' ? option.iconAlt : undefined,
       description:
         typeof option.description === 'string' && option.description.length > 0
           ? option.description
@@ -107,10 +115,14 @@ function normalizeOption(option: InputOption): ListBoxOption {
   const value = record[props.optionValueKey] ?? record.value ?? record.id ?? rawLabel
 
   const rawDescription = record[props.optionDescriptionKey] ?? record.description
+  const rawIcon = record[props.optionIconKey] ?? record.icon
+  const rawIconAlt = record[props.optionIconAltKey] ?? record.iconAlt
 
   return {
     label: String(rawLabel),
     value,
+    icon: typeof rawIcon === 'string' && rawIcon.length > 0 ? rawIcon : undefined,
+    iconAlt: typeof rawIconAlt === 'string' && rawIconAlt.length > 0 ? rawIconAlt : undefined,
     description:
       typeof rawDescription === 'string' && rawDescription.length > 0 ? rawDescription : undefined,
     disabled: Boolean(record.disabled),
@@ -140,26 +152,15 @@ function isSameValue(a: unknown, b: unknown) {
   return false
 }
 
-const selectedOptions = computed(() =>
-  normalizedOptions.value.filter((option) =>
-    model.value.some((value) => isSameValue(value, option.value))
-  )
+const selectedOption = computed(
+  () => normalizedOptions.value.find((option) => isSameValue(option.value, model.value)) ?? null
 )
 
-const selectedSummary = computed(() => {
-  const count = selectedOptions.value.length
-  if (count === 0) {
-    return ''
-  }
+const selectedLabel = computed(() => selectedOption.value?.label ?? '')
 
-  if (count === 1) {
-    return selectedOptions.value[0]?.label ?? ''
-  }
-
-  return `${count} ${props.pluralLabel}`
-})
-
-const hasValue = computed(() => model.value.length > 0)
+const hasValue = computed(
+  () => model.value !== null && model.value !== undefined && model.value !== ''
+)
 const showClearButton = computed(() => props.clearable && !props.disabled && hasValue.value)
 
 const ariaDescribedBy = computed(() => {
@@ -176,16 +177,16 @@ const ariaDescribedBy = computed(() => {
   return ids.length > 0 ? ids.join(' ') : undefined
 })
 
-function isSelected(value: unknown) {
-  return model.value.some((item) => isSameValue(item, value))
-}
-
 function clearSelection() {
-  model.value = []
+  model.value = null
 }
 
 function handleOpenChange(value: boolean) {
   isOpen.value = value
+}
+
+function isImageSource(icon: string) {
+  return /^(?:https?:\/\/|data:image\/|\/|\.\/|\.\.\/)/.test(icon)
 }
 
 const instructionsId = computed(() => `${props.id}-instructions`)
@@ -216,98 +217,81 @@ const describedBy = computed(() =>
       :disabled="props.disabled"
       :required="props.required"
       :name="props.name"
-      :multiple="true"
-      class="listbox-multi-root"
+      class="listbox-select-icon-root"
       @update:open="handleOpenChange"
     >
-      <div class="listbox-multi-trigger-shell">
+      <div class="listbox-select-icon-trigger-shell">
         <SelectTrigger
           :id="props.id"
           :aria-invalid="props.invalid ? 'true' : undefined"
           :aria-describedby="describedBy"
           :class="
-            cn('listbox-multi-trigger', {
-              'listbox-multi-has-clear': showClearButton,
-              'listbox-multi-trigger-invalid': props.invalid,
-              'listbox-multi-trigger-selected': hasValue,
+            cn('listbox-select-icon-trigger', {
+              'listbox-select-icon-has-clear': showClearButton,
+              'listbox-select-icon-trigger-invalid': props.invalid,
+              'listbox-select-icon-trigger-selected': hasValue,
             })
           "
         >
           <SelectValue :placeholder="props.placeholder">
-            <span class="listbox-multi-summary-text" style="font-weight: 400 !important;">
-              <slot
-                name="summary"
-                :count="selectedOptions.length"
-                :selected-options="selectedOptions"
-                :default-summary="selectedSummary"
-              >
-                {{ selectedSummary }}
-              </slot>
-            </span>
+            <span class="listbox-select-icon-value-text" style="font-weight: 400 !important;">{{ selectedLabel }}</span>
           </SelectValue>
         </SelectTrigger>
 
         <Button
           v-if="showClearButton"
           variant="close"
-          aria-label="Clear selected values"
-          class="listbox-multi-clear"
+          aria-label="Clear selected value"
+          class="listbox-select-icon-clear"
           @mousedown.prevent
           @click.stop="clearSelection"
         >
           <template #close>
             <ButtonCloseIcon aria-hidden="true" />
           </template>
-          Clear selected values
+          Clear selected value
         </Button>
 
         <span
           :class="
-            cn('listbox-multi-chevron-wrapper', {
-              'listbox-multi-chevron-wrapper-open': isOpen,
+            cn('listbox-select-icon-chevron-wrapper', {
+              'listbox-select-icon-chevron-wrapper-open': isOpen,
             })
           "
         >
-          <svg
-            width="16"
-            height="16"
-            viewBox="41 169 430 238"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            class="listbox-multi-chevron"
+          <FontAwesomeIcon
+            :icon="['fal', 'chevron-down']"
+            class="listbox-select-icon-chevron"
             aria-hidden="true"
-          >
-            <path
-              d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z"
-              fill="currentColor"
-            />
-          </svg>
+          />
         </span>
       </div>
 
-      <SelectContent class="listbox-multi-content">
+      <SelectContent class="listbox-select-icon-content">
         <SelectItem
           v-for="(option, index) in normalizedOptions"
           :key="`${option.label}-${index}`"
           :value="option.value"
           :disabled="option.disabled"
           :text-value="option.label"
-          class="listbox-multi-option"
+          class="listbox-select-icon-option"
         >
-          <div class="listbox-multi-item-content">
-            <span inert aria-hidden="true" class="listbox-multi-checkbox-wrapper">
-              <CheckboxPrimitive
-                :model-value="isSelected(option.value) ? 'Y' : 'N'"
-                size="sm"
-                variant="rds-dark-3"
-                readonly-visual
-                class="listbox-multi-option-checkbox"
-              />
-            </span>
+          <div class="listbox-select-icon-item-content">
+            <div v-if="option.icon || $slots['option-icon']" class="listbox-select-icon-media">
+              <slot name="option-icon" :option="option">
+                <img
+                  v-if="option.icon && isImageSource(option.icon)"
+                  :src="option.icon"
+                  :alt="option.iconAlt || ''"
+                  class="listbox-select-icon-image"
+                >
+                <span v-else-if="option.icon" class="listbox-select-icon-glyph">{{ option.icon }}</span>
+              </slot>
+            </div>
 
-            <div class="listbox-multi-item-text">
-              <span class="listbox-multi-item-label">{{ option.label }}</span>
-              <span v-if="option.description" class="listbox-multi-item-description">
+            <div class="listbox-select-icon-item-text">
+              <span class="listbox-select-icon-item-label">{{ option.label }}</span>
+              <span v-if="option.description" class="listbox-select-icon-item-description">
                 {{ option.description }}
               </span>
             </div>
@@ -316,9 +300,9 @@ const describedBy = computed(() =>
       </SelectContent>
     </Select>
 
-    <div :id="instructionsId" class="listbox-multi-sr-only">
+    <div :id="instructionsId" class="listbox-select-icon-sr-only">
       Press Enter, Space, or Arrow Down to expand. Use Arrow keys to move through options.
-      Press Enter to toggle selection and Escape to close.
+      Press Enter to select and Escape to close.
     </div>
 
     <InputHelp v-if="props.helpText || $slots.help">
@@ -332,15 +316,15 @@ const describedBy = computed(() =>
 </template>
 
 <style scoped>
-.listbox-multi-root {
+.listbox-select-icon-root {
   width: 100%;
 }
 
-.listbox-multi-trigger-shell {
+.listbox-select-icon-trigger-shell {
   position: relative;
 }
 
-:deep(.listbox-multi-trigger) {
+:deep(.listbox-select-icon-trigger) {
   height: 3.3125rem;
   background: #fff;
   border: 1px solid var(--rds-light-4, #d0d0d0);
@@ -356,30 +340,30 @@ const describedBy = computed(() =>
   text-align: left;
 }
 
-:deep(.listbox-multi-trigger:focus) {
+:deep(.listbox-select-icon-trigger:focus) {
   outline: 2px solid #000;
   outline-offset: 2px;
   box-shadow: none;
 }
 
-:deep(.listbox-multi-trigger-invalid) {
+:deep(.listbox-select-icon-trigger-invalid) {
   border-color: var(--rds-danger, #cc2f2f);
   border-bottom-width: 0.25rem;
 }
 
-:deep(.listbox-multi-trigger-invalid:focus) {
+:deep(.listbox-select-icon-trigger-invalid:focus) {
   border-color: var(--rds-danger, #cc2f2f);
 }
 
-:deep(.listbox-multi-trigger[data-placeholder]) {
+:deep(.listbox-select-icon-trigger[data-placeholder]) {
   color: var(--rds-dark-1, #747474);
 }
 
-:deep(.listbox-multi-trigger-selected) {
+:deep(.listbox-select-icon-trigger-selected) {
   color: var(--rds-dark-3, #191919);
 }
 
-.listbox-multi-summary-text {
+.listbox-select-icon-value-text {
   color: var(--rds-dark-3, #191919);
   font-weight: 400 !important;
   overflow: hidden;
@@ -389,25 +373,25 @@ const describedBy = computed(() =>
   min-width: 0;
 }
 
-.listbox-multi-clear {
+.listbox-select-icon-clear {
   position: absolute;
-  right: 3.125rem; /* 24px between X icon and chevron */
+  right: 3.125rem;
   top: 50%;
   transform: translateY(-50%);
   z-index: 1;
 }
 
-.listbox-multi-clear.rds-button--close {
+.listbox-select-icon-clear.rds-button--close {
   width: 1.75rem;
   height: 1.75rem;
 }
 
-.listbox-multi-clear.rds-button--close .rds-button__close-icon {
+.listbox-select-icon-clear.rds-button--close .rds-button__close-icon {
   width: 0.875rem;
   height: 0.875rem;
 }
 
-.listbox-multi-chevron-wrapper {
+.listbox-select-icon-chevron-wrapper {
   position: absolute;
   right: 1rem;
   top: 50%;
@@ -423,18 +407,18 @@ const describedBy = computed(() =>
   transition: transform 0.2s ease;
 }
 
-.listbox-multi-chevron-wrapper-open {
+.listbox-select-icon-chevron-wrapper-open {
   transform: translateY(-50%) rotate(180deg);
 }
 
-.listbox-multi-chevron {
+.listbox-select-icon-chevron {
   forced-color-adjust: auto;
   display: block;
   width: 16px;
   height: 16px;
 }
 
-:deep(.listbox-multi-content) {
+:deep(.listbox-select-icon-content) {
   margin-top: 0;
   width: 100%;
   min-width: 100%;
@@ -445,12 +429,12 @@ const describedBy = computed(() =>
   box-shadow: none;
 }
 
-:deep(.listbox-multi-content .select-viewport) {
+:deep(.listbox-select-icon-content .select-viewport) {
   max-height: 19rem;
   background: #fff;
 }
 
-:deep(.listbox-multi-option) {
+:deep(.listbox-select-icon-option) {
   padding: 1rem;
   border-bottom: 0;
   color: var(--rds-dark-3, #191919);
@@ -458,51 +442,63 @@ const describedBy = computed(() =>
   cursor: pointer;
 }
 
-:deep(.listbox-multi-option[data-highlighted]) {
+:deep(.listbox-select-icon-option[data-highlighted]) {
   background: #fff;
   color: var(--rds-dark-3, #191919);
   outline: 2px solid #000;
   outline-offset: -2px;
 }
 
-:deep(.listbox-multi-option[data-state='checked']) {
+:deep(.listbox-select-icon-option[data-state='checked']) {
   background: var(--rds-secondary, #ffc627);
 }
 
-.listbox-multi-item-content {
+.listbox-select-icon-item-content {
   display: flex;
   align-items: center;
   gap: 0.75rem;
+  min-width: 0;
 }
 
-.listbox-multi-checkbox-wrapper {
+.listbox-select-icon-media {
+  width: 2rem;
+  height: 2rem;
+  flex: 0 0 2rem;
   display: inline-flex;
-  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
 }
 
-.listbox-multi-option-checkbox {
-  margin-top: 0;
-  flex: 0 0 auto;
+.listbox-select-icon-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 
-.listbox-multi-item-text {
+.listbox-select-icon-glyph {
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+.listbox-select-icon-item-text {
   display: flex;
   flex-direction: column;
   gap: 0.125rem;
+  min-width: 0;
 }
 
-.listbox-multi-item-label {
+.listbox-select-icon-item-label {
   font-size: 16px;
   line-height: 1.3;
 }
 
-.listbox-multi-item-description {
+.listbox-select-icon-item-description {
   font-size: 0.875rem;
   line-height: 1.3;
   color: var(--rds-dark-1, #747474);
 }
 
-.listbox-multi-sr-only {
+.listbox-select-icon-sr-only {
   position: absolute;
   width: 1px;
   height: 1px;

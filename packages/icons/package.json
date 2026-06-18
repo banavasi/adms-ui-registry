@@ -1,0 +1,70 @@
+{
+  "name": "@banavasi/adms-rds-ui-icons",
+  "version": "0.1.0",
+  "description": "Font Awesome Pro icon library for ADMS RDS UI with a configurable Vite plugin",
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./vite": {
+      "import": "./dist/vite.js",
+      "types": "./dist/vite.d.ts"
+    },
+    "./setup": {
+      "import": "./dist/setup.js",
+      "types": "./dist/setup.d.ts"
+    },
+    "./app": {
+      "import": "./dist/app.js",
+      "types": "./dist/app.d.ts"
+    }
+  },
+  "files": ["dist"],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch"
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^7.2.0",
+    "@fortawesome/vue-fontawesome": "^3.2.0"
+  },
+  "peerDependencies": {
+    "@fortawesome/pro-light-svg-icons": "^7.0.0",
+    "@fortawesome/pro-regular-svg-icons": "^7.0.0",
+    "@fortawesome/pro-solid-svg-icons": "^7.0.0",
+    "vite": "^5.0.0 || ^6.0.0",
+    "vue": "^3.4.0"
+  },
+  "peerDependenciesMeta": {
+    "@fortawesome/pro-light-svg-icons": {
+      "optional": true
+    },
+    "@fortawesome/pro-regular-svg-icons": {
+      "optional": true
+    },
+    "@fortawesome/pro-solid-svg-icons": {
+      "optional": true
+    },
+    "vite": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@fortawesome/pro-light-svg-icons": "^7.2.0",
+    "@fortawesome/pro-regular-svg-icons": "^7.2.0",
+    "@fortawesome/pro-solid-svg-icons": "^7.2.0",
+    "@types/node": "^20.0.0",
+    "tsup": "^8.3.5",
+    "typescript": "~5.8.0",
+    "vite": "^6.0.0",
+    "vue": "^3.5.0"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://npm.pkg.github.com"
+  },
+  "license": "MIT",
+  "keywords": ["adms", "rds", "fontawesome", "icons", "vue", "vite"]
+}

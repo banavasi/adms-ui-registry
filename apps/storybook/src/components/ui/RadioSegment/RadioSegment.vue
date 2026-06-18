@@ -2,6 +2,7 @@
 import type { HTMLAttributes } from 'vue'
 import { RadioGroupIndicator, RadioGroupItem, RadioGroupRoot } from 'reka-ui'
 import { computed, onMounted, toRef, watch } from 'vue'
+import { FontAwesomeIcon } from '@/components/ui/icon'
 import { InputError } from '@/components/ui/InputError'
 import { InputHelp } from '@/components/ui/InputHelp'
 import { InputRoot } from '@/components/ui/InputRoot'
@@ -183,21 +184,11 @@ watch(
         <span class="radio-segment-label">{{ getOptionLabel(option) }}</span>
         <span class="radio-segment-indicator-wrapper" aria-hidden="true">
           <RadioGroupIndicator class="radio-segment-indicator">
-            <svg
+            <FontAwesomeIcon
+              :icon="['fal', 'check']"
               class="radio-segment-indicator-check"
-              width="12"
-              height="12"
-              viewBox="0 0 16 16"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="3"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              xmlns="http://www.w3.org/2000/svg"
               aria-hidden="true"
-            >
-              <path d="M3 8.5 L6.5 12 L13 5" />
-            </svg>
+            />
           </RadioGroupIndicator>
         </span>
       </RadioGroupItem>

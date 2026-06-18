@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { ComputedRef, HTMLAttributes } from 'vue'
-import { faCheck } from '@fortawesome/pro-light-svg-icons'
 import { RadioGroupItem } from 'reka-ui'
 import { computed, inject } from 'vue'
 import { FontAwesomeIcon } from '@/components/ui/icon'
@@ -77,7 +76,7 @@ const handleLinkClick = (event: MouseEvent) => {
       "
     >
       <FontAwesomeIcon
-        :icon="faCheck"
+        :icon="['fal', 'check']"
         :class="
           cn('radio-card-check-icon', {
             'radio-card-check-icon-selected': isSelected,

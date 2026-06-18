@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
 import { computed, ref } from 'vue'
-import { ComboboxMultiSelect, ComboboxSelect } from '@/components/ui/combobox'
-import { ListBoxSelect } from '@/components/ui/listbox'
+import { ComboboxMultiSelect, ComboboxSelect } from '@/components/ui/Combobox'
+import { ListBoxSelect } from '@/components/ui/ListBox'
 import { TextInput } from '@/components/ui/TextInput'
 
 const meta: Meta<typeof ComboboxSelect> = {

@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
 import { ref } from 'vue'
-import { ListBoxMultiSelect, ListBoxSelect, ListBoxSelectIcon } from '@/components/ui/listbox'
+import { ListBoxMultiSelect, ListBoxSelect, ListBoxSelectIcon } from '@/components/ui/ListBox'
 
 const meta: Meta<typeof ListBoxSelect> = {
   title: 'Components/ListBox',

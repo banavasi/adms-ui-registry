@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { faCircleExclamation } from '@fortawesome/pro-light-svg-icons'
 import { inject } from 'vue'
 import { FontAwesomeIcon } from '@/components/ui/icon'
 import { INPUT_INJECTION_KEY } from '@/components/ui/InputRoot'
@@ -19,7 +18,7 @@ if (!context) {
     role="alert"
   >
     <FontAwesomeIcon
-      :icon="faCircleExclamation"
+      :icon="['fal', 'circle-exclamation']"
       class="me-space-xxs flex-shrink-0"
       aria-hidden="true"
     />

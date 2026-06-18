@@ -3,6 +3,7 @@ import type { HTMLAttributes } from 'vue'
 import Fuse from 'fuse.js'
 import { computed, nextTick, ref, useSlots, watch } from 'vue'
 import { Button, ButtonCloseIcon } from '@/components/ui/Button'
+import { FontAwesomeIcon } from '@/components/ui/icon'
 import { InputError } from '@/components/ui/InputError'
 import { InputHelp } from '@/components/ui/InputHelp'
 import { InputRoot } from '@/components/ui/InputRoot'
@@ -568,20 +569,11 @@ const liveMessage = computed(() => {
                 :aria-label="isOpen ? 'Collapse options' : 'Expand options'"
                 @mousedown.prevent
               >
-                <svg
-                  width="16"
-                  height="16"
-                  viewBox="41 169 430 238"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
+                <FontAwesomeIcon
+                  :icon="['fal', 'chevron-down']"
                   class="combobox-select-chevron"
                   aria-hidden="true"
-                >
-                  <path
-                    d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z"
-                    fill="currentColor"
-                  />
-                </svg>
+                />
               </button>
             </ComboboxTrigger>
           </ComboboxInput>
