@@ -44,8 +44,10 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - name: Build CLI
-        run: pnpm --filter @banavasi/adms-rds-ui-cli build
+      - name: Build packages
+        # The icons package must be built first — storybook's vite.config.ts
+        # imports @banavasi/adms-rds-ui-icons/vite (dist/vite.js).
+        run: pnpm --filter @banavasi/adms-rds-ui-icons build && pnpm --filter @banavasi/adms-rds-ui-cli build
 
       - name: Initialize Storybook with CLI
         working-directory: apps/storybook
