@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
+import { FontAwesomeIcon } from '@/components/ui/icon'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/Tooltip'
 
 const meta: Meta<typeof Tooltip> = {
@@ -388,13 +389,15 @@ export const WithLinkTrigger: Story = {
 export const WithIconTrigger: Story = {
   name: 'Icon Trigger',
   render: () => ({
-    components: { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger },
+    components: { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger, FontAwesomeIcon },
     template: `
       <div class="d-flex gap-4 p-4">
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger as-child>
-              <button class="btn btn-outline-secondary btn-icon">?</button>
+              <button class="btn btn-outline-secondary btn-icon" aria-label="Help">
+                <FontAwesomeIcon :icon="['fal', 'circle-question']" />
+              </button>
             </TooltipTrigger>
             <TooltipContent>
               Help information
@@ -405,7 +408,9 @@ export const WithIconTrigger: Story = {
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger as-child>
-              <button class="btn btn-outline-primary btn-icon">⚙</button>
+              <button class="btn btn-outline-primary btn-icon" aria-label="Settings">
+                <FontAwesomeIcon :icon="['fal', 'gear']" />
+              </button>
             </TooltipTrigger>
             <TooltipContent>
               Settings
@@ -416,7 +421,9 @@ export const WithIconTrigger: Story = {
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger as-child>
-              <button class="btn btn-outline-secondary btn-icon">ℹ</button>
+              <button class="btn btn-outline-secondary btn-icon" aria-label="More information">
+                <FontAwesomeIcon :icon="['fal', 'circle-info']" />
+              </button>
             </TooltipTrigger>
             <TooltipContent>
               More information
@@ -427,7 +434,9 @@ export const WithIconTrigger: Story = {
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger as-child>
-              <button class="btn btn-danger btn-icon">!</button>
+              <button class="btn btn-danger btn-icon" aria-label="Warning">
+                <FontAwesomeIcon :icon="['fal', 'triangle-exclamation']" />
+              </button>
             </TooltipTrigger>
             <TooltipContent>
               Warning
@@ -483,7 +492,7 @@ export const WithinForm: Story = {
     },
   },
   render: () => ({
-    components: { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger },
+    components: { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger, FontAwesomeIcon },
     template: `
       <div class="p-4 border rounded" style="max-width: 400px;">
         <h5 class="mb-3">Create Account</h5>
@@ -494,7 +503,7 @@ export const WithinForm: Story = {
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger as-child>
-                  <span class="text-muted" style="cursor: help;">ⓘ</span>
+                  <span class="text-muted" style="cursor: help;"><FontAwesomeIcon :icon="['fal', 'circle-info']" /></span>
                 </TooltipTrigger>
                 <TooltipContent>
                   Your username must be 4-20 characters long and can only contain letters, numbers, and underscores.
@@ -511,7 +520,7 @@ export const WithinForm: Story = {
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger as-child>
-                  <span class="text-muted" style="cursor: help;">ⓘ</span>
+                  <span class="text-muted" style="cursor: help;"><FontAwesomeIcon :icon="['fal', 'circle-info']" /></span>
                 </TooltipTrigger>
                 <TooltipContent>
                   We'll send a verification link to this email address.
@@ -528,7 +537,7 @@ export const WithinForm: Story = {
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger as-child>
-                  <span class="text-muted" style="cursor: help;">ⓘ</span>
+                  <span class="text-muted" style="cursor: help;"><FontAwesomeIcon :icon="['fal', 'circle-info']" /></span>
                 </TooltipTrigger>
                 <TooltipContent>
                   Password must be at least 8 characters with uppercase, lowercase, and numbers.

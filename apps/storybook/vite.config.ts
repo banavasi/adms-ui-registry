@@ -8,6 +8,27 @@ export default defineConfig({
     vue(),
     rdsIcons({
       packages: ['light'],
+      // Demo icons used by the stories (the RDS preset icons are added
+      // automatically by `rds: true`). Declaring a name here is all it takes
+      // for `<FontAwesomeIcon :icon="['fal', 'name']" />` to render.
+      icons: {
+        light: [
+          'star',
+          'heart',
+          'house',
+          'gear',
+          'bell',
+          'circle-question',
+          'triangle-exclamation',
+          'magnifying-glass',
+          'user',
+          'envelope',
+          'calendar',
+          'trash',
+          'pen',
+          'download',
+        ],
+      },
     }),
   ],
   resolve: {
