@@ -149,7 +149,17 @@ export async function init(options: InitOptions) {
   console.log(pc.green('✓ Created rds-ui.json'))
 
   // Collect and install dependencies
-  const allDeps = [...registry.lib.utils.dependencies, ...registry.styles.dependencies, 'reka-ui']
+  // The icons package + its FA Pro light peer are installed up front so the
+  // rdsIcons() plugin wired into vite.config.ts resolves on first run. FA Pro
+  // is a private registry — consumers need the auth token in ~/.npmrc (see the
+  // next-steps output below).
+  const allDeps = [
+    ...registry.lib.utils.dependencies,
+    ...registry.styles.dependencies,
+    'reka-ui',
+    '@banavasi/adms-rds-ui-icons',
+    '@fortawesome/pro-light-svg-icons',
+  ]
   const uniqueDeps = [...new Set(allDeps)]
 
   console.log(pc.cyan('\n📦 Installing dependencies...\n'))
@@ -166,8 +176,18 @@ export async function init(options: InitOptions) {
   console.log('Next steps:')
   console.log(pc.dim(`  1. Import styles in your main.ts:`))
   console.log(pc.white(`     import "${config.alias}/${stylesPath}/styles.scss";`))
-  console.log(pc.dim(`  2. Add a component:`))
+  console.log(pc.dim(`  2. Register icons globally in your main.ts:`))
+  console.log(pc.white(`     import rdsIconsApp from "@banavasi/adms-rds-ui-icons/app";`))
+  console.log(pc.white(`     createApp(App).use(rdsIconsApp).mount("#app");`))
+  console.log(pc.dim(`  3. Add a component:`))
   console.log(pc.white(`     npx @adms-rds-ui/cli add button\n`))
+  console.log(
+    pc.dim(
+      `  Font Awesome Pro is a private registry. If install failed, add your token:\n` +
+        `     echo "//npm.fontawesome.com/:_authToken=YOUR_TOKEN" >> ~/.npmrc\n` +
+        `  Declare extra icons via rdsIcons({ icons: { light: ["star"] } }) in vite.config.ts.\n`
+    )
+  )
 }
 
 // Transform @/ to user's alias
@@ -175,7 +195,7 @@ function transformAliasImports(content: string, config: RdsConfig): string {
   return content.replace(/@\//g, `${config.alias}/`)
 }
 
-// Update vite.config.ts with alias
+// Update vite.config.ts with the src alias and the rdsIcons() plugin
 async function updateViteConfig(cwd: string, config: RdsConfig) {
   const viteConfigPath = path.join(cwd, 'vite.config.ts')
 
@@ -188,6 +208,7 @@ async function updateViteConfig(cwd: string, config: RdsConfig) {
     aliases[config.componentsAlias] = `./${config.componentsDir}`
   }
 
+  // Create from scratch — alias + rdsIcons plugin wired in
   if (!fs.existsSync(viteConfigPath)) {
     const aliasEntries = Object.entries(aliases)
       .map(([key, val]) => `      "${key}": path.resolve(__dirname, "${val}"),`)
@@ -195,10 +216,14 @@ async function updateViteConfig(cwd: string, config: RdsConfig) {
 
     const viteConfig = `import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
+import { rdsIcons } from "@banavasi/adms-rds-ui-icons/vite";
 import path from "path";
 
 export default defineConfig({
-  plugins: [vue()],
+  plugins: [
+    vue(),
+    rdsIcons({ packages: ["light"] }),
+  ],
   resolve: {
     alias: {
 ${aliasEntries}
@@ -207,45 +232,81 @@ ${aliasEntries}
 });
 `
     fs.writeFileSync(viteConfigPath, viteConfig)
-    console.log(pc.green('✓ Created vite.config.ts'))
+    console.log(pc.green('✓ Created vite.config.ts (alias + rdsIcons plugin)'))
     return
   }
 
   let content = fs.readFileSync(viteConfigPath, 'utf-8')
 
+  // --- src alias ---
   if (content.includes(`"${config.alias}"`)) {
     console.log(pc.dim('  vite.config.ts already has alias configured'))
-    return
-  }
-
-  if (content.includes('resolve:') && content.includes('alias:')) {
-    const aliasLines = Object.entries(aliases)
-      .map(([key, val]) => `      "${key}": path.resolve(__dirname, "${val}"),`)
-      .join('\n')
-    content = content.replace(/(alias:\s*\{)/, `$1\n${aliasLines}`)
-  } else if (content.includes('resolve:')) {
-    const aliasLines = Object.entries(aliases)
-      .map(([key, val]) => `      "${key}": path.resolve(__dirname, "${val}"),`)
-      .join('\n')
-    const aliasConfig = `    alias: {\n${aliasLines}\n    },`
-    content = content.replace(/(resolve:\s*\{)/, `$1\n${aliasConfig}`)
   } else {
-    const aliasLines = Object.entries(aliases)
-      .map(([key, val]) => `      "${key}": path.resolve(__dirname, "${val}"),`)
-      .join('\n')
-    const resolveConfig = `  resolve: {\n    alias: {\n${aliasLines}\n    },\n  },`
-    content = content.replace(/(defineConfig\(\s*)\{/, `$1{\n${resolveConfig}`)
+    if (content.includes('resolve:') && content.includes('alias:')) {
+      const aliasLines = Object.entries(aliases)
+        .map(([key, val]) => `      "${key}": path.resolve(__dirname, "${val}"),`)
+        .join('\n')
+      content = content.replace(/(alias:\s*\{)/, `$1\n${aliasLines}`)
+    } else if (content.includes('resolve:')) {
+      const aliasLines = Object.entries(aliases)
+        .map(([key, val]) => `      "${key}": path.resolve(__dirname, "${val}"),`)
+        .join('\n')
+      const aliasConfig = `    alias: {\n${aliasLines}\n    },`
+      content = content.replace(/(resolve:\s*\{)/, `$1\n${aliasConfig}`)
+    } else {
+      const aliasLines = Object.entries(aliases)
+        .map(([key, val]) => `      "${key}": path.resolve(__dirname, "${val}"),`)
+        .join('\n')
+      const resolveConfig = `  resolve: {\n    alias: {\n${aliasLines}\n    },\n  },`
+      content = content.replace(/(defineConfig\(\s*)\{/, `$1{\n${resolveConfig}`)
+    }
+
+    if (
+      !content.includes('import path from "path"') &&
+      !content.includes("import path from 'path'")
+    ) {
+      content = `import path from "path";\n${content}`
+    }
+    console.log(pc.green('✓ Updated vite.config.ts with alias'))
   }
 
-  if (
-    !content.includes('import path from "path"') &&
-    !content.includes("import path from 'path'")
-  ) {
-    content = `import path from "path";\n${content}`
-  }
+  // --- rdsIcons() plugin ---
+  content = ensureRdsIconsPlugin(content)
 
   fs.writeFileSync(viteConfigPath, content)
-  console.log(pc.green('✓ Updated vite.config.ts with alias'))
+}
+
+// Ensure the rdsIcons() plugin (and its import) are present in an existing
+// vite.config.ts. No-op if already wired. Returns the updated source.
+function ensureRdsIconsPlugin(content: string): string {
+  if (content.includes('adms-rds-ui-icons/vite') || content.includes('rdsIcons(')) {
+    console.log(pc.dim('  vite.config.ts already has the rdsIcons plugin'))
+    return content
+  }
+
+  // Add the import after the vue plugin import when present, else at the top.
+  const importLine = `import { rdsIcons } from "@banavasi/adms-rds-ui-icons/vite";`
+  if (/import\s+vue\s+from\s+['"]@vitejs\/plugin-vue['"];?\n/.test(content)) {
+    content = content.replace(
+      /(import\s+vue\s+from\s+['"]@vitejs\/plugin-vue['"];?\n)/,
+      `$1${importLine}\n`
+    )
+  } else {
+    content = `${importLine}\n${content}`
+  }
+
+  // Inject into the existing plugins array, or create one inside defineConfig.
+  const pluginEntry = `rdsIcons({ packages: ["light"] }),`
+  if (/plugins:\s*\[/.test(content)) {
+    // Consume whitespace after `[` so the existing first plugin keeps its own
+    // line instead of being mashed onto the rdsIcons() entry.
+    content = content.replace(/plugins:\s*\[\s*/, `plugins: [\n    ${pluginEntry}\n    `)
+  } else {
+    content = content.replace(/(defineConfig\(\s*\{)/, `$1\n  plugins: [${pluginEntry}],`)
+  }
+
+  console.log(pc.green('✓ Wired rdsIcons() plugin into vite.config.ts'))
+  return content
 }
 
 // Merge paths without duplicating existing aliases
