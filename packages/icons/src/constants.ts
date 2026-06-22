@@ -1,5 +1,5 @@
-/** Font Awesome Pro style packages the Vite plugin can register icons from. */
-export type FaPackage = 'light' | 'solid' | 'regular'
+/** Font Awesome style packages the Vite plugin can register icons from. */
+export type FaPackage = 'light' | 'solid' | 'regular' | 'sharp-solid' | 'sharp-regular' | 'brands'
 
 /** Kebab-case icon names grouped by FA style package. */
 export type FaIconsConfig = Partial<Record<FaPackage, string[]>>
@@ -26,6 +26,9 @@ export const FA_PREFIX: Record<FaPackage, string> = {
   light: 'fal',
   solid: 'fas',
   regular: 'far',
+  'sharp-solid': 'fass',
+  'sharp-regular': 'fasr',
+  brands: 'fab',
 }
 
 /** npm package that provides SVG definitions for each FA style. */
@@ -33,6 +36,9 @@ export const FA_PACKAGE_MODULE: Record<FaPackage, string> = {
   light: '@fortawesome/pro-light-svg-icons',
   solid: '@fortawesome/pro-solid-svg-icons',
   regular: '@fortawesome/pro-regular-svg-icons',
+  'sharp-solid': '@fortawesome/sharp-solid-svg-icons',
+  'sharp-regular': '@fortawesome/sharp-regular-svg-icons',
+  brands: '@fortawesome/free-brands-svg-icons',
 }
 
 /** Convert `chevron-down` → `faChevronDown` (Font Awesome export name). */

@@ -38,9 +38,22 @@ export function generateSetupModule(options: RdsIconsOptions = {}): string {
     if (!names?.length) continue
 
     const moduleId = FA_PACKAGE_MODULE[pkg]
-    const exports = names.map(toFaExportName)
-    importLines.push(`import { ${exports.join(', ')} } from '${moduleId}'`)
-    registerNames.push(...exports)
+    // Alias each import per package so the same icon enabled in multiple
+    // weights (e.g. chevron-down in light + solid) doesn't collide on one
+    // local identifier (`Identifier faChevronDown has already been declared`).
+    // `library.add` keys by the definition's prefix+name, so the local JS
+    // identifier is irrelevant — only uniqueness matters.
+    const suffix = pkg.replace(/[^a-z0-9]/gi, '_')
+    const specifiers = names.map((name) => {
+      const exportName = toFaExportName(name)
+      return { exportName, localName: `${exportName}_${suffix}` }
+    })
+    importLines.push(
+      `import { ${specifiers
+        .map((s) => `${s.exportName} as ${s.localName}`)
+        .join(', ')} } from '${moduleId}'`
+    )
+    registerNames.push(...specifiers.map((s) => s.localName))
   }
 
   const libraryAdd =
