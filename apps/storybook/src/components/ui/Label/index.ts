@@ -4,7 +4,7 @@ import { cva } from '@/lib/util'
 export { default as Label } from './Label.vue'
 
 export const labelVariants = cva(
-  'd-flex align-items-start gap-space-sm form-label fw-bold mb-space-xs',
+  'd-flex align-items-start gap-space-xxs form-label fw-bold mb-space-xxs',
   {
     variants: {
       size: {
