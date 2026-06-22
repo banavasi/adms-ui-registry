@@ -622,7 +622,7 @@ const liveMessage = computed(() => {
   min-height: 3.3125rem;
   border: 1px solid var(--rds-light-4, #d0d0d0);
   border-radius: 0;
-  background: #fff;
+  background: var(--rds-white, #fff);
   padding: 0 5rem 0 0;
 }
 
@@ -643,8 +643,7 @@ const liveMessage = computed(() => {
   background: transparent;
   color: var(--rds-dark-3, #191919);
   caret-color: var(--rds-dark-3, #191919);
-  font-family: var(--rds-font-family, Arial, Helvetica, "Nimbus Sans L", "Liberation Sans", FreeSans, sans-serif);
-  font-size: 16px;
+  font-size: 1rem;
   font-weight: 400 !important;
   line-height: 1.5;
   padding: 0 1rem !important;
@@ -678,8 +677,7 @@ const liveMessage = computed(() => {
   white-space: nowrap;
   pointer-events: none;
   color: var(--rds-dark-3, #191919);
-  font-family: var(--rds-font-family, Arial, Helvetica, "Nimbus Sans L", "Liberation Sans", FreeSans, sans-serif);
-  font-size: 16px;
+  font-size: 1rem;
   font-weight: 400 !important;
   line-height: 1.5;
   z-index: 1;
@@ -727,14 +725,14 @@ const liveMessage = computed(() => {
 .combobox-multi-search-shell {
   padding: 0.625rem;
   border-bottom: 1px solid var(--rds-light-3, #e8e8e8);
-  background: #fff;
+  background: var(--rds-white, #fff);
 }
 
 .combobox-multi-search {
   width: 100%;
   min-height: 3rem;
   border: 1px solid var(--rds-light-4, #d0d0d0);
-  background: #fff;
+  background: var(--rds-white, #fff);
   color: var(--rds-dark-3, #191919);
   font-size: 1rem;
   line-height: 1.5;
@@ -755,7 +753,7 @@ const liveMessage = computed(() => {
   margin-top: 0.375rem;
   width: 100%;
   min-width: 100%;
-  background: #fff;
+  background: var(--rds-white, #fff);
   border: 1px solid var(--rds-light-4, #d0d0d0);
   border-radius: 0;
   box-shadow: 0 10px 30px rgba(25, 25, 25, 0.12);
@@ -763,26 +761,26 @@ const liveMessage = computed(() => {
 
 :deep(.combobox-multi-content .combobox-viewport) {
   max-height: 19rem;
-  background: #fff;
+  background: var(--rds-white, #fff);
 }
 
 :deep(.combobox-multi-option) {
   padding: 1rem;
   color: var(--rds-dark-3, #191919);
-  background: #fff;
+  background: var(--rds-white, #fff);
   cursor: pointer;
 }
 
 :deep(.combobox-multi-option[data-highlighted]),
 :deep(.combobox-multi-option[data-active='true']) {
-  background: var(--rds-gold, #ffc627);
+  background: var(--rds-secondary, #ffc627);
   color: var(--rds-dark-3, #191919);
   outline: none;
 }
 
 :deep(.combobox-multi-option[data-state='checked']),
 :deep(.combobox-multi-option[data-selected='true']) {
-  background: var(--rds-gold, #ffc627);
+  background: var(--rds-secondary, #ffc627);
   color: var(--rds-dark-3, #191919);
   font-weight: 400;
 }
@@ -803,7 +801,7 @@ const liveMessage = computed(() => {
 }
 
 .combobox-multi-option-label {
-  font-size: 16px;
+  font-size: 1rem;
   line-height: 1.3;
 }
 

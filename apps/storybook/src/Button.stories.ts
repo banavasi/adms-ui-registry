@@ -81,8 +81,8 @@ const meta: Meta<typeof Button> = {
     variant: {
       control: 'select',
       options: [
-        'maroon',
-        'gold',
+        'primary',
+        'secondary',
         'gray',
         'black',
         'white',
@@ -115,14 +115,14 @@ export const ColorMatrix: Story = {
     },
     template: `
       <div style="width: 640px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px 36px;">
-        <Button variant="maroon">Default Button</Button>
-        <Button variant="maroon">
+        <Button variant="primary">Default Button</Button>
+        <Button variant="primary">
           Default Button
           <template #trailing><span v-html="ArrowRightIcon" /></template>
         </Button>
 
-        <Button variant="gold">Default Button</Button>
-        <Button variant="gold">
+        <Button variant="secondary">Default Button</Button>
+        <Button variant="secondary">
           Default Button
           <template #trailing><span v-html="ArrowRightIcon" /></template>
         </Button>
@@ -145,14 +145,14 @@ export const ColorMatrix: Story = {
           <template #trailing><span v-html="ArrowRightIcon" /></template>
         </Button>
 
-        <Button variant="maroon" disabled>Default Button</Button>
-        <Button variant="maroon" disabled>
+        <Button variant="primary" disabled>Default Button</Button>
+        <Button variant="primary" disabled>
           Default Button
           <template #trailing><span v-html="ArrowRightIcon" /></template>
         </Button>
 
-        <Button variant="gold" disabled>Default Button</Button>
-        <Button variant="gold" disabled>
+        <Button variant="secondary" disabled>Default Button</Button>
+        <Button variant="secondary" disabled>
           Default Button
           <template #trailing><span v-html="ArrowRightIcon" /></template>
         </Button>
@@ -214,11 +214,11 @@ export const GoldButtonStates: Story = {
     },
     template: `
       <div style="display: flex; flex-direction: column; align-items: flex-start; gap: 16px; width: 240px;">
-        <Button variant="gold">
+        <Button variant="secondary">
           Save changes
           <template #trailing><span v-html="ArrowRightIcon" /></template>
         </Button>
-        <Button variant="gold" disabled>
+        <Button variant="secondary" disabled>
           Save changes
           <template #trailing><span v-html="ArrowRightIcon" /></template>
         </Button>
@@ -262,13 +262,13 @@ export const LinkButtons: Story = {
     components: { Button, 'router-link': RouterLinkStub },
     template: `
       <div style="display: flex; flex-direction: column; align-items: flex-start; gap: 16px; width: 360px;">
-        <Button href="https://www.asu.edu" variant="maroon">
+        <Button href="https://www.asu.edu" variant="primary">
           External link button
         </Button>
-        <Button :to="{ path: '/dashboard' }" variant="gold">
+        <Button :to="{ path: '/dashboard' }" variant="secondary">
           Router link button
         </Button>
-        <Button :to="{ path: '/dashboard' }" variant="gold" disabled>
+        <Button :to="{ path: '/dashboard' }" variant="secondary" disabled>
           Disabled router link button
         </Button>
       </div>
@@ -327,7 +327,7 @@ export const EventEmitsTester: Story = {
           Latest event: <strong>{{ latestEvent }}</strong>
         </p>
         <Button
-          variant="maroon"
+          variant="primary"
           @click="onEvent('click')"
           @dblclick="onEvent('dblclick')"
           @mousedown="onEvent('mousedown')"

@@ -1,0 +1,15 @@
+# adms-ui-registry — project memory (profile: asu)
+> Precedence: PROJECT (this file) > PROFILE > STACK > GLOBAL — this file wins. See ~/.claude/CLAUDE.md.
+> Project preferences below; managed by /pref (don't hand-edit the fence).
+
+<!-- PREFS:PROJECT:START -->
+### design-system
+- Style `registry/ui` components with Bootstrap semantic classes FIRST, not `var(--rds-*)` and not raw values. The RDS theme map remaps Bootstrap so `primary` = maroon and `secondary` = gold, and merges the neutral scale + semantics into `$theme-colors`, so the build already emits brand utility/component classes: `btn-primary`/`bg-primary`/`text-primary`/`border-primary` (maroon), `*-secondary` (gold), `bg-light-1..5`, `bg-dark-1..3`, `border-light-4`, `text/bg-success|info|warning|danger`, plus `*-space-*` spacing (`p-space-xs`, `gap-space-md`, `px-space-xxxs` … xxxs→xxxl) and the `fs-*` font scale. Compose these in the CVA `index.ts`; reach for `var(--rds-*)` only inside a `<style>` block where no class fits (rgba shadows, gradients, pseudo-elements), and never hardcode the colour/size when a class or token exists.  <!-- key:design-system:bootstrap-classes-first -->
+### styling
+- Do NOT re-declare `font-family` (or restate the base sans-serif font) in a component — Bootstrap's reboot already applies `$font-family-base` → `var(--rds-font-family, Arial…)` to `body` globally, so components inherit the RDS font. Drop the redundant `font-family: …` lines; use `fw-bold`/`fw-normal` (or a token) for weight rather than re-stating defaults.  <!-- key:styling:no-redundant-font -->
+- Keep a component's `<style scoped>` minimal — only structural/positioning concerns Bootstrap + the RDS tokens genuinely don't cover; when CSS is unavoidable reference tokens as `var(--rds-token, #hexFallback)` (token first, hex only as fallback), following the `heading` / `radio-card` / `combobox` style.  <!-- key:styling:scoped-minimal -->
+- Use ONLY canonical RDS custom-property names — the build emits `var(--rds-primary)` (maroon) and `var(--rds-secondary)` (gold), plus `--rds-light-1..5` / `--rds-dark-1..3` / `--rds-success|info|warning|danger` / `--rds-white|black`. `var(--rds-maroon)` and `var(--rds-gold)` are NOT emitted and silently fall back to their hex — never use them; use `--rds-primary` / `--rds-secondary` (or the `bg-*`/`text-*` utility) instead.  <!-- key:styling:canonical-token-names -->
+- Focus rings are the ONE sanctioned literal: keep `outline: 2px solid #000; outline-offset: 2px; box-shadow: none;` as-is (the CLAUDE.md focus convention) — do not tokenise `#000` here (`--rds-black` only resolves to `#000` anyway).  <!-- key:styling:focus-ring-literal -->
+### do-not
+- Never hardcode bare hex colours or px spacing as the primary value inside a component; `registry/ui/button/Button.vue` (44 hardcoded hex, 0 token refs, ~370-line style block re-implementing the whole ASU palette + a redundant `font-family: Arial`) is the anti-pattern — do not replicate it. Prefer `btn-primary`/`bg-secondary`/`*-space-*` classes, then `var(--rds-*)`.  <!-- key:do-not:hardcode-design-values -->
+<!-- PREFS:PROJECT:END -->

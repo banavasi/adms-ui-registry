@@ -7,10 +7,8 @@ export { default as ButtonCloseIcon } from './ButtonCloseIcon.vue'
 export const buttonVariants = cva('rds-button-reset', {
   variants: {
     variant: {
-      maroon: 'rds-button rds-button--pill rds-button--maroon',
-      gold: 'rds-button rds-button--pill rds-button--gold',
-      gray: 'rds-button rds-button--pill rds-button--gray',
-      black: 'rds-button rds-button--pill rds-button--black',
+      gray: 'rds-button btn btn-light-3',
+      black: 'rds-button btn btn-dark',
       white: 'rds-button rds-button--pill rds-button--white',
       complete: 'rds-button rds-button--status rds-button--complete',
       incomplete: 'rds-button rds-button--status rds-button--incomplete',
@@ -25,8 +23,8 @@ export const buttonVariants = cva('rds-button-reset', {
       'help-footer': 'rds-button rds-button--help-footer',
       'help-footer-mobile': 'rds-button rds-button--help-footer',
       'outline-pill': 'rds-button rds-button--pill rds-button--outline-pill',
-      primary: 'btn btn-primary text-white',
-      secondary: 'btn btn-secondary',
+      primary: 'rds-button btn btn-primary text-white',
+      secondary: 'rds-button btn btn-secondary',
       success: 'btn btn-success text-white',
       danger: 'btn btn-danger text-white',
       warning: 'btn btn-warning text-white',
@@ -50,7 +48,7 @@ export const buttonVariants = cva('rds-button-reset', {
     },
   },
   defaultVariants: {
-    variant: 'maroon',
+    variant: 'primary',
     size: 'md',
   },
 })

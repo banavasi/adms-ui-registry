@@ -111,7 +111,7 @@ const handleLinkClick = (event: MouseEvent) => {
 .radio-card {
   display: flex;
   position: relative;
-  background-color: #fff;
+  background-color: var(--rds-white, #fff);
   border: 2px solid transparent;
   box-shadow: inset 0 0 0 1px var(--rds-dark-1, #747474);
   cursor: pointer;
@@ -208,8 +208,8 @@ const handleLinkClick = (event: MouseEvent) => {
 }
 
 .radio-card-check-selected {
-  border-color: var(--rds-gold, #ffc627);
-  background: var(--rds-gold, #ffc627);
+  border-color: var(--rds-secondary, #ffc627);
+  background: var(--rds-secondary, #ffc627);
 }
 
 .radio-card-check-icon-selected {
@@ -237,12 +237,12 @@ const handleLinkClick = (event: MouseEvent) => {
 }
 
 .radio-card-selected {
-  border-color: var(--rds-gold, #ffc627);
+  border-color: var(--rds-secondary, #ffc627);
   box-shadow: none;
 }
 
 .radio-card-selected:hover:not([data-disabled]) {
-  border-color: var(--rds-gold, #ffc627);
+  border-color: var(--rds-secondary, #ffc627);
 }
 
 .radio-card-invalid {
@@ -273,7 +273,7 @@ const handleLinkClick = (event: MouseEvent) => {
 }
 
 .radio-card-heading {
-  font-size: 16px;
+  font-size: 1rem;
   font-weight: 700;
   line-height: 24px;
   color: var(--rds-dark-3, #191919);
@@ -292,7 +292,7 @@ const handleLinkClick = (event: MouseEvent) => {
   font-size: 14px;
   font-weight: 400;
   line-height: 21px;
-  color: var(--rds-maroon, #8c1d40);
+  color: var(--rds-primary, #8c1d40);
   text-decoration: underline;
 }
 

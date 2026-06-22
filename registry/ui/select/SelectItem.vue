@@ -31,7 +31,7 @@ const props = defineProps<Props>()
   padding: 0.5rem 1rem;
   cursor: pointer;
   outline: none;
-  background: #fff;
+  background: var(--rds-white, #fff);
   color: var(--rds-dark-3, #191919);
 }
 
