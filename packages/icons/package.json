@@ -1,6 +1,6 @@
 {
   "name": "@banavasi/adms-rds-ui-icons",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Font Awesome Pro icon library for ADMS RDS UI with a configurable Vite plugin",
   "type": "module",
   "exports": {
