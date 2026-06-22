@@ -47,7 +47,7 @@ const props = withDefaults(defineProps<Props>(), {
   z-index: 1000;
   min-width: var(--reka-select-trigger-width, 300px);
   width: var(--reka-select-trigger-width, 300px);
-  background: #fff;
+  background: var(--rds-white, #fff);
   border: 1px solid var(--rds-light-4, #d0d0d0);
   border-radius: 0;
   box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);

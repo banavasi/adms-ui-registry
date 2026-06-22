@@ -49,7 +49,7 @@ const props = defineProps<Props>()
 }
 
 .combobox-item[data-highlighted] {
-  background-color: var(--rds-gold, #ffc627);
+  background-color: var(--rds-secondary, #ffc627);
   color: var(--rds-dark-3, #191919);
   outline: none;
 }

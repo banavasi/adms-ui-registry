@@ -221,12 +221,11 @@ watch(
   justify-content: space-between;
   gap: 16px;
   padding: 16px;
-  background-color: #fff;
+  background-color: var(--rds-white, #fff);
   border: 1px solid var(--rds-light-4, #d0d0d0);
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(25, 25, 25, 0.12);
   cursor: pointer;
-  font-family: var(--rds-font-family, Arial, Helvetica, "Nimbus Sans L", "Liberation Sans", FreeSans, sans-serif);
   transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
 }
 
@@ -246,13 +245,13 @@ watch(
 
 /* ─── Selected (solid maroon) ─────────────────────────────────── */
 .radio-segment-card-selected {
-  background-color: var(--rds-maroon, #8c1d40);
-  border-color: var(--rds-maroon, #8c1d40);
+  background-color: var(--rds-primary, #8c1d40);
+  border-color: var(--rds-primary, #8c1d40);
   box-shadow: 0 4px 8px rgba(140, 29, 64, 0.25);
 }
 
 .radio-segment-card-selected .radio-segment-label {
-  color: #fff;
+  color: var(--rds-white, #fff);
 }
 
 /* ─── Invalid ─────────────────────────────────────────────────── */
@@ -269,7 +268,7 @@ watch(
 
 /* ─── Label ───────────────────────────────────────────────────── */
 .radio-segment-label {
-  font-size: 16px;
+  font-size: 1rem;
   font-weight: 700;
   line-height: 1.2;
   color: var(--rds-dark-1, #747474);
@@ -285,14 +284,14 @@ watch(
   height: 16px;
   border: 1.5px solid var(--rds-dark-1, #747474);
   border-radius: 50%;
-  background-color: #fff;
+  background-color: var(--rds-white, #fff);
   flex-shrink: 0;
   transition: background-color 0.15s ease, border-color 0.15s ease;
 }
 
 .radio-segment-card-selected .radio-segment-indicator-wrapper {
-  border-color: #fff;
-  background-color: #fff;
+  border-color: var(--rds-white, #fff);
+  background-color: var(--rds-white, #fff);
 }
 
 .radio-segment-card-invalid:not(.radio-segment-card-selected) .radio-segment-indicator-wrapper {
@@ -304,7 +303,7 @@ watch(
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  color: var(--rds-maroon, #8c1d40);
+  color: var(--rds-primary, #8c1d40);
   line-height: 0;
 }
 

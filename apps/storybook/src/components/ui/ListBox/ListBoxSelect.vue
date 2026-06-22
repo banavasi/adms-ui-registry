@@ -307,11 +307,10 @@ const describedBy = computed(() =>
 
 :deep(.listbox-select-trigger) {
   height: 3.3125rem;
-  background: #fff;
+  background: var(--rds-white, #fff);
   border: 1px solid var(--rds-light-4, #d0d0d0);
   color: var(--rds-dark-1, #747474);
-  font-family: var(--rds-font-family, Arial, Helvetica, "Nimbus Sans L", "Liberation Sans", FreeSans, sans-serif);
-  font-size: 16px;
+  font-size: 1rem;
   font-weight: 400 !important;
   line-height: 1.5;
   padding-left: 1rem;
@@ -409,7 +408,7 @@ const describedBy = computed(() =>
   margin-top: 0;
   width: 100%;
   min-width: 100%;
-  background: #fff;
+  background: var(--rds-white, #fff);
   border: 1px solid var(--rds-light-4, #d0d0d0);
   border-top: 0;
   border-radius: 0;
@@ -418,7 +417,7 @@ const describedBy = computed(() =>
 
 :deep(.listbox-select-content .select-viewport) {
   max-height: 19rem;
-  background: #fff;
+  background: var(--rds-white, #fff);
   cursor: pointer;
 }
 
@@ -426,12 +425,12 @@ const describedBy = computed(() =>
   padding: 1rem;
   border-bottom: 0;
   color: var(--rds-dark-3, #191919);
-  background: #fff;
+  background: var(--rds-white, #fff);
   cursor: pointer;
 }
 
 :deep(.listbox-select-option[data-highlighted]) {
-  background: #fff;
+  background: var(--rds-white, #fff);
   color: var(--rds-dark-3, #191919);
   outline: 2px solid #000;
   outline-offset: -2px;
@@ -453,7 +452,7 @@ const describedBy = computed(() =>
 }
 
 .listbox-select-item-label {
-  font-size: 16px;
+  font-size: 1rem;
   line-height: 1.3;
 }
 

@@ -84,7 +84,7 @@ const parseInput = (input: string): number | null => {
 
   const parsed = props.allowDecimal ? parseFloat(clean) : parseInt(clean, 10)
 
-  if (isNaN(parsed)) return null
+  if (Number.isNaN(parsed)) return null
 
   return parsed
 }

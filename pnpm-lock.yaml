@@ -164,6 +164,15 @@ importers:
       '@fortawesome/fontawesome-svg-core':
         specifier: ^7.2.0
         version: 7.2.0
+      '@fortawesome/free-brands-svg-icons':
+        specifier: ^7.0.0
+        version: 7.2.0
+      '@fortawesome/sharp-regular-svg-icons':
+        specifier: ^7.0.0
+        version: 7.2.0
+      '@fortawesome/sharp-solid-svg-icons':
+        specifier: ^7.0.0
+        version: 7.2.0
       '@fortawesome/vue-fontawesome':
         specifier: ^3.2.0
         version: 3.2.0(@fortawesome/fontawesome-svg-core@7.2.0)(vue@3.5.27(typescript@5.8.3))
@@ -807,6 +816,10 @@ packages:
     resolution: {integrity: sha512-6639htZMjEkwskf3J+e6/iar+4cTNM9qhoWuRfj9F3eJD6r7iCzV1SWnQr2Mdv0QT0suuqU8BoJCZUyCtP9R4Q==}
     engines: {node: '>=6'}
 
+  '@fortawesome/free-brands-svg-icons@7.2.0':
+    resolution: {integrity: sha512-VNG8xqOip1JuJcC3zsVsKRQ60oXG9+oYNDCosjoU/H9pgYmLTEwWw8pE0jhPz/JWdHeUuK6+NQ3qsM4gIbdbYQ==}
+    engines: {node: '>=6'}
+
   '@fortawesome/pro-light-svg-icons@7.2.0':
     resolution: {integrity: sha512-0SZf+Lu4DoolJelZi9Cc1Ta2VqUGkvV6BPxCb22mV16GQhqGa2VuLkqAn7zur0Sy8Cinu6MyPRfndHSe72zYyQ==}
     engines: {node: '>=6'}
@@ -817,6 +830,14 @@ packages:
 
   '@fortawesome/pro-solid-svg-icons@7.2.0':
     resolution: {integrity: sha512-r+YsuG1B+iYcCXNS82bfvRnGJtlRhVI5Xk7vVJ9+ymJU5u4UGGGOSFRV5kRWH2zFItH9PKaIjnN1cXMcgOM/+g==}
+    engines: {node: '>=6'}
+
+  '@fortawesome/sharp-regular-svg-icons@7.2.0':
+    resolution: {integrity: sha512-lLOX1W98Vof2Isib3oNe8Os7yfUdk2gcRAP6rlVvrU8Uw6ZwX6UobiuEwAPHBOapIIeezolhRICiyEiT4qWOmg==}
+    engines: {node: '>=6'}
+
+  '@fortawesome/sharp-solid-svg-icons@7.2.0':
+    resolution: {integrity: sha512-suIIkT36ipgRO2xvaft9xAHJDa8K3vUSpP3YTH1fxJHkTUWILnvH7NNFvS6OQVBB8B6j0YpthO4tOyA/IMzlew==}
     engines: {node: '>=6'}
 
   '@fortawesome/vue-fontawesome@3.2.0':
@@ -4250,6 +4271,10 @@ snapshots:
     dependencies:
       '@fortawesome/fontawesome-common-types': 7.2.0
 
+  '@fortawesome/free-brands-svg-icons@7.2.0':
+    dependencies:
+      '@fortawesome/fontawesome-common-types': 7.2.0
+
   '@fortawesome/pro-light-svg-icons@7.2.0':
     dependencies:
       '@fortawesome/fontawesome-common-types': 7.2.0
@@ -4259,6 +4284,14 @@ snapshots:
       '@fortawesome/fontawesome-common-types': 7.2.0
 
   '@fortawesome/pro-solid-svg-icons@7.2.0':
+    dependencies:
+      '@fortawesome/fontawesome-common-types': 7.2.0
+
+  '@fortawesome/sharp-regular-svg-icons@7.2.0':
+    dependencies:
+      '@fortawesome/fontawesome-common-types': 7.2.0
+
+  '@fortawesome/sharp-solid-svg-icons@7.2.0':
     dependencies:
       '@fortawesome/fontawesome-common-types': 7.2.0
 

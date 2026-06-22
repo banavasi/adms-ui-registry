@@ -137,7 +137,6 @@ const handleSubmit = (event: Event) => emit('submit', event)
   justify-content: center;
   gap: 0.5rem;
   border: 0;
-  font-family: Arial, sans-serif;
   font-weight: 700;
   text-decoration: none;
   cursor: pointer;
@@ -171,51 +170,25 @@ const handleSubmit = (event: Event) => emit('submit', event)
   min-height: 40px;
   border-radius: 25px;
   padding: 8px 16px;
-  font-size: 16px;
+  font-size: 1rem;
   line-height: 24px;
 }
 
-.rds-button--maroon {
-  background: #8c1d40;
-  color: #fafafa;
-}
-
-.rds-button--gold {
-  background: #ffc627;
-  color: #191919;
-}
-
-.rds-button--gold:hover:not(:disabled),
-.rds-button--gold:focus-visible:not(:disabled) {
-  background: #f0b400;
-  color: #191919;
-}
-
-.rds-button--gray {
-  background: #e8e5e5;
-  color: #000;
-}
-
-.rds-button--black {
-  background: #191919;
-  color: #fafafa;
-}
-
 .rds-button--white {
-  background: #fff;
-  color: #747474;
+  background: var(--rds-white, #fff);
+  color: var(--rds-dark-1, #747474);
 }
 
 .rds-button--outline-pill {
-  background: #fff;
-  color: #484848;
-  border: 1px solid #747474;
+  background: var(--rds-white, #fff);
+  color: var(--rds-dark-2, #484848);
+  border: 1px solid var(--rds-dark-1, #747474);
   padding: 12px 20px;
   gap: 10px;
 }
 
 .rds-button--outline-pill:hover:not(:disabled) {
-  background: #fafafa;
+  background: var(--rds-light-1, #fafafa);
 }
 
 .rds-button--status {
@@ -226,22 +199,22 @@ const handleSubmit = (event: Event) => emit('submit', event)
   padding: 8px 16px;
   font-size: 10px;
   line-height: 1;
-  color: #191919;
+  color: var(--rds-dark-3, #191919);
 }
 
 .rds-button--complete {
   background: rgba(135, 194, 62, 0.3);
-  border-color: #78be20;
+  border-color: var(--rds-success, #78be20);
 }
 
 .rds-button--incomplete {
   background: #f7dddd;
-  border-color: #cc2f2f;
+  border-color: var(--rds-danger, #cc2f2f);
 }
 
 .rds-button--edit {
   background: rgba(255, 198, 39, 0.55);
-  border-color: #ffc627;
+  border-color: var(--rds-secondary, #ffc627);
   gap: 4px;
 }
 
@@ -285,9 +258,9 @@ const handleSubmit = (event: Event) => emit('submit', event)
   width: 64px;
   height: 64px;
   border-radius: 50%;
-  border: 4px solid #747474;
-  background: #fff;
-  color: #747474;
+  border: 4px solid var(--rds-dark-1, #747474);
+  background: var(--rds-white, #fff);
+  color: var(--rds-dark-1, #747474);
 }
 
 .rds-button--exit .rds-button__icon {
@@ -301,9 +274,9 @@ const handleSubmit = (event: Event) => emit('submit', event)
 }
 
 .rds-button--exit-solid {
-  border-color: #191919;
-  background: #191919;
-  color: #fff;
+  border-color: var(--rds-dark-3, #191919);
+  background: var(--rds-dark-3, #191919);
+  color: var(--rds-white, #fff);
 }
 
 .rds-button--exit-solid:hover:not(:disabled),
@@ -317,7 +290,7 @@ const handleSubmit = (event: Event) => emit('submit', event)
   height: 44px;
   border-radius: 50%;
   background: transparent;
-  color: #747474;
+  color: var(--rds-dark-1, #747474);
 }
 
 .rds-button--close .rds-button__close-icon {
@@ -358,9 +331,9 @@ const handleSubmit = (event: Event) => emit('submit', event)
 
 .rds-button--tag,
 .rds-button--tag-mobile {
-  background: #e8e8e8;
+  background: var(--rds-light-3, #e8e8e8);
   border-radius: 0;
-  color: #191919;
+  color: var(--rds-dark-3, #191919);
   font-weight: 400;
 }
 
@@ -388,13 +361,13 @@ const handleSubmit = (event: Event) => emit('submit', event)
 }
 
 .rds-button--feedback-maroon {
-  background: #8c1d40;
-  color: #fafafa;
+  background: var(--rds-primary, #8c1d40);
+  color: var(--rds-light-1, #fafafa);
 }
 
 .rds-button--feedback-gold {
-  background: #ffc627;
-  color: #191919;
+  background: var(--rds-secondary, #ffc627);
+  color: var(--rds-dark-3, #191919);
 }
 
 .rds-button--help-footer {
@@ -402,8 +375,8 @@ const handleSubmit = (event: Event) => emit('submit', event)
   height: 60px;
   border-radius: 50%;
   padding: 0;
-  background: #191919;
-  color: #fafafa;
+  background: var(--rds-dark-3, #191919);
+  color: var(--rds-light-1, #fafafa);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.28);
   font-size: 12px;
   line-height: 18px;
@@ -479,13 +452,13 @@ const handleSubmit = (event: Event) => emit('submit', event)
 .btn-secondary:hover,
 .btn-secondary:focus,
 .btn-secondary:active {
-  color: #191919;
+  color: var(--rds-dark-3, #191919);
 }
 
 .btn-warning,
 .btn-warning:hover,
 .btn-warning:focus,
 .btn-warning:active {
-  color: #191919;
+  color: var(--rds-dark-3, #191919);
 }
 </style>

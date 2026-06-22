@@ -146,7 +146,7 @@ $navbar-light-color: var(--rds-dark-3, $asu-dark-3);
 $pagination-color: var(--rds-dark-3, $asu-dark-3);
 $pagination-border-color: var(--rds-white, $white);
 $pagination-hover-color: var(--rds-dark-3, $asu-dark-3);
-$pagination-hover-border-color: var(light-2, $asu-light-2);
+$pagination-hover-border-color: var(--rds-light-2, $asu-light-2);
 $pagination-focus-box-shadow: var(--rds-dark-3, $asu-dark-3);
 $pagination-active-bg: var(--rds-primary, $asu-maroon);
 $pagination-active-border-color: var(--rds-primary, $asu-maroon);

@@ -8,7 +8,7 @@ export const highlightVariants = cva('d-inline px-1', {
     variant: {
       primary: 'bg-primary text-white',
       secondary: 'bg-secondary text-dark',
-      gold: 'bg-warning text-dark',
+      gold: 'bg-secondary text-dark',
       success: 'bg-success text-white',
       danger: 'bg-danger text-white',
       info: 'bg-info text-white',
