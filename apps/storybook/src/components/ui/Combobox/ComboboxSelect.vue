@@ -565,13 +565,22 @@ const liveMessage = computed(() => {
             <ComboboxTrigger as-child>
               <button
                 type="button"
-                class="combobox-select-toggle dropdown-chevron my-auto"
+                :class="
+                  cn('combobox-select-toggle dropdown-chevron my-auto', {
+                    'combobox-select-toggle-open': isOpen,
+                  })
+                "
+                :aria-expanded="isOpen ? 'true' : 'false'"
                 :aria-label="isOpen ? 'Collapse options' : 'Expand options'"
                 @mousedown.prevent
               >
                 <FontAwesomeIcon
                   :icon="['fal', 'chevron-down']"
-                  class="combobox-select-chevron"
+                  :class="
+                    cn('combobox-select-chevron', {
+                      'combobox-select-chevron-open': isOpen,
+                    })
+                  "
                   aria-hidden="true"
                 />
               </button>
@@ -787,12 +796,11 @@ const liveMessage = computed(() => {
   color: var(--rds-dark-3, #191919);
 }
 
-.combobox-select-toggle[aria-expanded='true'] {
-  transform: translateY(-50%) rotate(180deg);
-}
-
-.combobox-select-toggle[data-state='open'] {
-  transform: translateY(-50%) rotate(180deg);
+.combobox-select-chevron-open,
+.combobox-select-toggle-open .combobox-select-chevron,
+.combobox-select-toggle[aria-expanded='true'] .combobox-select-chevron,
+.combobox-select-toggle[data-state='open'] .combobox-select-chevron {
+  transform: rotate(180deg);
 }
 
 .combobox-select-toggle:focus-visible {
@@ -818,6 +826,8 @@ const liveMessage = computed(() => {
   width: 16px;
   height: 16px;
   flex: 0 0 16px;
+  transform-origin: center;
+  transition: transform 0.2s ease;
 }
 
 :deep(.combobox-select-root) {

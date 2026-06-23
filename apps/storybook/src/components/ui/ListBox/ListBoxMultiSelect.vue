@@ -235,7 +235,7 @@ const describedBy = computed(() =>
           "
         >
           <SelectValue :placeholder="props.placeholder">
-            <span class="listbox-multi-summary-text" style="font-weight: 400 !important;">
+            <span v-if="hasValue" class="listbox-multi-summary-text" style="font-weight: 400 !important;">
               <slot
                 name="summary"
                 :count="selectedOptions.length"
@@ -268,6 +268,7 @@ const describedBy = computed(() =>
               'listbox-multi-chevron-wrapper-open': isOpen,
             })
           "
+          :data-state="isOpen ? 'open' : 'closed'"
         >
           <FontAwesomeIcon
             :icon="['fal', 'chevron-down']"
@@ -414,8 +415,14 @@ const describedBy = computed(() =>
   transition: transform 0.2s ease;
 }
 
-.listbox-multi-chevron-wrapper-open {
-  transform: translateY(-50%) rotate(180deg);
+.listbox-multi-chevron-wrapper-open,
+.listbox-multi-chevron-wrapper[data-state='open'] {
+  transform: translateY(-50%);
+}
+
+.listbox-multi-chevron-wrapper-open .listbox-multi-chevron,
+.listbox-multi-chevron-wrapper[data-state='open'] .listbox-multi-chevron {
+  transform: rotate(180deg);
 }
 
 .listbox-multi-chevron {
@@ -423,6 +430,8 @@ const describedBy = computed(() =>
   display: block;
   width: 16px;
   height: 16px;
+  transform-origin: center;
+  transition: transform 0.2s ease;
 }
 
 :deep(.listbox-multi-content) {
@@ -449,15 +458,17 @@ const describedBy = computed(() =>
   cursor: pointer;
 }
 
-:deep(.listbox-multi-option[data-highlighted]) {
-  background: var(--rds-white, #fff);
-  color: var(--rds-dark-3, #191919);
-  outline: 2px solid #000;
-  outline-offset: -2px;
+:global(.select-item.listbox-multi-option:hover:not([data-disabled])),
+:global(.select-item.listbox-multi-option[data-highlighted]) {
+  background: var(--rds-secondary, #ffc627) !important;
+  color: var(--rds-dark-3, #191919) !important;
+  outline: none;
 }
 
-:deep(.listbox-multi-option[data-state='checked']) {
-  background: var(--rds-secondary, #ffc627);
+:global(.select-item.listbox-multi-option[data-state='checked']) {
+  background: var(--rds-secondary, #ffc627) !important;
+  color: var(--rds-dark-3, #191919) !important;
+  font-weight: 400;
 }
 
 .listbox-multi-item-content {

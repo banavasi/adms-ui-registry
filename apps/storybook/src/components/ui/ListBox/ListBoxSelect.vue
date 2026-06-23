@@ -229,7 +229,7 @@ const describedBy = computed(() =>
           "
         >
           <SelectValue :placeholder="props.placeholder">
-            <span class="listbox-select-value-text" style="font-weight: 400 !important;">{{ selectedLabel }}</span>
+            <span v-if="hasValue" class="listbox-select-value-text" style="font-weight: 400 !important;">{{ selectedLabel }}</span>
           </SelectValue>
         </SelectTrigger>
 
@@ -253,6 +253,7 @@ const describedBy = computed(() =>
               'listbox-select-chevron-wrapper-open': isOpen,
             })
           "
+          :data-state="isOpen ? 'open' : 'closed'"
         >
           <FontAwesomeIcon
             :icon="['fal', 'chevron-down']"
@@ -392,8 +393,14 @@ const describedBy = computed(() =>
   transition: transform 0.2s ease, color 0.15s ease;
 }
 
-.listbox-select-chevron-wrapper-open {
-  transform: translateY(-50%) rotate(180deg);
+.listbox-select-chevron-wrapper-open,
+.listbox-select-chevron-wrapper[data-state='open'] {
+  transform: translateY(-50%);
+}
+
+.listbox-select-chevron-wrapper-open .listbox-select-chevron,
+.listbox-select-chevron-wrapper[data-state='open'] .listbox-select-chevron {
+  transform: rotate(180deg);
 }
 
 .listbox-select-chevron {
@@ -402,6 +409,8 @@ const describedBy = computed(() =>
   width: 16px;
   height: 16px;
   flex: 0 0 16px;
+  transform-origin: center;
+  transition: transform 0.2s ease;
 }
 
 :deep(.listbox-select-content) {
@@ -429,19 +438,17 @@ const describedBy = computed(() =>
   cursor: pointer;
 }
 
-:deep(.listbox-select-option[data-highlighted]) {
-  background: var(--rds-white, #fff);
-  color: var(--rds-dark-3, #191919);
-  outline: 2px solid #000;
-  outline-offset: -2px;
+:global(.select-item.listbox-select-option:hover:not([data-disabled])),
+:global(.select-item.listbox-select-option[data-highlighted]) {
+  background: var(--rds-secondary, #ffc627) !important;
+  color: var(--rds-dark-3, #191919) !important;
+  outline: none;
 }
 
-:deep(.listbox-select-option[data-state='checked']) {
-  background: var(--rds-secondary, #ffc627);
-  border-top: 2px solid var(--rds-dark-3, #191919);
-  border-bottom: 2px solid var(--rds-dark-3, #191919);
-  padding-top: calc(1rem - 2px);
-  padding-bottom: calc(1rem - 2px);
+:global(.select-item.listbox-select-option[data-state='checked']) {
+  background: var(--rds-secondary, #ffc627) !important;
+  color: var(--rds-dark-3, #191919) !important;
+  font-weight: 400;
 }
 
 .listbox-select-item-content {

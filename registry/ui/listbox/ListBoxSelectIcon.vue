@@ -234,7 +234,7 @@ const describedBy = computed(() =>
           "
         >
           <SelectValue :placeholder="props.placeholder">
-            <span class="listbox-select-icon-value-text" style="font-weight: 400 !important;">{{ selectedLabel }}</span>
+            <span v-if="hasValue" class="listbox-select-icon-value-text" style="font-weight: 400 !important;">{{ selectedLabel }}</span>
           </SelectValue>
         </SelectTrigger>
 
@@ -258,6 +258,7 @@ const describedBy = computed(() =>
               'listbox-select-icon-chevron-wrapper-open': isOpen,
             })
           "
+          :data-state="isOpen ? 'open' : 'closed'"
         >
           <FontAwesomeIcon
             :icon="['fal', 'chevron-down']"
@@ -406,8 +407,14 @@ const describedBy = computed(() =>
   transition: transform 0.2s ease;
 }
 
-.listbox-select-icon-chevron-wrapper-open {
-  transform: translateY(-50%) rotate(180deg);
+.listbox-select-icon-chevron-wrapper-open,
+.listbox-select-icon-chevron-wrapper[data-state='open'] {
+  transform: translateY(-50%);
+}
+
+.listbox-select-icon-chevron-wrapper-open .listbox-select-icon-chevron,
+.listbox-select-icon-chevron-wrapper[data-state='open'] .listbox-select-icon-chevron {
+  transform: rotate(180deg);
 }
 
 .listbox-select-icon-chevron {
@@ -415,6 +422,8 @@ const describedBy = computed(() =>
   display: block;
   width: 16px;
   height: 16px;
+  transform-origin: center;
+  transition: transform 0.2s ease;
 }
 
 :deep(.listbox-select-icon-content) {
@@ -441,15 +450,17 @@ const describedBy = computed(() =>
   cursor: pointer;
 }
 
-:deep(.listbox-select-icon-option[data-highlighted]) {
-  background: var(--rds-white, #fff);
-  color: var(--rds-dark-3, #191919);
-  outline: 2px solid #000;
-  outline-offset: -2px;
+:global(.select-item.listbox-select-icon-option:hover:not([data-disabled])),
+:global(.select-item.listbox-select-icon-option[data-highlighted]) {
+  background: var(--rds-secondary, #ffc627) !important;
+  color: var(--rds-dark-3, #191919) !important;
+  outline: none;
 }
 
-:deep(.listbox-select-icon-option[data-state='checked']) {
-  background: var(--rds-secondary, #ffc627);
+:global(.select-item.listbox-select-icon-option[data-state='checked']) {
+  background: var(--rds-secondary, #ffc627) !important;
+  color: var(--rds-dark-3, #191919) !important;
+  font-weight: 400;
 }
 
 .listbox-select-icon-item-content {

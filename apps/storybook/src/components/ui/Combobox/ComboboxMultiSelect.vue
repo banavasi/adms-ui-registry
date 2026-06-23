@@ -524,13 +524,22 @@ const liveMessage = computed(() => {
         <ComboboxTrigger as-child>
           <button
             type="button"
-            class="combobox-multi-toggle"
+            :class="
+              cn('combobox-multi-toggle', {
+                'combobox-multi-toggle-open': isOpen,
+              })
+            "
+            :aria-expanded="isOpen ? 'true' : 'false'"
             :aria-label="isOpen ? 'Collapse options' : 'Expand options'"
             @mousedown.prevent
           >
             <FontAwesomeIcon
               :icon="['fal', 'chevron-down']"
-              class="combobox-multi-chevron"
+              :class="
+                cn('combobox-multi-chevron', {
+                  'combobox-multi-chevron-open': isOpen,
+                })
+              "
               aria-hidden="true"
             />
           </button>
@@ -710,8 +719,10 @@ const liveMessage = computed(() => {
   box-shadow: none;
 }
 
-.combobox-multi-toggle[data-state='open'],
-.combobox-multi-toggle[aria-expanded='true'] {
+.combobox-multi-chevron-open,
+.combobox-multi-toggle-open .combobox-multi-chevron,
+.combobox-multi-toggle[data-state='open'] .combobox-multi-chevron,
+.combobox-multi-toggle[aria-expanded='true'] .combobox-multi-chevron {
   transform: rotate(180deg);
 }
 
@@ -720,6 +731,8 @@ const liveMessage = computed(() => {
   display: block;
   width: 16px;
   height: 16px;
+  transform-origin: center;
+  transition: transform 0.2s ease;
 }
 
 .combobox-multi-search-shell {
