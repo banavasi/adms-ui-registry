@@ -102,6 +102,9 @@ importers:
       vite:
         specifier: ^6.0.0
         version: 6.4.1(@types/node@20.19.30)(lightningcss@1.31.1)(sass@1.97.3)(yaml@2.8.2)
+      vue-tsc:
+        specifier: ^2.2.12
+        version: 2.2.12(typescript@5.8.3)
 
   packages/cli:
     dependencies:
@@ -3636,6 +3639,12 @@ packages:
     resolution: {integrity: sha512-K3wt3iVmNGaFEOUR4JIThQRWfqokxLfnPslD41FDZB2ajXp789+wCqJyGYlIFsvEQ2P61PInw6/ph5iiqg51gg==}
     peerDependencies:
       vue: '>=2'
+
+  vue-tsc@2.2.12:
+    resolution: {integrity: sha512-P7OP77b2h/Pmk+lZdJ0YWs+5tJ6J2+uOQPo7tlBnY44QqQSPYvS0qVT4wqDJgwrZaLe47etJLLQRFia71GYITw==}
+    hasBin: true
+    peerDependencies:
+      typescript: '>=5.0.0'
 
   vue@3.5.27:
     resolution: {integrity: sha512-aJ/UtoEyFySPBGarREmN4z6qNKpbEguYHMmXSiOGk69czc+zhs0NF6tEFrY8TZKAl8N/LYAkd4JHVd5E/AsSmw==}
@@ -7273,6 +7282,12 @@ snapshots:
   vue-inbrowser-compiler-independent-utils@4.71.1(vue@3.5.27(typescript@5.8.3)):
     dependencies:
       vue: 3.5.27(typescript@5.8.3)
+
+  vue-tsc@2.2.12(typescript@5.8.3):
+    dependencies:
+      '@volar/typescript': 2.4.15
+      '@vue/language-core': 2.2.12(typescript@5.8.3)
+      typescript: 5.8.3
 
   vue@3.5.27(typescript@5.8.3):
     dependencies:

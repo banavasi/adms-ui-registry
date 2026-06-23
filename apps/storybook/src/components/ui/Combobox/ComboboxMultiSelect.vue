@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { AcceptableValue } from 'reka-ui'
 import type { HTMLAttributes } from 'vue'
 import Fuse from 'fuse.js'
 import { computed, nextTick, ref, useSlots, watch } from 'vue'
@@ -18,7 +19,7 @@ import ComboboxTrigger from './ComboboxTrigger.vue'
 
 export interface ComboboxMultiSelectOption {
   label: string
-  value: unknown
+  value: AcceptableValue
   description?: string
   keywords?: string[]
   disabled?: boolean
@@ -29,7 +30,6 @@ type InputOption = ComboboxMultiSelectOption | string | number | boolean | Recor
 interface Props {
   id: string
   options: InputOption[]
-  modelValue?: unknown[]
   searchTerm?: string
   label?: string
   tooltip?: string
@@ -52,7 +52,6 @@ interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  modelValue: () => [],
   searchTerm: '',
   optional: false,
   placeholder: 'Type to search',
@@ -74,6 +73,12 @@ const emit = defineEmits<{
 
 const model = defineModel<unknown[]>({ default: () => [] })
 const searchTermModel = defineModel<string>('searchTerm', { default: '' })
+const comboboxModel = computed<AcceptableValue[]>({
+  get: () => model.value as AcceptableValue[],
+  set: (value) => {
+    model.value = value
+  },
+})
 const isOpen = ref(false)
 const searchInputRef = ref<HTMLInputElement | null>(null)
 const activeOptionIndex = ref<number | null>(null)
@@ -118,7 +123,7 @@ function normalizeOption(option: InputOption): ComboboxMultiSelectOption {
   if (typeof option === 'string' || typeof option === 'number' || typeof option === 'boolean') {
     return {
       label: String(option),
-      value: option,
+      value: option as AcceptableValue,
       disabled: false,
     }
   }
@@ -126,7 +131,7 @@ function normalizeOption(option: InputOption): ComboboxMultiSelectOption {
   if ('label' in option && 'value' in option) {
     return {
       label: String(option.label),
-      value: option.value,
+      value: option.value as AcceptableValue,
       description:
         typeof option.description === 'string' && option.description.length > 0
           ? option.description
@@ -149,7 +154,7 @@ function normalizeOption(option: InputOption): ComboboxMultiSelectOption {
 
   return {
     label: String(rawLabel),
-    value,
+    value: value as AcceptableValue,
     description:
       typeof rawDescription === 'string' && rawDescription.length > 0 ? rawDescription : undefined,
     disabled: Boolean(record.disabled),
@@ -471,7 +476,7 @@ const liveMessage = computed(() => {
 
     <Combobox
       ref="comboboxRef"
-      v-model="model"
+      v-model="comboboxModel"
       v-model:search-term="searchTermModel"
       :disabled="props.disabled"
       :required="props.required"
