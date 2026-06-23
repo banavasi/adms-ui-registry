@@ -1,6 +1,7 @@
 import { Command } from 'commander'
 import { add } from './commands/add.js'
 import { init } from './commands/init.js'
+import { update } from './commands/update.js'
 
 const program = new Command()
 
@@ -21,5 +22,13 @@ program
   .option('-y, --yes', 'Skip prompts')
   .option('-o, --overwrite', 'Overwrite existing files')
   .action(add)
+
+program
+  .command('update [components...]')
+  .description('Update installed components to the latest registry version')
+  .option('-y, --yes', 'Apply all updates without confirming')
+  .option('-o, --overwrite', 'Overwrite without confirming (alias of --yes)')
+  .option('-c, --check', 'List outdated components without writing any files')
+  .action(update)
 
 program.parse()
