@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { AcceptableValue } from 'reka-ui'
 import type { HTMLAttributes } from 'vue'
 import { RadioGroupIndicator, RadioGroupItem, RadioGroupRoot } from 'reka-ui'
 import { toRef } from 'vue'
@@ -65,8 +66,8 @@ const emit = defineEmits<{
 
 const model = defineModel<'Y' | 'N'>()
 
-const handleValueChange = (value: string) => {
-  const typedValue = value as 'Y' | 'N'
+const handleValueChange = (value: AcceptableValue) => {
+  const typedValue = String(value) as 'Y' | 'N'
   model.value = typedValue
   emit('change', typedValue)
 }

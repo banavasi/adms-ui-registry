@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { AcceptableValue } from 'reka-ui'
 import type { HTMLAttributes } from 'vue'
 import { RadioGroupRoot } from 'reka-ui'
 import { computed, provide, toRef } from 'vue'
@@ -64,9 +65,10 @@ const emit = defineEmits<{
 
 const model = defineModel<string>()
 
-const handleValueChange = (value: string) => {
-  model.value = value
-  emit('change', value)
+const handleValueChange = (value: AcceptableValue) => {
+  const strValue = String(value)
+  model.value = strValue
+  emit('change', strValue)
 }
 
 // Use the keyboard navigation composable with dynamic orientation

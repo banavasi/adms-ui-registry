@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { ComboboxRootProps } from 'reka-ui'
+import type { ComboboxRootProps, AcceptableValue } from 'reka-ui'
 import { computed, ref, watch } from 'vue'
 import { ComboboxMultiSelect, ComboboxSelect } from '@/components/ui/Combobox'
 
@@ -181,9 +181,9 @@ const singleModel = computed<ComboboxModelValue | null>({
   },
 })
 
-const multiModel = computed<ComboboxModelArray>({
-  get: () => toMultiComboboxValue(model.value),
-  set: (value: unknown) => {
+const multiModel = computed<AcceptableValue[]>({
+  get: () => toMultiComboboxValue(model.value) as AcceptableValue[],
+  set: (value: AcceptableValue[]) => {
     model.value = normalizeMultiValue(value)
   },
 })

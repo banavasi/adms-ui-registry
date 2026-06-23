@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { AcceptableValue } from 'reka-ui'
 import type { HTMLAttributes } from 'vue'
 import { computed, ref, useSlots, watch } from 'vue'
 import { Button, ButtonCloseIcon } from '@/components/ui/Button'
@@ -19,7 +20,7 @@ import { cn } from '@/lib/util'
 
 export interface ListBoxOption {
   label: string
-  value: unknown
+  value: AcceptableValue
   description?: string
   disabled?: boolean
 }
@@ -29,7 +30,6 @@ type InputOption = ListBoxOption | string | number | boolean | Record<string, un
 interface Props {
   id: string
   options: InputOption[]
-  modelValue?: unknown[]
   label?: string
   tooltip?: string
   optional?: boolean
@@ -49,7 +49,6 @@ interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  modelValue: () => [],
   optional: false,
   placeholder: 'Select options',
   pluralLabel: 'selected',
@@ -67,6 +66,12 @@ const emit = defineEmits<{
 }>()
 
 const model = defineModel<unknown[]>({ default: () => [] })
+const selectModel = computed<AcceptableValue[]>({
+  get: () => model.value as AcceptableValue[],
+  set: (value) => {
+    model.value = value
+  },
+})
 const isOpen = ref(false)
 const slots = useSlots()
 
@@ -83,7 +88,7 @@ function normalizeOption(option: InputOption): ListBoxOption {
   if (typeof option === 'string' || typeof option === 'number' || typeof option === 'boolean') {
     return {
       label: String(option),
-      value: option,
+      value: option as AcceptableValue,
       disabled: false,
     }
   }
@@ -91,7 +96,7 @@ function normalizeOption(option: InputOption): ListBoxOption {
   if ('label' in option && 'value' in option) {
     return {
       label: String(option.label),
-      value: option.value,
+      value: option.value as AcceptableValue,
       description:
         typeof option.description === 'string' && option.description.length > 0
           ? option.description
@@ -111,7 +116,7 @@ function normalizeOption(option: InputOption): ListBoxOption {
 
   return {
     label: String(rawLabel),
-    value,
+    value: value as AcceptableValue,
     description:
       typeof rawDescription === 'string' && rawDescription.length > 0 ? rawDescription : undefined,
     disabled: Boolean(record.disabled),
@@ -213,7 +218,7 @@ const describedBy = computed(() =>
     </Label>
 
     <Select
-      v-model="model"
+      v-model="selectModel"
       :disabled="props.disabled"
       :required="props.required"
       :name="props.name"

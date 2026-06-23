@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { AcceptableValue } from 'reka-ui'
 import type { HTMLAttributes } from 'vue'
 import { computed, ref, useSlots, watch } from 'vue'
 import { Button, ButtonCloseIcon } from '@/components/ui/Button'
@@ -18,7 +19,7 @@ import { cn } from '@/lib/util'
 
 export interface ListBoxIconOption {
   label: string
-  value: unknown
+  value: AcceptableValue
   icon?: string
   iconAlt?: string
   description?: string
@@ -30,7 +31,6 @@ type InputOption = ListBoxIconOption | string | number | boolean | Record<string
 interface Props {
   id: string
   options: InputOption[]
-  modelValue?: unknown | null
   label?: string
   tooltip?: string
   optional?: boolean
@@ -51,7 +51,6 @@ interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  modelValue: null,
   optional: false,
   placeholder: 'Select an option',
   invalid: false,
@@ -66,10 +65,16 @@ const props = withDefaults(defineProps<Props>(), {
 })
 
 const emit = defineEmits<{
-  change: [value: unknown | null]
+  change: [value: unknown | undefined]
 }>()
 
-const model = defineModel<unknown | null>({ default: null })
+const model = defineModel<unknown | undefined>({ default: undefined })
+const selectModel = computed<AcceptableValue | undefined>({
+  get: () => model.value as AcceptableValue | undefined,
+  set: (value) => {
+    model.value = value
+  },
+})
 const isOpen = ref(false)
 const slots = useSlots()
 
@@ -88,7 +93,7 @@ function normalizeOption(option: InputOption): ListBoxIconOption {
   if (typeof option === 'string' || typeof option === 'number' || typeof option === 'boolean') {
     return {
       label: String(option),
-      value: option,
+      value: option as AcceptableValue,
       disabled: false,
     }
   }
@@ -96,7 +101,7 @@ function normalizeOption(option: InputOption): ListBoxIconOption {
   if ('label' in option && 'value' in option) {
     return {
       label: String(option.label),
-      value: option.value,
+      value: option.value as AcceptableValue,
       icon: typeof option.icon === 'string' ? option.icon : undefined,
       iconAlt: typeof option.iconAlt === 'string' ? option.iconAlt : undefined,
       description:
@@ -120,7 +125,7 @@ function normalizeOption(option: InputOption): ListBoxIconOption {
 
   return {
     label: String(rawLabel),
-    value,
+    value: value as AcceptableValue,
     icon: typeof rawIcon === 'string' && rawIcon.length > 0 ? rawIcon : undefined,
     iconAlt: typeof rawIconAlt === 'string' && rawIconAlt.length > 0 ? rawIconAlt : undefined,
     description:
@@ -213,7 +218,7 @@ const describedBy = computed(() =>
     </Label>
 
     <Select
-      v-model="model"
+      v-model="selectModel"
       :disabled="props.disabled"
       :required="props.required"
       :name="props.name"

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { AcceptableValue } from 'reka-ui'
 import type { HTMLAttributes } from 'vue'
 import type { RadioVariants } from '.'
 import { RadioGroupRoot } from 'reka-ui'
@@ -61,14 +62,15 @@ watch(
   (value) => emit('change', value)
 )
 
-function handleUpdate(value: string | undefined) {
-  if (value === undefined) {
+function handleUpdate(value: AcceptableValue) {
+  if (value === undefined || value === null) {
     model.value = undefined
     return
   }
 
-  const option = props.options.find((item) => String(item.value) === value)
-  model.value = option ? option.value : value
+  const strValue = String(value)
+  const option = props.options.find((item) => String(item.value) === strValue)
+  model.value = option ? option.value : strValue
 }
 
 function isOptionDisabled(option: RadioOption) {

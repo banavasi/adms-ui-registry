@@ -1,7 +1,8 @@
 <script setup lang="ts" generic="T extends Record<string, unknown>">
+import type { AcceptableValue } from 'reka-ui'
 import type { HTMLAttributes } from 'vue'
 import { RadioGroupIndicator, RadioGroupItem, RadioGroupRoot } from 'reka-ui'
-import { computed, onMounted, toRef, watch } from 'vue'
+import { computed, onMounted, watch } from 'vue'
 import { FontAwesomeIcon } from '@/components/ui/icon'
 import { InputError } from '@/components/ui/InputError'
 import { InputHelp } from '@/components/ui/InputHelp'
@@ -96,15 +97,16 @@ const selectedValue = computed(() => {
 })
 
 /** Handle value change from RadioGroup */
-const handleValueChange = (value: string) => {
-  const selectedOption = props.options.find((opt) => getOptionValue(opt) === value)
+const handleValueChange = (value: AcceptableValue) => {
+  const strValue = String(value)
+  const selectedOption = props.options.find((opt) => getOptionValue(opt) === strValue)
   model.value = selectedOption
   emit('change', selectedOption)
 }
 
 // Use the keyboard navigation composable
 const { handleKeyDown } = useRadioKeyboard({
-  isInToolbar: toRef(props, 'isInToolbar'),
+  isInToolbar: computed(() => props.isInToolbar ?? false),
   orientation: 'horizontal',
 })
 
