@@ -312,7 +312,7 @@ export const WithHtmlContent: Story = {
               <button class="btn btn-primary">Rich content</button>
             </TooltipTrigger>
             <TooltipContent
-              html-content="<div style='text-align: left;'><h6 style='margin: 0 0 8px 0;'>Title</h6><p style='margin: 0;'>Description text goes here with proper formatting.</p></div>"
+              html-content="<div style='text-align: left;'><h6 style='margin: 0 0 0.5rem 0;'>Title</h6><p style='margin: 0;'>Description text goes here with proper formatting.</p></div>"
             />
           </Tooltip>
         </TooltipProvider>

@@ -217,7 +217,7 @@ const ariaDescribedBy = computed(() => {
 </script>
 
 <template>
-  <div class="input-wrapper">
+  <div class="input-wrapper position-relative d-flex align-items-center">
     <input
       :id="context.id.value"
       ref="inputRef"
@@ -225,7 +225,7 @@ const ariaDescribedBy = computed(() => {
       data-slot="input-numeric-range"
       type="text"
       inputmode="decimal"
-      :class="cn('form-control col-12 p-space-xs', { 'is-invalid': context.invalid.value }, props.class)"
+      :class="cn('form-control col-12 p-space-xs w-100 rounded-0', { 'is-invalid': context.invalid.value }, props.class)"
       :placeholder="placeholder"
       :required="context.required.value"
       :disabled="context.disabled.value"
@@ -246,17 +246,6 @@ const ariaDescribedBy = computed(() => {
 </template>
 
 <style scoped>
-.input-wrapper {
-  position: relative;
-  display: flex;
-  align-items: center;
-}
-
-.form-control {
-  border-radius: 0;
-  width: 100%;
-}
-
 .form-control:focus {
   outline: 2px solid #000;
   outline-offset: 2px;

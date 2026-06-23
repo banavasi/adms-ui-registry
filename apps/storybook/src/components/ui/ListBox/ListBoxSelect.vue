@@ -314,7 +314,7 @@ const describedBy = computed(() =>
   font-weight: 400 !important;
   line-height: 1.5;
   padding-left: 1rem;
-  padding-right: 5rem;
+  padding-right: 6rem;
   cursor: pointer;
   outline: none;
   text-align: left;

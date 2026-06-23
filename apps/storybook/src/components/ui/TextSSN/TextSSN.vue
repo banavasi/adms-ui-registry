@@ -102,11 +102,11 @@ function handleBlur(event: FocusEvent) {
     </Label>
 
     <!-- Masked display input (shown on blur with value) -->
-    <div v-if="showMaskedDisplay" class="input-wrapper">
+    <div v-if="showMaskedDisplay" class="input-wrapper position-relative d-flex align-items-center">
       <input
         :id="props.id"
         type="text"
-        class="form-control col-12 p-space-xs"
+        class="form-control col-12 p-space-xs w-100 rounded-0"
         :class="{ 'is-invalid': props.invalid }"
         :value="maskedDisplayValue"
         :disabled="props.disabled"
@@ -143,17 +143,6 @@ function handleBlur(event: FocusEvent) {
 </template>
 
 <style scoped>
-.input-wrapper {
-  position: relative;
-  display: flex;
-  align-items: center;
-}
-
-.form-control {
-  border-radius: 0;
-  width: 100%;
-}
-
 .form-control:focus {
   outline: 2px solid #000;
   outline-offset: 2px;

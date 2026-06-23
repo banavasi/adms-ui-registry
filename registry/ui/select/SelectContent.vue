@@ -24,7 +24,7 @@ const props = withDefaults(defineProps<Props>(), {
   <SelectPortal>
     <SelectContent
       data-slot="select-content"
-      :class="cn('select-content', props.class)"
+      :class="cn('select-content bg-white border border-light-4 rounded-0 shadow-sm', props.class)"
       :position="position"
       :side="side"
       :side-offset="sideOffset"
@@ -35,7 +35,7 @@ const props = withDefaults(defineProps<Props>(), {
       :collision-padding="collisionPadding"
       :sticky="sticky"
     >
-      <SelectViewport class="select-viewport">
+      <SelectViewport class="select-viewport p-0">
         <slot />
       </SelectViewport>
     </SelectContent>
@@ -47,10 +47,6 @@ const props = withDefaults(defineProps<Props>(), {
   z-index: 1000;
   min-width: var(--reka-select-trigger-width, 300px);
   width: var(--reka-select-trigger-width, 300px);
-  background: var(--rds-white, #fff);
-  border: 1px solid var(--rds-light-4, #d0d0d0);
-  border-radius: 0;
-  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
 }
 
 .select-content[data-state='open'] {
@@ -62,7 +58,6 @@ const props = withDefaults(defineProps<Props>(), {
 }
 
 .select-viewport {
-  padding: 0;
   max-height: 300px;
   overflow-y: auto;
   /* Override Reka UI's injected styles that hide the scrollbar */

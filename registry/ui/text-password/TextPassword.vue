@@ -78,7 +78,7 @@ function toggleVisibility(visible: boolean) {
     </Label>
 
     <!-- Requirements slot for password rules (between label and input) -->
-    <div v-if="$slots.requirements" class="password-requirements">
+    <div v-if="$slots.requirements" class="password-requirements text-dark-2 fs-small lh-base">
       <slot name="requirements" />
     </div>
 
@@ -115,15 +115,9 @@ function toggleVisibility(visible: boolean) {
 </template>
 
 <style scoped>
-.password-requirements {
-  color: var(--rds-dark-2, #484848);
-  font-size: 0.875rem;
-  line-height: 1.5;
-}
-
 .password-requirements ul {
   margin: 0.5rem 0 0 0;
-  padding-left: 1.25rem;
+  padding-left: 1.5rem;
 }
 
 .password-requirements li {

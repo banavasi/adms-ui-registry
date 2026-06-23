@@ -169,7 +169,7 @@ const handleSubmit = (event: Event) => emit('submit', event)
 .rds-button--pill {
   min-height: 40px;
   border-radius: 25px;
-  padding: 8px 16px;
+  padding: 0.5rem 1rem;
   font-size: 1rem;
   line-height: 24px;
 }
@@ -183,7 +183,7 @@ const handleSubmit = (event: Event) => emit('submit', event)
   background: var(--rds-white, #fff);
   color: var(--rds-dark-2, #484848);
   border: 1px solid var(--rds-dark-1, #747474);
-  padding: 12px 20px;
+  padding: 1rem 1.5rem;
   gap: 10px;
 }
 
@@ -196,8 +196,8 @@ const handleSubmit = (event: Event) => emit('submit', event)
   border-width: 1px;
   border-style: solid;
   border-radius: 25px;
-  padding: 8px 16px;
-  font-size: 10px;
+  padding: 0.5rem 1rem;
+  font-size: 0.75rem;
   line-height: 1;
   color: var(--rds-dark-3, #191919);
 }
@@ -220,7 +220,7 @@ const handleSubmit = (event: Event) => emit('submit', event)
 
 .rds-button--signout {
   min-height: 39px;
-  font-size: 17px;
+  font-size: 1.125rem;
   line-height: 1.2;
 }
 
@@ -339,22 +339,22 @@ const handleSubmit = (event: Event) => emit('submit', event)
 
 .rds-button--tag {
   min-height: 26px;
-  padding: 4px 8px;
-  font-size: 12px;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.75rem;
   line-height: 18px;
 }
 
 .rds-button--tag-mobile {
   min-height: 17px;
-  padding: 2px 6px;
-  font-size: 11px;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.75rem;
   line-height: 1;
 }
 
 .rds-button--feedback {
   min-height: 72px;
   border-radius: 4px;
-  padding: 12px 24px 12px 12px;
+  padding: 1rem 1.5rem 1rem 1rem;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
   text-align: center;
   white-space: normal;
@@ -378,7 +378,7 @@ const handleSubmit = (event: Event) => emit('submit', event)
   background: var(--rds-dark-3, #191919);
   color: var(--rds-light-1, #fafafa);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.28);
-  font-size: 12px;
+  font-size: 0.75rem;
   line-height: 18px;
   flex-direction: column;
   gap: 2px;

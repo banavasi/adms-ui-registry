@@ -32,14 +32,14 @@ const HeadingTag = computed(() => props.level || 'h3')
     data-slot="heading"
     :class="cn(headingVariants({ level: props.level }), props.class)"
   >
-    <span class="heading-text">
+    <span class="heading-text fw-bold">
       <slot />
     </span>
 
     <span
       v-if="optional"
       :class="cn(optionalBadgeVariants())"
-      class="optional-badge"
+      class="optional-badge bg-light-3 text-dark-2 fs-xs"
     >
       {{ optionalText }}
     </span>
@@ -49,12 +49,12 @@ const HeadingTag = computed(() => props.level || 'h3')
         <TooltipTrigger as-child>
           <button
             type="button"
-            class="btn btn-link p-0 ms-1 tooltip-trigger"
+            class="btn btn-link p-0 ms-1 tooltip-trigger lh-1 align-middle"
             aria-label="More information"
           >
             <FontAwesomeIcon
               :icon="['fal', 'circle-info']"
-              class="info-icon"
+              class="info-icon text-dark-1 align-middle"
               aria-hidden="true"
               focusable="false"
             />
@@ -69,25 +69,8 @@ const HeadingTag = computed(() => props.level || 'h3')
 </template>
 
 <style scoped>
-.heading-text {
-  font-weight: bold;
-}
-
 .optional-badge {
-  background-color: var(--rds-light-3, #e8e8e8);
-  color: var(--rds-dark-2, #484848);
-  font-size: 0.75rem;
   padding: 0.25em 0.6em;
-}
-
-.tooltip-trigger {
-  line-height: 1;
-  vertical-align: middle;
-}
-
-.info-icon {
-  color: var(--rds-dark-1, #747474);
-  vertical-align: middle;
 }
 
 .tooltip-trigger:focus-visible {

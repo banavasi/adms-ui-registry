@@ -187,14 +187,14 @@ export const IconOptions: Story = {
             <span
               v-if="option.value === 'nondegree'"
               aria-hidden="true"
-              style="font-size: 28px; line-height: 1;"
+              style="font-size: 1.75rem; line-height: 1;"
             >
               🧑‍🏫
             </span>
             <span
               v-else
               aria-hidden="true"
-              style="font-size: 28px; line-height: 1;"
+              style="font-size: 1.75rem; line-height: 1;"
             >
               🎓
             </span>

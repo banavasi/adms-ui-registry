@@ -78,7 +78,7 @@ const inputClasses = computed(() =>
 .combobox-input {
   border-radius: 0;
   width: 100%;
-  padding-right: 4.5rem; /* Space for trigger and cancel buttons */
+  padding-right: 4rem; /* Space for trigger and cancel buttons */
 }
 
 .combobox-input:focus {

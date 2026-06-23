@@ -623,7 +623,7 @@ const liveMessage = computed(() => {
   border: 1px solid var(--rds-light-4, #d0d0d0);
   border-radius: 0;
   background: var(--rds-white, #fff);
-  padding: 0 5rem 0 0;
+  padding: 0 6rem 0 0;
 }
 
 :deep(.combobox-anchor:focus-within) {
@@ -723,7 +723,7 @@ const liveMessage = computed(() => {
 }
 
 .combobox-multi-search-shell {
-  padding: 0.625rem;
+  padding: 0.5rem;
   border-bottom: 1px solid var(--rds-light-3, #e8e8e8);
   background: var(--rds-white, #fff);
 }
@@ -736,7 +736,7 @@ const liveMessage = computed(() => {
   color: var(--rds-dark-3, #191919);
   font-size: 1rem;
   line-height: 1.5;
-  padding: 0.75rem 1rem;
+  padding: 1rem 1rem;
 }
 
 .combobox-multi-search::placeholder {
@@ -750,7 +750,7 @@ const liveMessage = computed(() => {
 }
 
 :deep(.combobox-multi-content) {
-  margin-top: 0.375rem;
+  margin-top: 0.5rem;
   width: 100%;
   min-width: 100%;
   background: var(--rds-white, #fff);

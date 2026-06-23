@@ -25,7 +25,7 @@ const forwarded = useForwardPropsEmits(props, emits)
   <SelectRoot
     v-slot="slotProps"
     data-slot="select"
-    :class="cn('select-root', props.class)"
+    :class="cn('select-root position-relative d-block w-100', props.class)"
     v-bind="forwarded"
   >
     <slot v-bind="slotProps" />
@@ -34,9 +34,6 @@ const forwarded = useForwardPropsEmits(props, emits)
 
 <style scoped>
 .select-root {
-  position: relative;
-  display: block;
-  width: 100%;
   min-width: 0;
 }
 </style>

@@ -14,11 +14,11 @@ const props = defineProps<Props>()
 <template>
   <ComboboxItem
     data-slot="combobox-item"
-    :class="cn('combobox-item', props.class)"
+    :class="cn('combobox-item d-flex align-items-start position-relative text-dark-3 rounded-0', props.class)"
     :value="props.value"
     :disabled="props.disabled"
   >
-    <span class="combobox-item-text">
+    <span class="combobox-item-text d-block flex-fill overflow-hidden">
       <slot />
     </span>
   </ComboboxItem>
@@ -26,19 +26,13 @@ const props = defineProps<Props>()
 
 <style scoped>
 .combobox-item {
-  display: flex;
-  align-items: flex-start;
-  padding: 0.75rem 1rem;
-  padding-left: 1rem;
-  position: relative;
+  padding: 1rem 1rem;
 
   font-size: 0.875rem;
   line-height: 1.5;
-  color: var(--rds-dark-3, #191919);
 
   cursor: pointer;
   user-select: none;
-  border-radius: 0;
   border-bottom: 1px solid var(--rds-light-3, #e8e8e8);
 
   transition: background-color 0.15s ease, color 0.15s ease;
@@ -66,9 +60,6 @@ const props = defineProps<Props>()
 }
 
 .combobox-item-text {
-  display: block;
-  flex: 1;
   min-width: 0;
-  overflow: hidden;
 }
 </style>

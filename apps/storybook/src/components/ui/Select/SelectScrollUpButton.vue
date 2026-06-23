@@ -15,7 +15,7 @@ const props = defineProps<Props>()
 <template>
   <SelectScrollUpButton
     data-slot="select-scroll-up-button"
-    :class="cn('select-scroll-button', props.class)"
+    :class="cn('select-scroll-button d-flex align-items-center justify-content-center p-space-xxxs text-dark-1', props.class)"
   >
     <slot>
       <FontAwesomeIcon
@@ -25,14 +25,3 @@ const props = defineProps<Props>()
     </slot>
   </SelectScrollUpButton>
 </template>
-
-<style scoped>
-.select-scroll-button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0.25rem;
-  cursor: default;
-  color: var(--rds-dark-1, #747474);
-}
-</style>

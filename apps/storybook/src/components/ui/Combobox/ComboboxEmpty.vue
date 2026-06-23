@@ -14,17 +14,8 @@ const props = defineProps<Props>()
 <template>
   <ComboboxEmpty
     data-slot="combobox-empty"
-    :class="cn('combobox-empty', props.class)"
+    :class="cn('combobox-empty p-space-xs text-center fs-small text-dark-1', props.class)"
   >
     <slot />
   </ComboboxEmpty>
 </template>
-
-<style scoped>
-.combobox-empty {
-  padding: 1rem;
-  text-align: center;
-  font-size: 0.875rem;
-  color: var(--rds-dark-1, #747474);
-}
-</style>

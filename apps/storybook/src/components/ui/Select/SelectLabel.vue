@@ -14,16 +14,8 @@ const props = defineProps<Props>()
 <template>
   <SelectLabel
     data-slot="select-label"
-    :class="cn('select-label', props.class)"
+    :class="cn('select-label py-space-xxs px-space-xs fs-xs text-dark-1', props.class)"
   >
     <slot />
   </SelectLabel>
 </template>
-
-<style scoped>
-.select-label {
-  padding: 0.5rem 1rem;
-  font-size: 0.75rem;
-  color: var(--rds-dark-1, #747474);
-}
-</style>

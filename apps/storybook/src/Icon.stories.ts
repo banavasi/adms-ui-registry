@@ -94,14 +94,14 @@ const CUSTOM_ICONS = [
 ]
 
 const gridTemplate = (binding: string) => `
-  <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 16px; padding: 24px; max-width: 760px;">
+  <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 16px; padding: 1.5rem; max-width: 760px;">
     <div
       v-for="name in ${binding}"
       :key="name"
-      style="display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 16px 8px; border: 1px solid #dee2e6; border-radius: 8px;"
+      style="display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 1rem 0.5rem; border: 1px solid #dee2e6; border-radius: 8px;"
     >
       <FontAwesomeIcon :icon="['fal', name]" style="font-size: 1.75rem; color: #8c1d40;" />
-      <code style="font-size: 11px; color: #6c757d; text-align: center;">{{ name }}</code>
+      <code style="font-size: 0.75rem; color: #6c757d; text-align: center;">{{ name }}</code>
     </div>
   </div>
 `
@@ -144,7 +144,7 @@ export const Sizes: Story = {
   render: () => ({
     components: { FontAwesomeIcon },
     template: `
-      <div style="display: flex; align-items: baseline; gap: 24px; padding: 24px; color: #8c1d40;">
+      <div style="display: flex; align-items: baseline; gap: 24px; padding: 1.5rem; color: #8c1d40;">
         <FontAwesomeIcon :icon="['fal', 'star']" size="xs" />
         <FontAwesomeIcon :icon="['fal', 'star']" size="sm" />
         <FontAwesomeIcon :icon="['fal', 'star']" />
@@ -168,7 +168,7 @@ export const Colors: Story = {
   render: () => ({
     components: { FontAwesomeIcon },
     template: `
-      <div style="display: flex; align-items: center; gap: 24px; padding: 24px; font-size: 1.75rem;">
+      <div style="display: flex; align-items: center; gap: 24px; padding: 1.5rem; font-size: 1.75rem;">
         <FontAwesomeIcon :icon="['fal', 'heart']" class="text-primary" />
         <FontAwesomeIcon :icon="['fal', 'heart']" class="text-danger" />
         <FontAwesomeIcon :icon="['fal', 'heart']" class="text-success" />
@@ -192,7 +192,7 @@ export const InButtons: Story = {
   render: () => ({
     components: { FontAwesomeIcon },
     template: `
-      <div style="display: flex; align-items: center; gap: 12px; padding: 24px;">
+      <div style="display: flex; align-items: center; gap: 12px; padding: 1.5rem;">
         <button class="btn btn-primary d-inline-flex align-items-center gap-2">
           <FontAwesomeIcon :icon="['fal', 'download']" /> Download
         </button>

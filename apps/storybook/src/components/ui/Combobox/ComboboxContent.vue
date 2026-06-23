@@ -25,7 +25,7 @@ const props = withDefaults(defineProps<Props>(), {
   <ComboboxPortal>
     <ComboboxContent
       data-slot="combobox-content"
-      :class="cn('combobox-content', props.class)"
+      :class="cn('combobox-content bg-white border border-light-4 rounded-0 shadow-sm', props.class)"
       :position="position"
       :side="side"
       :side-offset="sideOffset"
@@ -37,7 +37,7 @@ const props = withDefaults(defineProps<Props>(), {
       :sticky="sticky"
     >
       <slot name="beforeViewport" />
-      <ComboboxViewport class="combobox-viewport">
+      <ComboboxViewport class="combobox-viewport p-0">
         <slot />
       </ComboboxViewport>
     </ComboboxContent>
@@ -49,10 +49,6 @@ const props = withDefaults(defineProps<Props>(), {
   z-index: 1000;
   min-width: var(--reka-combobox-trigger-width, 300px);
   width: var(--reka-combobox-trigger-width, 300px);
-  background: var(--rds-white, #fff);
-  border: 1px solid var(--rds-light-4, #d0d0d0);
-  border-radius: 0;
-  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
 }
 
 .combobox-content[data-state='open'] {
@@ -64,7 +60,6 @@ const props = withDefaults(defineProps<Props>(), {
 }
 
 .combobox-viewport {
-  padding: 0;
   max-height: 300px;
   overflow-y: auto;
 }

@@ -13,7 +13,7 @@ const props = defineProps<Props>()
 <template>
   <ComboboxSeparator
     data-slot="combobox-separator"
-    :class="cn('combobox-separator', props.class)"
+    :class="cn('combobox-separator my-space-xxxs', props.class)"
   />
 </template>
 
@@ -21,6 +21,5 @@ const props = defineProps<Props>()
 .combobox-separator {
   height: 1px;
   background-color: var(--rds-light-3, #e8e8e8);
-  margin: 0.25rem 0;
 }
 </style>

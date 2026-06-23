@@ -35,7 +35,7 @@ const props = withDefaults(defineProps<Props>(), {
       <slot />
     </span>
 
-    <span v-if="optional" class="optional-badge badge rounded-0 fw-normal" aria-hidden="true">
+    <span v-if="optional" class="optional-badge badge rounded-0 fw-normal bg-light-3 text-dark-2 fs-xs" aria-hidden="true">
       {{ optionalText }}
     </span>
     <span v-if="optional" class="visually-hidden">({{ optionalText }})</span>
@@ -45,13 +45,13 @@ const props = withDefaults(defineProps<Props>(), {
         <TooltipTrigger as-child>
           <button
             type="button"
-            class="btn btn-link p-0 tooltip-trigger"
+            class="btn btn-link p-0 tooltip-trigger lh-1 align-middle"
             aria-label="More information about this field"
             :aria-describedby="`tooltip-${props.for}`"
           >
             <FontAwesomeIcon
               :icon="['fal', 'circle-info']"
-              class="info-icon"
+              class="info-icon text-dark-1 align-middle"
               aria-hidden="true"
               focusable="false"
             />
@@ -67,20 +67,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 <style scoped>
 .optional-badge {
-  background-color: var(--rds-light-3, #e8e8e8);
-  color: var(--rds-dark-2, #484848);
-  font-size: 0.75rem;
   padding: 0.25em 0.6em;
-}
-
-.tooltip-trigger {
-  line-height: 1;
-  vertical-align: middle;
-}
-
-.info-icon {
-  color: var(--rds-dark-1, #747474);
-  vertical-align: middle;
 }
 
 .tooltip-trigger:focus-visible {

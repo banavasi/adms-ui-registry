@@ -18,11 +18,11 @@ const attrs = useAttrs()
   <ComboboxTrigger
     data-slot="combobox-trigger"
     v-bind="attrs"
-    :class="cn('combobox-trigger', props.class)"
+    :class="cn('combobox-trigger position-absolute top-50 translate-middle-y d-flex align-items-center justify-content-center text-dark-1 bg-transparent border-0 p-space-xxxs', props.class)"
   >
     <FontAwesomeIcon
       :icon="['fal', 'chevron-down']"
-      class="combobox-chevron"
+      class="combobox-chevron d-block flex-shrink-0"
       aria-hidden="true"
     />
   </ComboboxTrigger>
@@ -30,19 +30,9 @@ const attrs = useAttrs()
 
 <style scoped>
 .combobox-trigger {
-  position: absolute;
   right: 1rem;
-  top: 50%;
-  transform: translateY(-50%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--rds-dark-1, #747474);
-  background: transparent;
-  border: none;
   cursor: pointer;
   transition: transform 0.2s ease, color 0.15s ease;
-  padding: 0.25rem;
   line-height: 1;
 }
 
@@ -61,9 +51,8 @@ const attrs = useAttrs()
 
 .combobox-chevron {
   forced-color-adjust: auto;
-  display: block;
   width: 20px;
   height: 20px;
-  flex: 0 0 20px;
+  flex-basis: 20px;
 }
 </style>

@@ -14,7 +14,7 @@ const props = defineProps<Props>()
 <template>
   <SelectSeparator
     data-slot="select-separator"
-    :class="cn('select-separator', props.class)"
+    :class="cn('select-separator my-space-xxxs', props.class)"
   />
 </template>
 
@@ -22,6 +22,5 @@ const props = defineProps<Props>()
 .select-separator {
   height: 1px;
   background: var(--rds-light-4, #d0d0d0);
-  margin: 0.25rem 0;
 }
 </style>

@@ -120,7 +120,7 @@ const handleLinkClick = (event: MouseEvent) => {
 
 /* Default variant - with icon support */
 .radio-card-default {
-  padding: 24px;
+  padding: 1.5rem;
   gap: 16px;
 }
 
@@ -145,7 +145,7 @@ const handleLinkClick = (event: MouseEvent) => {
   flex-direction: column;
   align-items: center;
   text-align: center;
-  padding: 24px 16px;
+  padding: 1.5rem 1rem;
   gap: 24px;
 }
 
@@ -171,7 +171,7 @@ const handleLinkClick = (event: MouseEvent) => {
 }
 
 .radio-card-vertical .radio-card-heading {
-  font-size: 18px;
+  font-size: 1.125rem;
 }
 
 /* Simple variant - text only, horizontal layout */
@@ -179,7 +179,7 @@ const handleLinkClick = (event: MouseEvent) => {
   flex-direction: row;
   align-items: center;
   text-align: left;
-  padding: 16px;
+  padding: 1rem;
   gap: 12px;
 }
 
@@ -281,7 +281,7 @@ const handleLinkClick = (event: MouseEvent) => {
 }
 
 .radio-card-description {
-  font-size: 14px;
+  font-size: 0.875rem;
   font-weight: 400;
   line-height: 21px;
   color: var(--rds-dark-1, #747474);
@@ -289,7 +289,7 @@ const handleLinkClick = (event: MouseEvent) => {
 }
 
 .radio-card-link {
-  font-size: 14px;
+  font-size: 0.875rem;
   font-weight: 400;
   line-height: 21px;
   color: var(--rds-primary, #8c1d40);

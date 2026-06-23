@@ -47,7 +47,7 @@ defineExpose({
     ref="rootRef"
     v-slot="slotProps"
     data-slot="combobox"
-    :class="cn('combobox-root', props.class)"
+    :class="cn('combobox-root position-relative d-block w-100', props.class)"
     v-bind="forwarded"
   >
     <slot v-bind="slotProps" />
@@ -56,9 +56,6 @@ defineExpose({
 
 <style scoped>
 .combobox-root {
-  position: relative;
-  display: block;
-  width: 100%;
   min-width: 0;
 }
 </style>

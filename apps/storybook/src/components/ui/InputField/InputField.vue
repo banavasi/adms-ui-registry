@@ -57,7 +57,7 @@ const ariaDescribedBy = computed(() => {
 
 const inputClasses = computed(() =>
   cn(
-    'form-control col-12 p-space-xs',
+    'form-control col-12 p-space-xs w-100 rounded-0',
     {
       'is-invalid': context.invalid.value,
       'has-suffix': props.hasSuffix,
@@ -69,8 +69,8 @@ const inputClasses = computed(() =>
 </script>
 
 <template>
-  <div class="input-wrapper">
-    <span v-if="hasPrefix" class="input-prefix">
+  <div class="input-wrapper position-relative d-flex align-items-center">
+    <span v-if="hasPrefix" class="input-prefix position-absolute d-flex align-items-center justify-content-center h-100 text-dark-1">
       <slot name="prefix" />
     </span>
     <input
@@ -94,22 +94,14 @@ const inputClasses = computed(() =>
       @keydown="emit('keydown', $event)"
       @keyup="emit('keyup', $event)"
     />
-    <span v-if="hasSuffix" class="input-suffix">
+    <span v-if="hasSuffix" class="input-suffix position-absolute d-flex align-items-center justify-content-center h-100 text-dark-1">
       <slot name="suffix" />
     </span>
   </div>
 </template>
 
 <style scoped>
-.input-wrapper {
-  position: relative;
-  display: flex;
-  align-items: center;
-}
-
 .form-control {
-  border-radius: 0;
-  width: 100%;
   height: 3.3125rem;
 }
 
@@ -131,16 +123,6 @@ const inputClasses = computed(() =>
   border-bottom-width: 0.25rem;
   /* Remove Bootstrap's default error icon */
   padding-right: 3rem !important;
-}
-
-.input-prefix,
-.input-suffix {
-  position: absolute;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-  color: var(--rds-dark-1, #747474);
 }
 
 .input-prefix {

@@ -337,11 +337,11 @@ const describedBy = computed(() =>
   background: var(--rds-white, #fff);
   border: 1px solid var(--rds-light-4, #d0d0d0);
   color: var(--rds-dark-1, #747474);
-  font-size: 14px;
+  font-size: 0.875rem;
   font-weight: 400 !important;
   line-height: 1.5;
   padding-left: 1rem;
-  padding-right: 5rem;
+  padding-right: 6rem;
   cursor: pointer;
   outline: none;
   text-align: left;

@@ -168,7 +168,7 @@ const { handleKeyDown } = useRadioKeyboard({
   align-items: center;
   justify-content: space-between;
   gap: 8px;
-  padding: 16px;
+  padding: 1rem;
   background-color: var(--rds-white, #fff);
   border: 1px solid var(--rds-light-4, #d0d0d0);
   border-radius: 8px;

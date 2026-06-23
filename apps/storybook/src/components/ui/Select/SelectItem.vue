@@ -19,7 +19,7 @@ const props = defineProps<Props>()
     :text-value="props.textValue"
     :as-child="props.asChild"
     :as="props.as"
-    :class="cn('select-item', props.class)"
+    :class="cn('select-item py-space-xxs px-space-xs bg-white text-dark-3', props.class)"
   >
     <SelectItemText>
       <slot />
@@ -29,11 +29,8 @@ const props = defineProps<Props>()
 
 <style>
 .select-item {
-  padding: 0.5rem 1rem;
   cursor: pointer;
   outline: none;
-  background: var(--rds-white, #fff);
-  color: var(--rds-dark-3, #191919);
 }
 
 .select-item[data-highlighted] {
