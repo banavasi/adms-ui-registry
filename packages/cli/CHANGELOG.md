@@ -1,5 +1,11 @@
 # @adms-rds-ui/cli
 
+## 3.3.1
+
+### Patch Changes
+
+- [`902d451`](https://github.com/banavasi/adms-ui-registry/commit/902d4510963998afb49a68838a5dd3c938251cf3) Thanks [@banavasi](https://github.com/banavasi)! - Align registry component spacing, margin, and font sizes to the RDS sizing scale.
+
 ## 3.3.0
 
 ### Minor Changes
