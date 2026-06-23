@@ -1,5 +1,11 @@
 # @adms-rds-ui/cli
 
+## 3.3.2
+
+### Patch Changes
+
+- [`ad1c9df`](https://github.com/banavasi/adms-ui-registry/commit/ad1c9df8f91950ecc60b056bec0c553cba689bea) Thanks [@banavasi](https://github.com/banavasi)! - Polish combobox and listbox interactions: reliable chevron inversion, ListBox placeholders, and ListBox hover/selected states matching Combobox.
+
 ## 3.3.1
 
 ### Patch Changes
