@@ -368,7 +368,7 @@ async function updateTsConfig(cwd: string, config: RdsConfig) {
     // Find and update the app tsconfig (the one that includes src files)
     let appConfigUpdated = false
 
-    for (const ref of tsConfig.references) {
+    for (const ref of tsConfig.references ?? []) {
       const refPath = path.join(cwd, ref.path)
       const refConfigPath = refPath.endsWith('.json') ? refPath : `${refPath}.json`
 
