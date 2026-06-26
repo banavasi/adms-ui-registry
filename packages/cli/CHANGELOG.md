@@ -1,5 +1,11 @@
 # @adms-rds-ui/cli
 
+## 3.4.0
+
+### Minor Changes
+
+- [#58](https://github.com/banavasi/adms-ui-registry/pull/58) [`01bee25`](https://github.com/banavasi/adms-ui-registry/commit/01bee25fbd1d9296a3d8c59c87725542c2c8ae7b) Thanks [@banavasi](https://github.com/banavasi)! - Add an `update` command that refreshes already-installed components to the latest registry version. It auto-discovers installed components by scanning the configured components directory, fetches + import-transforms each registry file, and diffs it byte-for-byte against the local copy — applying changes with per-file confirmation. Flags: `--check` (dry-run list of outdated components), `--overwrite`/`--yes` (skip confirmations). Accepts explicit component names to scope the update; new files added to a component are picked up too.
+
 ## 3.3.2
 
 ### Patch Changes
